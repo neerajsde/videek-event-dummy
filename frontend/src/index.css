@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Slick Slider */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+/* font family  */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  overflow-y: visible;
+}
+
+.home-banner{
+  background: rgba(0, 0, 0, 0.8);
+  background: -webkit-linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+.card-shadow{
+  -webkit-box-shadow: 0 3.5px 12px 1.5px rgba(79, 79, 79, 0.265);
+  -moz-box-shadow: 0 3.5px 12px 1.5px rgba(79, 79, 79, 0.265);
+  box-shadow: 0 3.5px 12px 1.5px rgba(79, 79, 79, 0.265);
+  transition: all 0.3s ease-in;
+}
+.card-shadow:hover{
+  -webkit-box-shadow: 0 3.5px 12px 1.5px rgba(79, 79, 79, 0.121);
+  -moz-box-shadow: 0 3.5px 12px 1.5px rgba(79, 79, 79, 0.121);
+  box-shadow: 0 3.5px 12px 1.5px rgba(79, 79, 79, 0.121);
+}
+
+.venue-bg{
+  background-image: radial-gradient(rgba(184, 184, 184, 0.53) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  background-color: #f2f2f2;
+}
+
+.venue-bg-clip-path{
+  background-color: black;
+  clip-path: polygon(39% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.slick-slide div{
+  margin: 10px;
+}
+.slick-slide a div{
+  margin: 0px;
+}
+
+.gallery-section .slick-arrow{
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background-color: #00000077;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  margin: -10px;
+}
+
+.real-wedding-card{
+  background: rgba(0, 0, 0, 0.7);
+  background: -webkit-linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(255, 255, 255, 0) 100%);
+}
+.blog-section .slick-slide div{
+  margin: 10px auto;
+  text-align: center;
+}
+
+.blog-section .slick-arrow{
+  position: absolute;
+  top:-51px;
+  height: 30px;
+  width: 30px;
+  right: 30px;
+  border-radius: 100%;
+  background-color: #00000077;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  margin: -10px;
+}
+
+
+.blog-section .slick-arrow.slick-prev{
+  right: 90px;
+  left: auto;
+}
+
+
+.blog-card .slick-arrow{
+  position: absolute;
+  top:50%;
+  transform: translateY(-50%);
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background-color: #00000077;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  margin: -10px;
+}
+
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  animation: spinner-plncf9 4s infinite;
+}
+
+.spinner::before,
+.spinner::after {
+  content: "";
+  grid-area: 1/1;
+  border: 4px solid;
+  border-radius: 50%;
+  border-color: #AB1C49 #AB1C49 #0000 #0000;
+  mix-blend-mode: darken;
+  animation: spinner-plncf9 1s infinite linear;
+}
+
+.spinner::after {
+  border-color: #0000 #0000 #dbdcef #dbdcef;
+  animation-direction: reverse;
+}
+
+@keyframes spinner-plncf9 {
+  100% {
+     transform: rotate(1turn);
+  }
+}
+
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  color: #fff;
+  width: 2px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
+  transform: translateX(-38px);
+  animation: l21 .5s infinite alternate linear;
+}
+
+@keyframes l21 {
+  50%  {box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px}
+  100% {box-shadow: 19px 0 0 0  , 38px 0 0 3px, 57px 0 0 7px}
+}
+
+
+.spinner2 {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 9px solid #AB1C49;
+  animation: spinner-bulqg1 0.8s infinite linear alternate,
+       spinner-oaa3wk 1.6s infinite linear;
+}
+
+@keyframes spinner-bulqg1 {
+  0% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%);
+  }
+
+  12.5% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%);
+  }
+
+  25% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 100% 100%, 100% 100%);
+  }
+
+  50% {
+     clip-path: polygon(50% 50%, 0 0, 50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  62.5% {
+     clip-path: polygon(50% 50%, 100% 0, 100% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  75% {
+     clip-path: polygon(50% 50%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 50% 100%, 0% 100%);
+  }
+
+  100% {
+     clip-path: polygon(50% 50%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 50% 100%, 0% 100%);
+  }
+}
+
+@keyframes spinner-oaa3wk {
+  0% {
+     transform: scaleY(1) rotate(0deg);
+  }
+
+  49.99% {
+     transform: scaleY(1) rotate(135deg);
+  }
+
+  50% {
+     transform: scaleY(-1) rotate(0deg);
+  }
+
+  100% {
+     transform: scaleY(-1) rotate(-135deg);
+  }
+}
