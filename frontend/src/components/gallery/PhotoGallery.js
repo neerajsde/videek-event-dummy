@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 function PhotoGallery({ weddingData }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [currentImage, setCurrentImage] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Map images to lightbox-compatible format
+    const slides = weddingData.images.map(img => ({
+        src: `${process.env.REACT_APP_BASE_URL}/weddings${img}`
+    }));
 
     return (
         <div className="w-full px-8 py-8 max-md:p-6 max-sm:px-4 flex flex-col gap-4">
@@ -17,7 +22,7 @@ function PhotoGallery({ weddingData }) {
                         alt={`Wedding image ${index + 1}`}
                         className="w-full h-[270px] max-sm:h-[250px] object-cover cursor-pointer"
                         onClick={() => {
-                            setCurrentImage(index);
+                            setCurrentIndex(index);
                             setIsOpen(true);
                         }}
                     />
@@ -26,16 +31,11 @@ function PhotoGallery({ weddingData }) {
 
             {isOpen && (
                 <Lightbox
-                    mainSrc={`${process.env.REACT_APP_BASE_URL}/weddings${weddingData.images[currentImage]}`}
-                    nextSrc={`${process.env.REACT_APP_BASE_URL}/weddings${weddingData.images[(currentImage + 1) % weddingData.images.length]}`}
-                    prevSrc={`${process.env.REACT_APP_BASE_URL}/weddings${weddingData.images[(currentImage + weddingData.images.length - 1) % weddingData.images.length]}`}
-                    onCloseRequest={() => setIsOpen(false)}
-                    onMovePrevRequest={() =>
-                        setCurrentImage((currentImage + weddingData.images.length - 1) % weddingData.images.length)
-                    }
-                    onMoveNextRequest={() =>
-                        setCurrentImage((currentImage + 1) % weddingData.images.length)
-                    }
+                    open={isOpen}
+                    close={() => setIsOpen(false)}
+                    slides={slides}
+                    index={currentIndex}
+                    onIndexChange={setCurrentIndex}
                 />
             )}
         </div>

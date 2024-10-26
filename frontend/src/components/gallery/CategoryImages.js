@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 function CategoryImages({ weddingData }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [currentImage, setCurrentImage] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Map images to lightbox-compatible format
+    const slides = weddingData.images.map(img => ({
+        src: `${process.env.REACT_APP_BASE_URL}/gallery${img}`
+    }));
 
     return (
         <div className="w-full py-8 flex flex-col gap-4">
@@ -14,10 +19,10 @@ function CategoryImages({ weddingData }) {
                     <img
                         key={index}
                         src={`${process.env.REACT_APP_BASE_URL}/gallery${img}`}
-                        alt={`image ${index + 1}`}
+                        alt={`Image ${index + 1}`}
                         className="w-full h-[270px] object-cover cursor-pointer"
                         onClick={() => {
-                            setCurrentImage(index);
+                            setCurrentIndex(index);
                             setIsOpen(true);
                         }}
                     />
@@ -26,21 +31,15 @@ function CategoryImages({ weddingData }) {
 
             {isOpen && (
                 <Lightbox
-                    mainSrc={`${process.env.REACT_APP_BASE_URL}/gallery${weddingData.images[currentImage]}`}
-                    nextSrc={`${process.env.REACT_APP_BASE_URL}/gallery${weddingData.images[(currentImage + 1) % weddingData.images.length]}`}
-                    prevSrc={`${process.env.REACT_APP_BASE_URL}/gallery${weddingData.images[(currentImage + weddingData.images.length - 1) % weddingData.images.length]}`}
-                    onCloseRequest={() => setIsOpen(false)}
-                    onMovePrevRequest={() =>
-                        setCurrentImage((currentImage + weddingData.images.length - 1) % weddingData.images.length)
-                    }
-                    onMoveNextRequest={() =>
-                        setCurrentImage((currentImage + 1) % weddingData.images.length)
-                    }
+                    open={isOpen}
+                    close={() => setIsOpen(false)}
+                    slides={slides}
+                    index={currentIndex}
+                    onIndexChange={setCurrentIndex}
                 />
             )}
         </div>
     );
 }
 
-export default CategoryImages
- 
+export default CategoryImages;
