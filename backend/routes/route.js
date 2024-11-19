@@ -24,6 +24,7 @@ const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendor
 const { AddNewVendor } = require('../controllers/vendor/AddVendor');
 const { getVendorFAQs } = require('../controllers/vendor/GetVendorFAQs');
 const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg } = require('../controllers/vendor/Update');
+const { sendOtpVendor, resetVendorPassword } = require('../controllers/vendor/ForgotPassword');
 // gallery
 const { uploadGalleryImg } = require('../controllers/Gallery/uploadImg');
 const { getGalleryCategoryWithUnique, getById, getGalleryData, getGalleryCategory } = require('../controllers/Gallery/GetGallery');
@@ -75,6 +76,8 @@ router.delete('/vendor/FAQ/delete', auth, deleteFAQFromVendor);
 router.put('/vendor/FAQ/update', auth, updateFAQInVendor);
 router.post('/vendor/album/img/upload', uploadVendorAlbumImg);
 router.get('/vendor/:Name', getVendorByName);
+router.post('/vendor/forgot-password/send-otp', sendOtpVendor);
+router.post('/vendor/forgot-password/reset-password', resetVendorPassword);
 // gallery
 router.get('/gallery', getGalleryData);
 router.post('/gallery/img/upload', uploadGalleryImg);

@@ -188,7 +188,7 @@ const Login = () => {
                 {!isVerifyOtp && (<label className='w-full flex flex-col relative gap-2'>
                     <div className='w-full flex items-center justify-between'>
                         <p className='text-base max-md:text-sm font-semibold text-gray-500'>Password</p>
-                        <p onClick={() => navigate('/forget-password')} className='text-md max-md:text-sm font-semibold text-blue-600 cursor-pointer transition duration-200 ease-in hover:underline'>Lost Password?</p>
+                        <p onClick={() => navigate('/forgot-password')} className='text-md max-md:text-sm font-semibold text-blue-600 cursor-pointer transition duration-200 ease-in hover:underline'>Forgot Password?</p>
                     </div>
                     <input
                         type={isVisiablePass ? 'text' : 'password'}
