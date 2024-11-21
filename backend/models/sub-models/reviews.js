@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const reviewSchema = new mongoose.Schema({
   noOfStars: { type: Number, required: true },
   comment: String,
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+  images:[{
+    type:String
+  }],
+  amount:{
+    type: Number
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

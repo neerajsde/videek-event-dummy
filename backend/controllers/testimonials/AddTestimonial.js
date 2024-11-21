@@ -73,6 +73,14 @@ exports.AddNewTestimonials = async (req, res) => {
                 });
             }
 
+            if(existingUser.designation === ''){
+                await User.findByIdAndUpdate(
+                    user_id,
+                    {$set: {designation: designation}},
+                    {new: true}
+                )
+            }
+
             // Create testimonial for the existing user
             await Testimonial.create({
                 user_id: user_id,

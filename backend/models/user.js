@@ -11,7 +11,7 @@ const creatednewUser = new mongoose.Schema({
     },
     email:{
         type:String,
-        required: true
+        default: ''
     },
     phone:{
         type:String,
@@ -24,6 +24,10 @@ const creatednewUser = new mongoose.Schema({
     user_img:{
         type:String,
         default:''
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
     },
     token:{
         type:String,

@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import toast from "react-hot-toast";
 
 
 export const AppContext = createContext();
@@ -11,15 +12,46 @@ function AppContextProvider({children}){
     const [isActiveLoginPage, setIsActiveLoginPage] = useState(false);
     const [isMenuBarActive, setIsMenuBarActive] = useState(false);
     const [isOpenRate, setIsOpenRate] = useState(false);
+    const [activeUserMenu, setActiveUserMenu] = useState(false);
+
+    const AuthUser = async () => {
+        try {
+          const token = localStorage.getItem("DJevents");
+          if (!token) {
+            throw new Error("Token not found. Please log in again.");
+          }
+          const url = `${process.env.REACT_APP_BASE_URL}/user/dashboard`;
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ token }),
+          });
+          const data = await response.json();
+          if (response.ok && data.success) {
+            setIsLoggedIn(true);
+            setUserData(data.userData);
+            setIsActiveLoginPage(false);
+          } else {
+            toast.error(
+              data.message || "Failed to authenticate. Please try again."
+            );
+          }
+        } catch (err) {}
+    };
 
     const value = {
+        AuthUser,
         isLoading, setIsLoading,
         isLoggedIn, setIsLoggedIn,
         userData, setUserData,
         tab, setTab,
         isActiveLoginPage, setIsActiveLoginPage,
         isMenuBarActive, setIsMenuBarActive,
-        isOpenRate, setIsOpenRate
+        isOpenRate, setIsOpenRate,
+        activeUserMenu, setActiveUserMenu
     }
 
     return <AppContext.Provider value={value}>

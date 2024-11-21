@@ -36,7 +36,7 @@ const AddTestimonal = () => {
                     'Content-Type': 'application/json', 
                 },
                 body: JSON.stringify({
-                    user_id: isLoggedIn ? userData?._id : '',  // update here
+                    user_id: isLoggedIn ? userData?.user_id : '',
                     email: formData.email, 
                     name:formData.name, 
                     designation: formData.designation, 

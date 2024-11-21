@@ -217,3 +217,19 @@ body{
      transform: scaleY(-1) rotate(-135deg);
   }
 }
+
+.btn-shadow{
+  border:1px;
+  border-color: transparent;
+  transition: all 0.3s ease-in;
+}
+.btn-shadow:hover{
+  -webkit-box-shadow: 0 0 5px 1.5px #ab1c49;
+  -moz-box-shadow: 0 0 5px 1.5px #ab1c49;
+  box-shadow: 0 0 5px 1.5px #ab1c49;
+}
+.btn-shadow-active{
+  -webkit-box-shadow: 0 0 5px 1.5px #ab1c49;
+  -moz-box-shadow: 0 0 5px 1.5px #ab1c49;
+  box-shadow: 0 0 5px 1.5px #ab1c49;
+}

@@ -1,4 +1,31 @@
 const Vendor = require('../../models/vendor_category');
+const Reviews = require('../../models/sub-models/reviews');
+const User = require('../../models/user');
+
+function timeAgo(timestamp) {
+    const now = new Date();
+    const past = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    const intervals = [
+        { label: "year", seconds: 31536000 },
+        { label: "month", seconds: 2592000 },
+        { label: "week", seconds: 604800 },
+        { label: "day", seconds: 86400 },
+        { label: "hour", seconds: 3600 },
+        { label: "minute", seconds: 60 },
+        { label: "second", seconds: 1 },
+    ];
+
+    for (const interval of intervals) {
+        const count = Math.floor(diffInSeconds / interval.seconds);
+        if (count >= 1) {
+            return `${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
+        }
+    }
+
+    return "just now"; // For cases where the time difference is very small
+}
 
 exports.getVendorCategoryWithUnique = async (req, res) => {
     try{
@@ -69,7 +96,7 @@ exports.getCategory = async (req, res) => {
                             VendorsData.push(currVendor);
                         }
                     }
-                    console.log(VendorsData);
+                    // console.log(VendorsData);
                     return res.status(200).json({
                         success: true,
                         data: VendorsData,
@@ -228,7 +255,7 @@ exports.getVendorAlbumImages = async (req, res) => {
 exports.getVendorByName = async (req, res) => {
     try{
         const { Name } = req.params;
-        let AllVendors = await Vendor.find().populate('FAQs');
+        let AllVendors = await Vendor.find().populate(['FAQs', 'reviews']);
 
         if (AllVendors.length === 0) {
             return res.status(404).json({
@@ -241,12 +268,31 @@ exports.getVendorByName = async (req, res) => {
             const vendorNameFormatted = AllVendors[i].name.toLowerCase().replaceAll(/\s+/g, '-');
             if (vendorNameFormatted === Name) {
                 const currVendor = AllVendors[i].toObject();
+                let reviewers = [];
+                const maxReviews = 5; // accordingly change
                 const totalReviews = await Promise.all(currVendor?.reviews.map(async (reviewId) => {
                     const currReviewer = await Reviews.findById(reviewId);
+                    if(reviewers.length <= maxReviews){
+                        const userDetails = await User.findById(currReviewer.user);
+                        const newReviewObject = {
+                            comment: currReviewer.comment,
+                            stars: parseFloat(currReviewer.noOfStars).toFixed(1),
+                            images: currReviewer.images,
+                            user_name: userDetails.name,
+                            user_img: userDetails.user_img,
+                            user_Verified: userDetails.isVerified,
+                            date: timeAgo(currReviewer.createdAt)
+                        }
+                        reviewers.push(newReviewObject);
+                    }
                     return currReviewer ? currReviewer.noOfStars : 0;
                 }));
 
                 currVendor.avg_ratings = totalReviews.length > 0 ? (totalReviews.reduce((sum, stars) => sum + stars, 0) / totalReviews.length).toFixed(1) : "4.8";
+                currVendor.total_reviews = currVendor.reviews.length;
+                currVendor.reviews = reviewers;
+                currVendor.ytLinksLength = currVendor.youtube_links.length;
+                currVendor.youtube_links = currVendor.youtube_links.slice(-3);
                 delete currVendor.token;
                 delete currVendor.password;
                 delete currVendor.createdAt;

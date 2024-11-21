@@ -25,6 +25,7 @@ const { AddNewVendor } = require('../controllers/vendor/AddVendor');
 const { getVendorFAQs } = require('../controllers/vendor/GetVendorFAQs');
 const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg } = require('../controllers/vendor/Update');
 const { sendOtpVendor, resetVendorPassword } = require('../controllers/vendor/ForgotPassword');
+const { addVendorReviews, uploadVendorReviewImg } = require('../controllers/vendor/writeVendorReviews');
 // gallery
 const { uploadGalleryImg } = require('../controllers/Gallery/uploadImg');
 const { getGalleryCategoryWithUnique, getById, getGalleryData, getGalleryCategory } = require('../controllers/Gallery/GetGallery');
@@ -36,7 +37,11 @@ const { getWeddingsData, getRealWeddingByCoupleName } = require('../controllers/
 const { AddNewTestimonials } = require('../controllers/testimonials/AddTestimonial');
 const { getTestimonalForAdmin, getTestimonals } = require('../controllers/testimonials/GetTestimonals');
 const { UpdatePublishTestimonals, UnUpdatePublishTestimonals } = require('../controllers/testimonials/UpdateTestimonals');
-
+// user
+const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
+router.post('/user/login-email', loginHandler);
+router.post('/user/login-mobile', loginWithMobile);
+router.post('/user/dashboard', auth, getUserDetails);
 // admin
 router.post('/admin/add', createNewAdmin);
 router.post('/admin/login', adminLogin);
@@ -78,6 +83,8 @@ router.post('/vendor/album/img/upload', uploadVendorAlbumImg);
 router.get('/vendor/:Name', getVendorByName);
 router.post('/vendor/forgot-password/send-otp', sendOtpVendor);
 router.post('/vendor/forgot-password/reset-password', resetVendorPassword);
+router.post('/vendor/review/add', addVendorReviews);
+router.post('/vendor/review/img/upload', uploadVendorReviewImg);
 // gallery
 router.get('/gallery', getGalleryData);
 router.post('/gallery/img/upload', uploadGalleryImg);

@@ -3,15 +3,15 @@ import { Navigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
 
 const PrivateRoute = ({children}) => {
-    const {isLoggedIn} = useContext(AppContext);
+    const {isLoggedIn, setIsActiveLoginPage} = useContext(AppContext);
 
     if(isLoggedIn){
         return children;
     }
     else{
+        setIsActiveLoginPage(true);
         return <Navigate to={'/'}/>
     }
 }
 
 export default PrivateRoute
-
