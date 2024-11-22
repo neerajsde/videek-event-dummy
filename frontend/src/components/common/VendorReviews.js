@@ -103,7 +103,7 @@ const VendorReviews = ({ data }) => {
   return (
     <div className="w-full flex flex-col">
       <div className="w-full flex flex-col bg-white shadow-sm shadow-gray-400 p-4 gap-4">
-        <h2 className="text-xl text-gray-700 font-semibold">
+        <h2 className="text-xl text-gray-700 font-semibold max-md:text-lg max-sm:text-base">
           Write review about <span className="text-black">{data.name}</span>
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -116,19 +116,21 @@ const VendorReviews = ({ data }) => {
           />
 
           {/* Ratings */}
-          <div className="flex items-center gap-2">
+          <div className="w-full flex max-sm:justify-between items-center gap-2 px-2">
             <span className="text-sm font-medium">Rate*</span>
-            {[...Array(5)].map((_, index) => (
-              <span
-                key={index}
-                onClick={() => handleRating(index)}
-                className={`cursor-pointer text-2xl ${
-                  rating > index ? "text-yellow-400" : "text-gray-300"
-                }`}
-              >
-                ★
-              </span>
-            ))}
+            <div className="flex justify-center items-center gap-2">
+              {[...Array(5)].map((_, index) => (
+                <span
+                  key={index}
+                  onClick={() => handleRating(index)}
+                  className={`cursor-pointer text-2xl ${
+                    rating > index ? "text-yellow-400" : "text-gray-300"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Price Input */}
@@ -156,18 +158,18 @@ const VendorReviews = ({ data }) => {
 
           {/* Display Selected Images */}
           {images.length > 0 && (
-            <div className="flex flex-wrap gap-4 mt-2">
+            <div className="flex flex-wrap gap-4 max-sm:gap-1 mt-2">
               {images.map((image, index) => (
                 <div key={index} className="relative group">
                   <img
                     src={URL.createObjectURL(image)}
                     alt="uploaded"
-                    className="w-24 h-24 object-cover rounded-md"
+                    className="w-24 h-24 max-sm:w-12 max-sm:h-12 object-cover rounded-md"
                   />
                   <button
                     type="button"
                     onClick={() => handleImageRemove(index)}
-                    className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full p-1 group-hover:opacity-100 opacity-0 transition"
+                    className="absolute top-1 right-1 max-sm:top-[2px] max-sm:right-[2px] bg-red-500 text-white text-xs rounded-full p-1 max-sm:py-0 group-hover:opacity-100 opacity-0 transition"
                   >
                     ✕
                   </button>

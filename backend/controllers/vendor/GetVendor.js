@@ -268,9 +268,10 @@ exports.getVendorByName = async (req, res) => {
             const vendorNameFormatted = AllVendors[i].name.toLowerCase().replaceAll(/\s+/g, '-');
             if (vendorNameFormatted === Name) {
                 const currVendor = AllVendors[i].toObject();
+                const updateLetestReview = [...currVendor?.reviews].reverse();
                 let reviewers = [];
                 const maxReviews = 5; // accordingly change
-                const totalReviews = await Promise.all(currVendor?.reviews.map(async (reviewId) => {
+                const totalReviews = await Promise.all(updateLetestReview.map(async (reviewId) => {
                     const currReviewer = await Reviews.findById(reviewId);
                     if(reviewers.length <= maxReviews){
                         const userDetails = await User.findById(currReviewer.user);
