@@ -13,7 +13,8 @@ import Logo from "../assets/logo.png";
 import { IoMdNotifications } from "react-icons/io";
 import Album from "../components/album/Album";
 import { MdPhotoAlbum } from "react-icons/md";
-
+import { RxVideo } from "react-icons/rx";
+import VideosHome from "../components/youtube/VideosHome";
 
 const Home = () => {
   const { setIsLoggedIn, adminData } = useContext(AppContext);
@@ -76,14 +77,14 @@ const Home = () => {
           </button>
 
           <button
-            onClick={() => setCurrentSection("faqs")}
+            onClick={() => setCurrentSection("video-links")}
             className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${
-              currentSection === "faqs"
+              currentSection === "video-links"
                 ? "bg-[#222] text-white"
                 : "hover:bg-[#000] hover:text-white"
             }`}
           >
-            <FaQuestionCircle className="text-xl" /> FAQs
+            <RxVideo className="text-xl" /> Videos Links
           </button>
 
           <button
@@ -98,6 +99,17 @@ const Home = () => {
           </button>
 
           <button
+            onClick={() => setCurrentSection("faqs")}
+            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${
+              currentSection === "faqs"
+                ? "bg-[#222] text-white"
+                : "hover:bg-[#000] hover:text-white"
+            }`}
+          >
+            <FaQuestionCircle className="text-xl" /> FAQs
+          </button>
+
+          <button
             onClick={handleLogout}
             className="w-full py-2 flex justify-start px-4 items-center gap-4 text-red-400 text-lg font-semibold transition duration-300 ease-in-out hover:bg-[#000] hover:text-red-500"
           >
@@ -108,6 +120,7 @@ const Home = () => {
         <div className="w-full flex justify-start items-start text-white p-4">
           {currentSection === "dashboard" && <MainPage />}
           {currentSection === "album" && <Album />}
+          {currentSection === "video-links" && <VideosHome />}
           {currentSection === "faqs" && <FAQs />}
           {currentSection === "reviews" && <Reviews />}
         </div>

@@ -9,7 +9,15 @@ const creatednewVendor = new mongoose.Schema({
         type:String,
         default:''
     },
-    vendor:{
+    phone:{
+        type: String,
+        default:''
+    },
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user' 
+    },
+    category:{
         type:String,
         default:''
     },

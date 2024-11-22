@@ -237,3 +237,107 @@ exports.uploadVendorAlbumImg = async (req, res) => {
         });
     }
 };
+
+function isValidYouTubeUrl(url) {
+    // Regular expression to match various YouTube URL formats
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([a-zA-Z0-9_-]{11})(.*)?$/;
+
+    // Test the URL against the regex
+    return youtubeRegex.test(url);
+}
+
+exports.addVideoLinks = async (req, res) => {
+    try{
+        const { vendor_id, url } = req.body;
+        if(!vendor_id){
+            return res.status(404).json({
+                success: false,
+                message: 'Vendor id required'
+            })
+        }
+        if(!url){
+            return res.status(404).json({
+                success: false,
+                message: 'url required'
+            })
+        }
+        if(!isValidYouTubeUrl(url)){
+            return res.status(404).json({
+                success: false,
+                message: 'Please enter Vaild URL'
+            })
+        }
+        const updateVendor = await Vendor.findByIdAndUpdate(
+            vendor_id,
+            {$push: {youtube_links: url }},
+            {new: true}
+        )
+        if(updateVendor){
+            res.status(200).json({
+                success: true,
+                message:'Video link added successfully'
+            })
+        }
+        else{
+            res.status(300).json({
+                success: false,
+                message:'something went wrong'
+            })
+        }
+    } catch(err){
+        console.log('Error while adding YT Video Link From Vendor: ', err.message);
+        res.status(500).json({
+            success: false,
+            message:'Internal server error',
+            error:err.message
+        })
+    }
+}
+
+
+exports.deleteVideoLink = async (req, res) => {
+    try {
+        const { vendor_id, url } = req.body;
+
+        // Validate inputs
+        if (!vendor_id) {
+            return res.status(404).json({
+                success: false,
+                message: 'Vendor id required',
+            });
+        }
+        if (!url) {
+            return res.status(404).json({
+                success: false,
+                message: 'URL required',
+            });
+        }
+
+        // Find vendor and remove the specific URL from the youtube_links array
+        const updatedVendor = await Vendor.findByIdAndUpdate(
+            vendor_id,
+            { $pull: { youtube_links: url } },
+            { new: true }
+        );
+
+        if (updatedVendor) {
+            res.status(200).json({
+                success: true,
+                message: 'Video link deleted successfully',
+                data: updatedVendor,
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'Vendor not found or URL does not exist',
+            });
+        }
+    } catch (err) {
+        console.error('Error while deleting YT Video Link for Vendor: ', err.message);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: err.message,
+        });
+    }
+};

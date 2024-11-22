@@ -5,12 +5,13 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const UserMenu = () => {
-    const { userData, setIsLoggedIn, setActiveUserMenu } = useContext(AppContext);
+    const { userData, setIsLoggedIn, setActiveUserMenu, setUserData } = useContext(AppContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem("DJevents");
         setIsLoggedIn(false);
+        setUserData(null);
         navigate("/");
         setActiveUserMenu(false);
         toast.success("Log Out Successfully");

@@ -321,3 +321,38 @@ exports.getVendorByName = async (req, res) => {
         })
     }
 }
+
+
+exports.getOnVendorAdminVideoLinks = async (req, res) => {
+    try{
+        const { vendor_id } = req.body;
+        if(!vendor_id){
+            return res.status(404).json({
+                success: false,
+                message: 'Vendor id required'
+            })
+        }
+        const getVendor = await Vendor.findById(vendor_id);
+        const update = [...getVendor.youtube_links].reverse();
+        if(getVendor && update.length > 0){
+            res.status(200).json({
+                success: true,
+                data: update,
+                message:'Fetch successfully'
+            })
+        }
+        else{
+            res.status(300).json({
+                success: false,
+                message:'something went wrong'
+            })
+        }
+    } catch(err){
+        console.log('Error while Get Video Link From Vendor Admin Pannel: ', err.message);
+        res.status(500).json({
+            success: false,
+            message:'Internal server error',
+            error:err.message
+        })
+    }
+}

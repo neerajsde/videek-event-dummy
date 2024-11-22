@@ -20,10 +20,10 @@ const { AddNewBlogs } = require('../controllers/blogs/AddBlog');
 const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory } = require('../controllers/blogs/GetBlogs');
 // vendor
 const { VendorLogin, sendOtpVendorOnMail } = require('../controllers/vendor/LoginVendor');
-const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName } = require('../controllers/vendor/GetVendor');
+const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName, getOnVendorAdminVideoLinks } = require('../controllers/vendor/GetVendor');
 const { AddNewVendor } = require('../controllers/vendor/AddVendor');
 const { getVendorFAQs } = require('../controllers/vendor/GetVendorFAQs');
-const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg } = require('../controllers/vendor/Update');
+const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg, addVideoLinks, deleteVideoLink } = require('../controllers/vendor/Update');
 const { sendOtpVendor, resetVendorPassword } = require('../controllers/vendor/ForgotPassword');
 const { addVendorReviews, uploadVendorReviewImg } = require('../controllers/vendor/writeVendorReviews');
 // gallery
@@ -85,6 +85,9 @@ router.post('/vendor/forgot-password/send-otp', sendOtpVendor);
 router.post('/vendor/forgot-password/reset-password', resetVendorPassword);
 router.post('/vendor/review/add', addVendorReviews);
 router.post('/vendor/review/img/upload', uploadVendorReviewImg);
+router.put('/vendor/admin/video/add', auth, addVideoLinks);
+router.delete('/vendor/admin/video/delete', auth, deleteVideoLink);
+router.post('/vendor/admin/video', auth, getOnVendorAdminVideoLinks);
 // gallery
 router.get('/gallery', getGalleryData);
 router.post('/gallery/img/upload', uploadGalleryImg);
