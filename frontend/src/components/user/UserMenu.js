@@ -30,7 +30,7 @@ const UserMenu = () => {
             </div>
         </div>
 
-        <div className='w-full flex justify-start items-center py-2 bg-white cursor-pointer transition duration-200 ease-in hover:text-blue-600'>
+        <div onClick={() => navigate('/dashboard#profile')} className='w-full flex justify-start items-center py-2 bg-white cursor-pointer transition duration-200 ease-in hover:text-blue-600'>
             <div className='w-[2px] h-[40px] bg-blue-500'></div>
             <span className='w-full px-4 py-2 bg-blue-100'>User Settings</span>
         </div>

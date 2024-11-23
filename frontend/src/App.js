@@ -28,6 +28,7 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
 import UserMenu from "./components/user/UserMenu";
 import { FaCaretUp } from "react-icons/fa";
+import Invitations from "./pages/Invitations";
 
 function App() {
   const {
@@ -138,6 +139,7 @@ function App() {
         <Route path="/real_weddings/:couple_name" element={<RealWeddings />} />
         <Route path="/vendor-category/:name" element={<VendorCategories />} />
         <Route path="/vendor/:category/:name" element={<Vendor />} />
+        <Route path="/wedding-invitations/:tab" element={<Invitations />} /> 
         <Route path="/s/:services" element={<Services />} />
         <Route path="/s/:services/:anything" element={<Services />} />
         <Route path="/s/:services/:anything/:anything" element={<Services />} />
