@@ -123,7 +123,7 @@ const BasicContactForm = () => {
                 <h2 className='text-2xl max-sm:text-lg font-bold text-black'>Help us with your details</h2>
                 <p className='text-base max-md:text-sm max-sm:text-xs font-normal text-gray-500'>Our executives will call you to understand your requirements to find suitable vendors</p>
             </div>
-            <form onSubmit={submitHandler} className='w-full flex max-sm:flex-col justify-between items-center gap-4 max-md:pr-4 max-sm:pr-0 max-md:gap-2'>
+            <form onSubmit={submitHandler} className='w-full flex max-sm:flex-col justify-between items-center gap-4 max-sm:gap-6 max-md:pr-4 max-sm:pr-0 max-md:gap-2'>
                 <div className='w-full relative group focus-within'>
                     <input
                         type='text'

@@ -76,10 +76,10 @@ const VendorCategories = () => {
                 <div className='text-xl font-semibold text-black max-sm:text-sm'>{`Total Vendors: ${categoryData.length}`}</div>
             </div>
 
-            <div className='w-full flex flex-wrap p-8 gap-6 max-sm:px-2 max-sm:py-4'>
+            <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-8 gap-6 max-sm:px-2 max-sm:py-4'>
                 {
                     categoryData?.length !== 0 ? categoryData.map((item) => (
-                        <Link key={item._id} to={`/vendor/${item.category.toLowerCase().replaceAll(/\s+/g, '-')}/${item.name.toLowerCase().replaceAll(/\s+/g, '-')}`} className={`w-[350px] shadow-lg border border-gray-200 rounded-xl p-4 gap-2 flex flex-col`}>
+                        <Link key={item._id} to={`/vendor/${item.category.toLowerCase().replaceAll(/\s+/g, '-')}/${item.name.toLowerCase().replaceAll(/\s+/g, '-')}`} className={`w-full shadow-lg border border-gray-200 rounded-xl p-4 gap-2 flex flex-col`}>
                             <div className='w-full h-[200px] relative'>
                                 <img
                                     src={`${process.env.REACT_APP_BASE_URL}${item.img}`}
