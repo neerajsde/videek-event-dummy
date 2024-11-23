@@ -86,8 +86,8 @@ function App() {
       )}
 
       {isActiveLoginPage && (
-        <div className="w-full min-h-screen fixed top-0 left-0 backdrop-blur-sm bg-[#00000057] z-[60] flex flex-col">
-          <div className="w-full flex items-center justify-end">
+        <div className="w-full min-h-screen max-sm:pt-4 max-sm:p-2 fixed top-0 left-0 backdrop-blur-sm bg-[#00000057] z-[60] flex justify-center items-center">
+          <div className=" absolute top-0 right-0">
             <button
               onClick={() => setIsActiveLoginPage(false)}
               className="text-white py-1 px-2 transition duration-300 ease-in-out hover:rotate-180"
@@ -95,9 +95,7 @@ function App() {
               <IoClose className="text-5xl" />
             </button>
           </div>
-          <div className="w-full h-full flex items-center justify-center">
-            <Login />
-          </div>
+          <Login />
         </div>
       )}
 

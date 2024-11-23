@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaFacebookF } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import MdLoader from "../components/spinner/MdLoader";
 import toast from "react-hot-toast";
 import { AppContext } from "../context/AppContext";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import IndiaLogo from '../assets/india.png'
+import { MdEmail } from "react-icons/md";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 const Login = () => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -18,9 +21,9 @@ const Login = () => {
   const [token, setToken] = useState('');
   const { AuthUser, setIsActiveLoginPage } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  // const [isVisiablePass, setIsVisiablePass] = useState(false);
   const [emailError, setEmailError] = useState({ error: false, message: "" });
+  const [isMobile, setIsMobile] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
   const [passwordError, setPasswordError] = useState({
     error: false,
     message: "",
@@ -34,34 +37,43 @@ const Login = () => {
     otp: ""
   });
 
+
+  function isNumericString(str) {
+    return !isNaN(str) && !isNaN(parseFloat(str));
+  }
+
   function inputHandler(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    if(isNumericString(value)){
+      setIsEmail(false)
+      setIsMobile(true);
+      if (value.length > 10) return;
+    }
+    else{
+      setIsMobile(false);
+      setIsEmail(true);
+    }
     setEmailError("");
     setFormData((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
   }
 
   const [otpData, setOtpData] = useState({
-    one: "",
-    two: "",
-    three: "",
-    four: "",
-    five: "",
-    six: "",
+    otp1: "",
+    otp2: "",
+    otp3: "",
+    otp4: "",
+    otp5: "",
+    otp6: "",
   });
-
-  function otpInputHandler(event) {
-    setOtpData((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  }
 
   useEffect(() => {
     setFormData((prevstate) => ({
       ...prevstate,
-      otp: otpData.one + otpData.two + otpData.three + otpData.four + otpData.five + otpData.six
+      otp: otpData.otp1 + otpData.otp2 + otpData.otp3 + otpData.otp4 + otpData.otp5 + otpData.otp6
     }))
   },[otpData]);
 
@@ -252,14 +264,35 @@ const Login = () => {
     }
   }
 
+  const otpInputHandler = (e, index) => {
+    const value = e.target.value;
+    if (/^\d$/.test(value) || value === "") {
+      // Accept only a single digit or clear input
+      setOtpData((prev) => ({
+        ...prev,
+        [`otp${index + 1}`]: value,
+      }));
+    }
+  };
+  
+  const handleKeyUp = (e, index) => {
+    if (e.key === "Backspace" && index > 0) {
+      // Move to the previous input field on Backspace
+      document.querySelector(`input[name=otp${index}]`).focus();
+    } else if (/^\d$/.test(e.key) && index < 5) {
+      // Move to the next input field if a digit is entered
+      document.querySelector(`input[name=otp${index + 2}]`).focus();
+    }
+  };
+
   return (
-    <div className="w-[500px] min-h-[350px] relative flex items-center justify-center bg-white rounded-lg mt-6 max-sm:mt-0">
-      <div className="w-full flex flex-col gap-4 p-8">
-        <h2 className="text-2xl font-semibold text-center text-gray-800">
+    <div className="w-[500px] max-sm:w-full h-auto relative flex items-center justify-center bg-white rounded-lg mt-6 max-sm:mt-0">
+      <div className="w-full flex flex-col gap-4 p-6 max-sm:px-2 max-sm:gap-2">
+        <h2 className="text-2xl font-semibold text-center text-gray-800 max-sm:text-lg">
           Sign In/Sign Up
         </h2>
-        <form onSubmit={submitHandler} className="w-full flex flex-col gap-4">
-          <div className="w-full flex flex-col gap-1">
+        <form onSubmit={submitHandler} className="w-full flex flex-col gap-4 max-sm:gap-2">
+          <div className="w-full flex flex-col gap-1 relative">
             <input
               type="text"
               name="input"
@@ -267,10 +300,19 @@ const Login = () => {
               onChange={inputHandler}
               placeholder="Enter email or mobile*"
               disabled={isActivePassword || activeOtpInput}
-              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 ${
-                (isActivePassword || activeOtpInput) && " cursor-not-allowed bg-gray-200"
-              }`}
+              className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 
+                ${(isActivePassword || activeOtpInput) && " cursor-not-allowed bg-gray-200"}
+                ${isMobile && 'pl-[75px]'}
+                ${isEmail && 'pl-10'}`}
             />
+            {
+              isMobile && (
+                <div className="absolute top-2 left-2 flex items-center gap-1">
+                  <img src={IndiaLogo} alt="arc" className="w-[30px] h-[22px]" loading="lazy"/>
+                  <span>+91</span>
+                </div>)
+            }
+            {isEmail && (<MdEmail className="absolute top-2 left-2 flex items-center gap-1 text-2xl text-gray-600"/>)}
             {emailError.error !== "" && (
               <div className="text-xs text-red-500 pl-4">{emailError.message}</div>
             )}
@@ -283,8 +325,9 @@ const Login = () => {
                 value={formData.password}
                 onChange={inputHandler}
                 placeholder="Enter password*"
-                className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700"
+                className="w-full px-4 py-2 pl-10 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700"
               />
+              <RiLockPasswordFill className="absolute top-2 left-2 flex items-center gap-1 text-2xl text-gray-600"/>
               <div className="absolute top-2 right-2 text-2xl text-gray-400 cursor-pointer" onClick={() => setIsVisiablePassword(!isVisiablePassword)}>
                 {
                   isVisiablePassword ? (<IoMdEyeOff/>) : (<IoMdEye/>)
@@ -298,69 +341,30 @@ const Login = () => {
           {activeOtpInput && (
             <div className="w-full flex flex-col gap-1">
               <label>Enter OTP*</label>
-              <div className="w-full flex justify-between items-center gap-4">
-                <input
-                  type="text"
-                  name="one"
-                  value={otpData.one}
-                  onChange={otpInputHandler}
-                  placeholder="-"
-                  maxLength={1}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
-                />
-                <input
-                  type="text"
-                  name="two"
-                  value={otpData.two}
-                  onChange={otpInputHandler}
-                  placeholder="-"
-                  maxLength={1}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
-                />
-                <input
-                  type="text"
-                  name="three"
-                  value={otpData.three}
-                  onChange={otpInputHandler}
-                  placeholder="-"
-                  maxLength={1}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
-                />
-                <input
-                  type="text"
-                  name="four"
-                  value={otpData.four}
-                  onChange={otpInputHandler}
-                  placeholder="-"
-                  maxLength={1}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
-                />
-                <input
-                  type="text"
-                  name="five"
-                  value={otpData.five}
-                  onChange={otpInputHandler}
-                  placeholder="-"
-                  maxLength={1}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
-                />
-                <input
-                  type="text"
-                  name="six"
-                  value={otpData.six}
-                  onChange={otpInputHandler}
-                  placeholder="-"
-                  maxLength={1}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
-                />
-              </div>
+                <div className="w-full flex justify-between items-center gap-4 max-sm:gap-1">
+                  {Array(6)
+                    .fill("")
+                    .map((_, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        name={`otp${index + 1}`}
+                        value={otpData[`otp${index + 1}`]} // e.g., otp1, otp2, etc.
+                        onChange={(e) => otpInputHandler(e, index)}
+                        onKeyUp={(e) => handleKeyUp(e, index)}
+                        placeholder="-"
+                        maxLength={1}
+                        className="w-full px-4 py-2 max-sm:px-2 max-sm:py-1 border rounded-md focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 text-center"
+                      />
+                    ))}
+                </div>
             </div>
           )}
           {(isActivePassword || activeOtpInput) && (
             <div className="w-full flex justify-center">
               <button
                 type="submit"
-                className="w-[200px] py-2 px-3 border bg-pink-500 rounded text-black font-semibold text-base transition duration-200 ease-in hover:bg-pink-600"
+                className="w-[200px] max-sm:w-full py-2 px-3 border bg-pink-500 rounded text-black font-semibold text-base transition duration-200 ease-in hover:bg-pink-600"
               >
                 Submit
               </button>
@@ -370,10 +374,10 @@ const Login = () => {
             <span className="absolute bg-white px-2 text-gray-500">OR</span>
             <hr className="w-full border-gray-300" />
           </div>
-          <div className="flex justify-between items-center mb-6 max-sm:flex-col">
+          <div className="flex justify-between items-center mb-6">
             <button
               type="button"
-              className="flex items-center justify-center w-full px-4 py-2 mr-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100"
+              className="flex items-center justify-center w-full px-4 py-2 max-sm:px-2 max-sm:py-1 mr-2 max-sm:mr-1 border border-gray-300 rounded-md bg-white hover:bg-gray-100"
             >
               <FaFacebookF className="mr-2 text-blue-600" />
               Facebook
@@ -381,20 +385,21 @@ const Login = () => {
             <button
               type="button"
               onClick={handleGoogleSignUp} // Trigger Google Signup
-              className="flex items-center justify-center w-full px-4 py-2 ml-2 border border-gray-300 rounded-md bg-white hover:bg-gray-100"
+              className="flex items-center justify-center w-full px-4 py-2 max-sm:px-2 max-sm:py-1 ml-2 max-sm:ml-1 border border-gray-300 rounded-md bg-white hover:bg-gray-100"
             >
               <FcGoogle className="mr-2" />
               Google
             </button>
           </div>
         </form>
-        <div className="w-full flex justify-center items-center gap-4 max-sm:flex-col">
+        <div className="w-full flex justify-center items-center gap-4 max-sm:gap-2">
           <p className="text-sm text-gray-600">Are you a vendor?</p>
           <Link
-            to={`vendor.${window.origin
-              .replace("https://", "")
-              .replace("http://", "")}/`}
-            className="mt-2 px-4 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white"
+            onClick={(e) => {
+              e.preventDefault();
+              window.open(`https://vendor.${window.origin.replace("https://", "").replace("http://", "")}/`, "_blank");
+            }}
+            className="mt-2 px-2 py-1 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-600 hover:text-white"
           >
             Business Sign In
           </Link>
