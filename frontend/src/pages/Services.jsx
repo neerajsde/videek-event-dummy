@@ -52,8 +52,25 @@ const Services = () => {
     getServiceByName(serviceName); 
   }, [location.pathname]);
 
+
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+      document.title = `${location.pathname.split("/").at(-1).replaceAll('-', ' ').toUpperCase()}`
+      scrollToDiv("toview");
+  }, [location.pathname]);
+
+  useEffect(() => {
+    scrollToDiv("services");
+  },[])
+
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div id="services" className="w-full h-full flex flex-col items-center">
       <Header />
       <Navbar />
       <SuperHeading title={pageName} />
@@ -108,7 +125,7 @@ const Services = () => {
       <div className="w-full flex justify-between items-start max-md:flex-col gap-4">
         <LeftMenu pageName={pageName} />
 
-        <div className="w-[700px] max-md:w-full max-lg:w-[600px] max-md:px-4 flex flex-col items-start">
+        <div id="toview" className="w-[700px] max-md:w-full max-lg:w-[600px] max-md:px-4 flex flex-col items-start">
           {/* Content Block */}
 
           {loading ? (

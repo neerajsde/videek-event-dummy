@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../components/section/Navbar'
 import Header from '../components/section/Header'
 import Footer from '../components/section/Footer'
@@ -10,8 +10,21 @@ import SuperHeading from '../components/common/SuperHeading';
 
 
 const About = () => {
+    const scrollToDiv = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+        };
+
+        useEffect(() => {
+        document.title = "About Us"
+        scrollToDiv("about");
+    }, []);
+
+
   return (
-    <div className='w-full h-full flex flex-col items-center'>
+    <div id="about" className='w-full h-full flex flex-col items-center'>
         <Header/>
         <Navbar/>
 

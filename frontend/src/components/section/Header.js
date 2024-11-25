@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
-import { MdEditDocument } from "react-icons/md";
-import { Link } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
+import { FaEdit } from "react-icons/fa";
 
 const Header = () => {
   const {setIsOpenRate} = useContext(AppContext);
@@ -11,10 +10,10 @@ const Header = () => {
 
       <button 
         onClick={() => setIsOpenRate(true)}
-        className='flex max-sm:hidden items-center justify-center gap-1 text-base max-md:text-sm text-zinc-100 font-normal'
+        className='flex items-center justify-center gap-1 text-base max-md:text-sm text-zinc-100 font-normal'
       >
-        <MdEditDocument className='text-lg max-md:text-base'/>
-        <span>Write A Review</span>
+        <FaEdit className='text-lg'/>
+        <span className='max-sm:hidden'>Write A Review</span>
       </button>
     </div>
   )

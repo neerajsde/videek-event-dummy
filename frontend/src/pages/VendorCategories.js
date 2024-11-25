@@ -18,6 +18,18 @@ const VendorCategories = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const scrollToDiv = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+    
+    useEffect(() => {
+        document.title = `Vendor category - ${location.pathname.split('/').at(-1).replaceAll('-',' ')}`
+        scrollToDiv("vendor-category");
+    }, []);
+
     const getVendorCategories = async (categoryName) => {
         try {
           setIsLoading(true);
@@ -42,8 +54,6 @@ const VendorCategories = () => {
         getVendorCategories(name);
     }, [location.pathname]);
 
-    console.log(categoryData);
-
     if(isLoading){
         return (
             <div className="w-screen h-screen flex flex-col justify-center items-center gap-2">
@@ -63,7 +73,7 @@ const VendorCategories = () => {
     }
 
   return (
-    <div className='w-full h-full flex flex-col items-center'>
+    <div id='vendor-category' className='w-full h-full flex flex-col items-center'>
         <Header/>
         <Navbar/>
 

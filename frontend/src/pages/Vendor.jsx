@@ -37,8 +37,20 @@ const Vendor = () => {
         getVendor(name);
     }, [location.pathname]);
 
+    const scrollToDiv = (id) => {
+      const element = document.getElementById(id);
+      if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+      }
+    };
+  
+    useEffect(() => {
+      document.title = `Vendor - ${location.pathname.split('/').at(-1).replaceAll('-',' ').toLocaleUpperCase()}`
+      scrollToDiv("vendor");
+    }, []);
+
   return (
-    <div className='w-full h-full flex flex-col items-center'>
+    <div id='vendor' className='w-full h-full flex flex-col items-center'>
         <Header/>
         <Navbar/>
 

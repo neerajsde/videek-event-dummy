@@ -42,6 +42,18 @@ const RealWeddings = () => {
         getWeddingData(name);
     }, [location.pathname]);
 
+    const scrollToDiv = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+    
+    useEffect(() => {
+        document.title = "Real-Weddings"
+        scrollToDiv("realweddings");
+    }, []);
+
     if(isLoading){
         return (
             <div className="w-screen h-screen flex flex-col justify-center items-center gap-2">
@@ -61,7 +73,7 @@ const RealWeddings = () => {
     }
 
   return (
-    <div className='w-full h-full flex flex-col items-center'>
+    <div id='realweddings' className='w-full h-full flex flex-col items-center'>
         <Header/>
         <Navbar/>
 

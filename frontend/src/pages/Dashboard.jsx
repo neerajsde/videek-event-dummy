@@ -17,8 +17,20 @@ const Dashboard = () => {
     setCurrTab(location.hash);
   },[location.hash]);
 
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+    }
+    };
+
+    useEffect(() => {
+    document.title = "Dashboard"
+    scrollToDiv("dashboard");
+  }, []);
+
   return (
-    <div className='w-full flex flex-col'>
+    <div id='dashboard' className='w-full flex flex-col'>
       <Header/>
       <Navbar/>
 

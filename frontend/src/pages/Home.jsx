@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../components/section/Header';
 import Navbar from '../components/section/Navbar';
 import BannerImg from '../assets/home-banner.jpg';
@@ -20,8 +20,20 @@ import VendorCategory from '../components/home-com/VendorCategory';
 
 const Home = () => {
 
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+    }
+    };
+
+    useEffect(() => {
+    document.title = "Dj Events"
+    scrollToDiv("home");
+  }, []);
+
   return (
-    <div className='w-full h-full flex flex-col items-center'>
+    <div id='home' className='w-full h-full flex flex-col items-center'>
         <Header/>
         <Navbar/>
 

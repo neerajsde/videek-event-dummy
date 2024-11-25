@@ -13,9 +13,21 @@ const Invitations = () => {
     useEffect(() => {
         setCurrectTab(location.pathname.split('/').at(-1));
     },[location.pathname]);
+
+    const scrollToDiv = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+    
+    useEffect(() => {
+        document.title = "E-Invites"
+        scrollToDiv("invitaions");
+    }, []);
     
   return (
-    <div className='w-full flex flex-col'>
+    <div id='invitaions' className='w-full flex flex-col'>
         <Header/>
         <Navbar/>
 

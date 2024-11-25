@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/section/Header";
 import Navbar from "../components/section/Navbar";
 import Footer from "../components/section/Footer";
@@ -6,8 +6,21 @@ import SuperHeading from "../components/common/SuperHeading";
 import ContactForm from "../components/common/ContactForm";
 
 const Contact = () => {
+
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+    }
+    };
+
+    useEffect(() => {
+    document.title = "Contact Us"
+    scrollToDiv("contact");
+  }, []);
+
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <div id="contact" className="w-full h-full flex flex-col items-center">
       <Header />
       <Navbar />
       <SuperHeading title={"Contact Us"} />
