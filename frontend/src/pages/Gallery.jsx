@@ -34,8 +34,6 @@ const Gallery = () => {
             setIsLoading(false);
         }
     };
-
-    console.log(categoryData)
     
     useEffect(() => {
         const name = location.pathname.split('/').at(-1)
@@ -74,13 +72,14 @@ const Gallery = () => {
             </div>
             
             <div className='w-full flex flex-col p-8 gap-4 max-sm:p-4'>
-                <h3 className='text-2xl font-semibold text-black'>{categoryData.desc}</h3>
+                <h3 className='text-2xl font-semibold text-black'>{categoryData.title}</h3>
                 <div className='w-full flex flex-col gap-2'>
                     <h3 className='text-xl font-semibold text-black'>About</h3>
-                    <p className='w-full text-gray-500'>{categoryData.desc}</p>
+                    <div
+                        dangerouslySetInnerHTML={{ __html: categoryData.desc }}
+                        ></div>
                 </div>
                 <CategoryImages weddingData={categoryData}/>
-
             </div>
         </div>
 

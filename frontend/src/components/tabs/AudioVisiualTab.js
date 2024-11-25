@@ -2,15 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
+import SmLoader from "../spinner/SmLoader";
 
 const AudioVisiualTab = () => {
   const {setTab, setIsMenuBarActive} = useContext(AppContext);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [audioVisiualData, setAudioVisiualData] = useState(null);
+  const [tabLoading, setTabLoading] = useState(false);
 
   const getServicesByCategory = async (category) => {
     if (!category) return;
     try {
+      setTabLoading(true);
       const response = await axios.get(
         `${baseUrl}/services-tab/${category}`
       );
@@ -22,6 +25,8 @@ const AudioVisiualTab = () => {
       }
     } catch (error) {
       setAudioVisiualData(null);
+    } finally{
+      setTabLoading(false);
     }
   };
 
@@ -31,9 +36,19 @@ const AudioVisiualTab = () => {
     }
   }, [])
 
+  if(tabLoading){
+    return (
+      <div className='w-full h-full flex justify-center items-center'>
+        <div className='flex flex-col items-center mt-16 gap-1'>
+          <SmLoader/>
+          <span className='text-base text-gray-400 max-sm:text-sm'>Loading...</span>
+        </div>
+      </div>
+    )
+  }
   
   return (
-    <div className="w-full flex justify-start items-start gap-8 py-4 px-8 max-md:px-4">
+    <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 py-4 px-8 max-md:px-4">
       {audioVisiualData &&
         audioVisiualData.map((data, index) => (
           <div key={index} className="flex flex-col gap-3 max-md:gap-2">

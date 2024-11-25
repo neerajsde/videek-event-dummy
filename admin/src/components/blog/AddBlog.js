@@ -90,7 +90,7 @@ const AddBlog = () => {
         }));
         setCategoryOptions(formattedSubCategories);
       } else {
-        setCategoryOptions([]);
+        setCategoryOptions([]); 
       }
     } catch (error) {
       setCategoryOptions([]);

@@ -49,7 +49,7 @@ const LeftMenu = () => {
   }, []);
 
   return (
-    <div className="w-[280px] sticky top-0 max-md:hidden flex flex-col border border-[#411530]">
+    <div className="w-[280px] sticky top-[80px] max-md:hidden flex flex-col border border-[#411530]">
       {
         tabData && tabData.map((data, idx) => (
           <div key={idx} className="w-full flex flex-col">

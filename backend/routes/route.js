@@ -17,7 +17,7 @@ const { submitRequestContact } = require('../controllers/contacts/request_contac
 const { submitVendorContact } = require('../controllers/contacts/vendor_contact');
 // blogs
 const { AddNewBlogs } = require('../controllers/blogs/AddBlog');
-const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory } = require('../controllers/blogs/GetBlogs');
+const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory, getLatestBlogsForTab } = require('../controllers/blogs/GetBlogs');
 // vendor
 const { VendorLogin, sendOtpVendorOnMail } = require('../controllers/vendor/LoginVendor');
 const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName, getOnVendorAdminVideoLinks } = require('../controllers/vendor/GetVendor');
@@ -30,6 +30,7 @@ const { addVendorReviews, uploadVendorReviewImg } = require('../controllers/vend
 const { uploadGalleryImg } = require('../controllers/Gallery/uploadImg');
 const { getGalleryCategoryWithUnique, getById, getGalleryData, getGalleryCategory } = require('../controllers/Gallery/GetGallery');
 const { createCategoryAlbum } = require('../controllers/Gallery/UploadGallery');
+const { updateAlbum } = require('../controllers/Gallery/UpdateGallery');
 // Real Weddings
 const { createNewRealWedding, uploadRealWeddingImg } = require('../controllers/weddings/AddNewWedding');
 const { getWeddingsData, getRealWeddingByCoupleName } = require('../controllers/weddings/GetWeddings');
@@ -66,6 +67,7 @@ router.post('/blog/post', AddNewBlogs);
 router.get('/blog/category', getBlogCategoryWithUnique);
 router.get('/blogs', getLatestBlogsWithCategory);
 router.get('/blog/:blogId', getBlogById);
+router.get('/blogs/tab', getLatestBlogsForTab);
 // vendor
 router.get('/vendor/category', getVendorCategoryWithUnique);
 router.get('/vendor/category-data', getVendorCategories);
@@ -95,6 +97,7 @@ router.get('/gallery/category', getGalleryCategoryWithUnique);
 router.post('/gellery/create', createCategoryAlbum);
 router.get('/gelleryById/:albumName', getById);
 router.get('/gallery/category/:categoryName', getGalleryCategory);
+router.put('/gallery/update', updateAlbum);
 // Real Weddings
 router.get('/weddings', getWeddingsData);
 router.get('/wedding/:coupleName', getRealWeddingByCoupleName);

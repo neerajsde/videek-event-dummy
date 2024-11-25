@@ -1,19 +1,28 @@
 const Blogs = require('../../models/blogs');
 
-function convertDateTime(dateTime, timeZone = 'Asia/Kolkata') {
-    const date = new Date(dateTime);
+function timeAgo(timestamp) {
+    const now = new Date();
+    const past = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - past) / 1000);
 
-    const options = {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: timeZone
-    };
+    const intervals = [
+        { label: "year", seconds: 31536000 },
+        { label: "month", seconds: 2592000 },
+        { label: "week", seconds: 604800 },
+        { label: "day", seconds: 86400 },
+        { label: "hour", seconds: 3600 },
+        { label: "minute", seconds: 60 },
+        { label: "second", seconds: 1 },
+    ];
 
-    return date.toLocaleString('en-IN', options);
+    for (const interval of intervals) {
+        const count = Math.floor(diffInSeconds / interval.seconds);
+        if (count >= 1) {
+            return `${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
+        }
+    }
+
+    return "just now"; // For cases where the time difference is very small
 }
 
 exports.getBlogCategoryWithUnique = async (req, res) => {
@@ -56,7 +65,7 @@ exports.getBlogById = async (req, res) => {
         }
 
         const blogData = findBlog.toObject();
-        blogData.dateTime = convertDateTime(blogData.createdAt);
+        blogData.dateTime = timeAgo(blogData.createdAt);
         delete blogData.createdAt;
         delete blogData._id;
 
@@ -96,7 +105,7 @@ exports.getLatestBlogsWithCategory = async (req, res) => {
                 category: 'Latest',
                 blogs: latestBlogs.map(blog => {
                     let updatedBlog = blog.toObject();
-                    updatedBlog.dateTime = convertDateTime(updatedBlog.createdAt);
+                    updatedBlog.dateTime = timeAgo(updatedBlog.createdAt);
                     delete updatedBlog.description;
                     delete updatedBlog.createdAt;
                     return updatedBlog;
@@ -115,7 +124,7 @@ exports.getLatestBlogsWithCategory = async (req, res) => {
                 category,
                 blogs: categoryBlogs.map(blog => {
                     let updatedBlog = blog.toObject();
-                    updatedBlog.dateTime = convertDateTime(updatedBlog.createdAt);
+                    updatedBlog.dateTime = timeAgo(updatedBlog.createdAt);
                     delete updatedBlog.createdAt;
                     return updatedBlog;
                 })
@@ -142,3 +151,55 @@ exports.getLatestBlogsWithCategory = async (req, res) => {
     }
 };
 
+exports.getLatestBlogsForTab = async (req, res) => {
+    try {
+        // Fetch the latest 5 blogs sorted by createdAt
+        const latestBlogs = await Blogs.find({})
+            .sort({ createdAt: -1 })
+            .limit(5);
+
+        if (latestBlogs.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No blogs available',
+            });
+        }
+
+        // Prepare the 'Latest' category data
+        const blogsData = [
+            {
+                category: 'latest',
+                image: latestBlogs[0]?.img || null, // Use optional chaining to handle missing images
+            },
+        ];
+
+        // Fetch unique categories and pick the first blog from each category
+        const uniqueCategories = await Blogs.aggregate([
+            { $group: { _id: '$category', firstBlog: { $first: '$$ROOT' } } },
+        ]);
+
+        uniqueCategories.forEach(({ _id: category, firstBlog }) => {
+            // Avoid adding the 'Latest' category again
+            if (category !== 'Latest') {
+                blogsData.push({
+                    category,
+                    image: firstBlog?.img || null,
+                });
+            }
+        });
+
+        // Send the response
+        return res.status(200).json({
+            success: true,
+            message: 'Blogs found',
+            data: blogsData,
+        });
+    } catch (err) {
+        console.error('Error fetching blogs:', err); // Log the error stack for debugging
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message,
+        });
+    }
+};

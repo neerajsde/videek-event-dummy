@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import Spinner from '../spinner/Spinner'
 
@@ -12,6 +12,21 @@ const BlogSection = () => {
     category: "latest",
     data: null,
   });
+
+  const location = useLocation();
+  useEffect(() => {
+    if(location.hash && blogsData){
+      const categoryName = location.hash.replace('#','').replaceAll('-',' ');
+      for(let i=0; i<blogsData.length; i++){
+        if(blogsData[i].category === categoryName){
+          setCurrBlog({
+            category: categoryName,
+            data: blogsData[i].blogs
+          })
+        }
+      }
+    }
+  },[location.hash, blogsData]);
 
   const settings = {
     dots: false,

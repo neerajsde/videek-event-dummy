@@ -4,6 +4,8 @@ import CreatableSelect from "react-select/creatable";
 import MdLoader from '../spinner/MdLoader';
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast"
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const UploadGallery = () => {
     const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -12,11 +14,12 @@ const UploadGallery = () => {
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [categoryOptions, setCategoryOptions] = useState([]);
+    const [description, setDescription] = useState("");
     const [currAlbum, setCurrAlbum] = useState(null);
     const [formData, setFormData] = useState({
         id:'',
         category:'',
-        desc:'',
+        title:'',
     });
 
     function inputHandler(event){
@@ -25,6 +28,10 @@ const UploadGallery = () => {
             [event.target.name]: event.target.value
         }))
     }
+
+    const handleDescriptionChange = (value) => {
+        setDescription(value);
+      };
 
     // Handle multiple files
     const handleFileChange = (e) => {
@@ -88,7 +95,17 @@ const UploadGallery = () => {
     
         try {
             setIsLoading(true);  // Start loader when uploading images
-    
+            const formXData = new FormData();
+            formXData.append("id", formData.id);
+            formXData.append("title", formData.title);
+            formXData.append("desc", description);
+            const response = await axios.put(`${baseUrl}/gallery/update`, formXData);
+            if (response.data.success) {
+                await getGalleryCategory();
+                setSuccessMessage("updated successfully");
+            } else {
+                setError(response.data.message);
+            }
             // Sequential Upload Approach (Current)
             for (let index = 0; index < images.length; index++) {
                 const res = await uploadImg(index);
@@ -119,8 +136,9 @@ const UploadGallery = () => {
             setFormData({
                 id: response.data.data._id,
                 category: response.data.data.category,
-                desc: response.data.data.desc,
+                title: response.data.data.title,
             })
+            setDescription(response.data.data.desc);
             toast.success(response.data.message);
           } else {
             setCurrAlbum(null);
@@ -145,14 +163,16 @@ const UploadGallery = () => {
             setIsLoading(true);
             const formXData = new FormData();
             formXData.append("category", formData.category);
-            formXData.append("desc", formData.desc);
+            formXData.append("title", formData.title);
+            formXData.append("desc", description);
             const response = await axios.post(`${baseUrl}/gellery/create`, formXData);
             if (response.data.success) {
                 setFormData({
                     id: response.data.data._id,
                     category: response.data.data.category,
-                    desc: response.data.data.desc,
+                    title: response.data.data.title,
                 });
+                setDescription(response.data.data.desc);
                 setCurrAlbum(response.data.data);
                 await getGalleryCategory();
                 setSuccessMessage("Album created successfully");
@@ -218,14 +238,26 @@ const UploadGallery = () => {
                     <label className="text-gray-400 text-base font-medium">About Image</label>
                     <input
                         type="text"
-                        name="desc"
-                        value={formData.desc}
+                        name="title"
+                        value={formData.title}
                         onChange={inputHandler}
                         required
-                        placeholder="write a small description"
+                        placeholder="write title"
                         className="w-full py-2 px-4 bg-[#111] border placeholder:text-gray-700 border-[#333] outline-none text-lg text-white focus:border-yellow-600 rounded-sm"
                     />
                 </div>
+            </div>
+
+            {/* Description Input */}
+            <div className="w-full flex flex-col gap-1">
+                <label className="text-gray-400 text-base font-medium">
+                    Description
+                </label>
+                <ReactQuill
+                    value={description}
+                    onChange={handleDescriptionChange}
+                    className="text-white"
+                />
             </div>
 
             {!currAlbum && (<div className="w-full flex justify-start items-end gap-4">

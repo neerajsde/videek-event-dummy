@@ -2,9 +2,9 @@ const Gallery = require("../../models/gallery");
 
 exports.createCategoryAlbum = async (req, res) => {
   try {
-    const { category, desc } = req.body;
+    const { category, title, desc } = req.body;
 
-    const requiredFields = ["category", "desc"];
+    const requiredFields = ["category", 'title', "desc"];
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({
@@ -20,7 +20,7 @@ exports.createCategoryAlbum = async (req, res) => {
       .status(200)
       .json({ success: true, data: isFind, message: "Gallery Exits" });
     }
-    const newGallery = await Gallery.create({ category, desc });
+    const newGallery = await Gallery.create({ category, title,  desc });
     return res
       .status(200)
       .json({ success: true, data: newGallery, message: "Create Gallery" });

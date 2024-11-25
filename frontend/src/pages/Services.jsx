@@ -143,7 +143,7 @@ const Services = () => {
         </div>
 
         {/* Sticky Contact Us Form */}
-        <div className="sticky top-0 max-md:w-full p-4">
+        <div className="sticky top-[80px] max-md:w-full p-4">
           <ModernContactUs />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./context/AppContext";
 import PhotosTab from "./components/tabs/PhotosTab";
 import BlogTab from "./components/tabs/BlogTab";
@@ -29,6 +29,7 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import UserMenu from "./components/user/UserMenu";
 import { FaCaretUp } from "react-icons/fa";
 import Invitations from "./pages/Invitations";
+import BlogCategory from "./pages/BlogCategory";
 
 function App() {
   const {
@@ -46,16 +47,36 @@ function App() {
 
   useEffect(() => {
     AuthUser();
-  },[])
+  },[]);
+
+  const [updateMenu, setUpdateMenu] = useState(false);
+
+  // Use useEffect to add scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setUpdateMenu(true);
+      } else {
+        setUpdateMenu(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className={`w-full min-h-full`}>
       {tab.isActive && (
-        <div className="absolute w-full h-full bg-[#00000045] top-0 left-0 flex items-start justify-end z-50">
+        <div className="fixed w-full h-full overflow-y-scroll bg-[#00000045] top-0 left-0 flex items-start justify-end z-50">
           <div
             onMouseEnter={() => setTab({ isActive: true, name: tab.name })}
             onMouseLeave={() => setTab({ isActive: false, name: "" })}
-            className="w-[80vw] max-sm:w-full min-h-[300px] pt-[110px] mr-4 max-sm:mr-0 bg-white shadow-lg"
+            className={`w-[80vw] max-sm:w-full min-h-[300px] max-sm:h-full mr-4 max-sm:mr-0 bg-white shadow-lg ${updateMenu ? 'pt-[60px]' : 'pt-[110px]'}`}
           >
             {isMenuBarActive && (
               <div className="w-full flex justify-between items-center py-3 px-4 border-b border-gray-400">
@@ -83,6 +104,12 @@ function App() {
             {tab.name === "blog" && <BlogTab />}
             {tab.name === "e-vites" && <EInvitesTab />}
           </div>
+        </div>
+      )}
+
+      {isMenuBarActive && (
+        <div className="w-full min-h-screen fixed top-0 backdrop-blur-sm bg-[#00000057] z-40">
+          <MenuBar />
         </div>
       )}
 
@@ -114,14 +141,8 @@ function App() {
         </div>
       )}
 
-      {isMenuBarActive && (
-        <div className="w-full min-h-screen absolute top-0 backdrop-blur-sm bg-[#00000057] z-40">
-          <MenuBar />
-        </div>
-      )}
-
       {activeUserMenu && (
-        <div className="w-[300px] absolute top-[110px] right-3 z-[70]">
+        <div className={`w-[300px] fixed right-3 z-[10000] ${updateMenu ? 'top-[60px]' : 'top-[110px]'}`}>
           <div className="w-full relative border bg-gray-200 rounded-lg shadow-md">
             <FaCaretUp className="absolute top-[-20px] right-5 text-3xl text-gray-200"/>
             <UserMenu/>
@@ -133,6 +154,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/blog" element={<BlogCategory />} /> 
         <Route path="/blog/:uId" element={<Blogs />} />
         <Route path="/gallery/:category" element={<Gallery />} />
         <Route path="/real_weddings" element={<AllWeddings />} />
