@@ -9,11 +9,23 @@ const createNewVenue = new mongoose.Schema({
         type: String,
         default: ''
     },
-    image: {
+    type: {
         type: String,
         default: ''
     },
-    link: {
+    phone: {
+        type: String,
+        default: ''
+    },
+    whatsapp: {
+        type: String,
+        default: ''
+    },
+    email: {
+        type: String,
+        default: ''
+    },
+    img: {
         type: String,
         default: ''
     },
@@ -21,6 +33,29 @@ const createNewVenue = new mongoose.Schema({
         type: String,
         default: ''
     },
+    rooms: {
+        type: Number,
+        default: 0
+    },
+    price_range: {
+        type: String,
+        default: ''
+    },
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review' 
+        }
+    ],
+    FAQs: [
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'FAQ' 
+        }
+    ],
+    albums:[
+        {type: String}
+    ],
     createdAt: {
         type: Date,
         default: Date.now

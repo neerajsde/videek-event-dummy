@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export const AppContext = createContext();
@@ -9,6 +9,7 @@ function AppContextProvider({ children }) {
   const [adminData, setAdminData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const AuthAdmin = async () => {
     try {
@@ -29,7 +30,12 @@ function AppContextProvider({ children }) {
       if (response.ok && data.success) {
         setIsLoggedIn(true);
         setAdminData(data.adminData);
-        navigate("/dashboard");
+        if(location.hash){
+          navigate(`/dashboard${location.hash}`)
+        }
+        else{
+          navigate("/dashboard");
+        }
         toast.success("Your Dashboard");
       } else {
         toast.error(

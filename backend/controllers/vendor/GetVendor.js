@@ -106,7 +106,7 @@ exports.getCategory = async (req, res) => {
             }
         }
 
-        res.status(200).json({
+        res.status(400).json({
             success: false,
             message: 'Not found'
         });

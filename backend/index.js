@@ -48,3 +48,4 @@ app.use('/api/v1/blogImg/category', express.static(path.join(__dirname, 'categor
 app.use('/api/v1/gallery/files', express.static(path.join(__dirname, 'Gallery')));
 app.use('/api/v1/weddings/files', express.static(path.join(__dirname, 'RealWeddings')));
 app.use('/api/v1/vendor/files', express.static(path.join(__dirname, 'VendorAlbum')));
+app.use('/api/v1/venue/files', express.static(path.join(__dirname, 'VenueImages')));

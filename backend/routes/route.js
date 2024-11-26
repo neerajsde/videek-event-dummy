@@ -38,6 +38,10 @@ const { getWeddingsData, getRealWeddingByCoupleName } = require('../controllers/
 const { AddNewTestimonials } = require('../controllers/testimonials/AddTestimonial');
 const { getTestimonalForAdmin, getTestimonals } = require('../controllers/testimonials/GetTestimonals');
 const { UpdatePublishTestimonals, UnUpdatePublishTestimonals } = require('../controllers/testimonials/UpdateTestimonals');
+
+// venue
+const { getVenueCategoryWithUnique, AddNewVenue } = require('../controllers/venue/addVenue');
+const { getPopularVenue, getVenueCategory, getVenueByName } = require('../controllers/venue/getVenue');
 // user
 const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
 router.post('/user/login-email', loginHandler);
@@ -90,6 +94,7 @@ router.post('/vendor/review/img/upload', uploadVendorReviewImg);
 router.put('/vendor/admin/video/add', auth, addVideoLinks);
 router.delete('/vendor/admin/video/delete', auth, deleteVideoLink);
 router.post('/vendor/admin/video', auth, getOnVendorAdminVideoLinks);
+
 // gallery
 router.get('/gallery', getGalleryData);
 router.post('/gallery/img/upload', uploadGalleryImg);
@@ -109,6 +114,12 @@ router.post('/testimonial/add', AddNewTestimonials);
 router.get('/testimonals/admin', getTestimonalForAdmin);
 router.put('/testimonal/admin-update', UpdatePublishTestimonals);
 router.put('/testimonal/admin-unPublish', UnUpdatePublishTestimonals);
+// venue 
+router.get('/venue/category', getVenueCategoryWithUnique);
+router.post('/venue/add', AddNewVenue);
+router.get('/venue/popular', getPopularVenue);
+router.get('/venue-category/:categoryName', getVenueCategory);
+router.get('/venue/:Name', getVenueByName);
 // downloads
 router.get('/download/contact-us', downloadContactUsData);
 

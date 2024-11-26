@@ -42,6 +42,14 @@ function AppContextProvider({children}){
         } catch (err) {}
     };
 
+    const contactHandler = async(Id, emailId, phone) => {
+      if(!isLoggedIn && !userData){
+        setIsActiveLoginPage(true);
+        return;
+      }
+      // console.log(Id, emailId, phone);
+    }
+
     const value = {
         AuthUser,
         isLoading, setIsLoading,
@@ -51,7 +59,8 @@ function AppContextProvider({children}){
         isActiveLoginPage, setIsActiveLoginPage,
         isMenuBarActive, setIsMenuBarActive,
         isOpenRate, setIsOpenRate,
-        activeUserMenu, setActiveUserMenu
+        activeUserMenu, setActiveUserMenu,
+        contactHandler
     }
 
     return <AppContext.Provider value={value}>

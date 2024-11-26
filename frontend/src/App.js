@@ -30,6 +30,8 @@ import UserMenu from "./components/user/UserMenu";
 import { FaCaretUp } from "react-icons/fa";
 import Invitations from "./pages/Invitations";
 import BlogCategory from "./pages/BlogCategory";
+import Venues from "./pages/Venues";
+import VenueDetails from "./pages/VenueDetails";
 
 function App() {
   const {
@@ -114,8 +116,8 @@ function App() {
       )}
 
       {isActiveLoginPage && (
-        <div className="w-full min-h-screen max-sm:pt-4 max-sm:p-2 fixed top-0 left-0 backdrop-blur-sm bg-[#00000057] z-[60] flex justify-center items-center">
-          <div className=" absolute top-0 right-0">
+        <div className={`w-full min-h-screen max-sm:pt-4 max-sm:p-2 fixed top-0 left-0 backdrop-blur-sm bg-[#00000057] z-[60] flex justify-center items-center`}>
+          <div className={`absolute right-0 ${updateMenu ? 'top-[60px]' : 'top-0'}`}>
             <button
               onClick={() => setIsActiveLoginPage(false)}
               className="text-white py-1 px-2 transition duration-300 ease-in-out hover:rotate-180"
@@ -128,8 +130,8 @@ function App() {
       )}
 
       {isOpenRate && (
-        <div className="w-full min-h-[2000px] absolute top-0 left-0 backdrop-blur-sm bg-[#00000057] z-[60] flex justify-center items-start py-8">
-          <div className="absolute top-0 right-0 z-[70]">
+        <div className="w-full min-h-screen fixed top-0 left-0 backdrop-blur-sm bg-[#00000057] z-[10000] flex justify-center items-center py-8">
+          <div className={`absolute top-0 right-0 z-[70]`}>
             <button
               onClick={() => setIsOpenRate(false)}
               className="text-white py-1 px-2 transition duration-300 ease-in-out hover:rotate-180"
@@ -156,6 +158,8 @@ function App() {
         <Route path="/contact-us" element={<Contact />} />
         <Route path="/blog" element={<BlogCategory />} /> 
         <Route path="/blog/:uId" element={<Blogs />} />
+        <Route path="/venues" element={<Venues />} />
+        <Route path="/venue/:type/:name" element={<VenueDetails />} />
         <Route path="/gallery/:category" element={<Gallery />} />
         <Route path="/real_weddings" element={<AllWeddings />} />
         <Route path="/real_weddings/:couple_name" element={<RealWeddings />} />
