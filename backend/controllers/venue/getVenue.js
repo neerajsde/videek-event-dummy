@@ -1,5 +1,31 @@
 const Venue = require('../../models/venue');
 const Reviews = require('../../models/sub-models/reviews');
+const User = require('../../models/user');
+
+function timeAgo(timestamp) {
+    const now = new Date();
+    const past = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    const intervals = [
+        { label: "year", seconds: 31536000 },
+        { label: "month", seconds: 2592000 },
+        { label: "week", seconds: 604800 },
+        { label: "day", seconds: 86400 },
+        { label: "hour", seconds: 3600 },
+        { label: "minute", seconds: 60 },
+        { label: "second", seconds: 1 },
+    ];
+
+    for (const interval of intervals) {
+        const count = Math.floor(diffInSeconds / interval.seconds);
+        if (count >= 1) {
+            return `${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
+        }
+    }
+
+    return "just now"; // For cases where the time difference is very small
+}
 
 exports.getPopularVenue = async (req, res) => {
     try{
@@ -37,6 +63,44 @@ exports.getPopularVenue = async (req, res) => {
             success: true,
             message: 'Popular venue found',
             data: popularVenues
+        });
+    } catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}
+
+exports.getAllVenues = async (req, res) => {
+    try{
+        const AllVenue = await Venue.find();
+        if (AllVenue.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Empty Venue'
+            });
+        }
+        const allVenuesData = [];
+        for(let i=0; i<AllVenue.length; i++){
+            allVenuesData.push({
+                id: AllVenue[i]._id,
+                name: AllVenue[i].name
+            })
+        }
+
+        if (allVenuesData.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Empty Venue'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Popular venue found',
+            data: allVenuesData
         });
     } catch(err){
         res.status(500).json({
@@ -201,3 +265,44 @@ exports.getVenueByName = async (req, res) => {
         })
     }
 }
+
+exports.getVenueFAQs = async (req, res) => {
+    try {
+        const { venue_name } = req.params;
+
+        // Validate vendor_id
+        if (!venue_name) {
+            return res.status(400).json({
+                success: false,
+                message: 'Venue Name is required'
+            });
+        }
+
+        // Find the vendor and populate the FAQs
+        const venue = await Venue.findOne({name: venue_name}).populate('FAQs');
+        if (!venue) {
+            return res.status(404).json({
+                success: false,
+                message: 'Venue not found'
+            });
+        }
+
+        // Return the venue details along with FAQs
+        res.status(200).json({
+            success: true,
+            message: 'Venue and FAQs fetched successfully',
+            data: {
+                id: venue._id,
+                venue_name: venue.name,
+                faqs: venue.FAQs
+            }
+        });
+
+    } catch (err) {
+        // Handle server errors
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+};

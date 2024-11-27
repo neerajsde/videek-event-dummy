@@ -85,22 +85,22 @@ const RealWeddings = () => {
                   </p>
                 </div>
               </div>
-              <div className="w-full h-[100px] flex gap-1 max-sm:gap-[2px]">
+              <div className="w-full h-[100px] grid grid-cols-3 gap-1 max-sm:gap-[2px]">
                 <img
                   src={`${process.env.REACT_APP_BASE_URL}/weddings${item.images[1]}`}
                   alt={item.name}
-                  className="w-full h-full object-cover rounded-bl-xl"
+                  className="w-full h-[100px] object-cover rounded-bl-xl"
                 />
                 <img
                   src={`${process.env.REACT_APP_BASE_URL}/weddings${item.images[2]}`}
                   alt={item.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-[100px] object-cover"
                 />
                 <div className="w-full h-full rounded-br-xl relative ">
                   <img
                     src={`${process.env.REACT_APP_BASE_URL}/weddings${item.images[3]}`}
                     alt={item.name}
-                    className="w-full h-full object-cover rounded-br-xl"
+                    className="w-full h-[100px] object-cover rounded-br-xl"
                   />
                   <div className="w-full h-full absolute top-0 left-0 bg-[#000000a0] rounded-br-xl flex justify-center items-center">
                     <div className="text-2xl max-sm:text-xl font-bold text-white">{`+${item.images.length - 4}`}</div>

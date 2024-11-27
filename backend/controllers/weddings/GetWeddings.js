@@ -27,6 +27,32 @@ exports.getWeddingsData = async (req, res) => {
     }
 }
 
+exports.getWeddingCategory = async (req, res) => {
+    try{
+        const AllWeddings = await Weddings.find();
+
+        if (AllWeddings.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Empty Weddings Data'
+            });
+        }
+
+        const uniqueCategories = [...new Set(AllWeddings.map(wedding => wedding.category))];
+
+        res.status(200).json({
+            success: true,
+            message: 'Weddings Data found',
+            data: uniqueCategories
+        });
+    } catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}
 
 exports.getRealWeddingByCoupleName = async (req, res) => {
     try{
@@ -88,6 +114,60 @@ exports.getRealWeddingByCoupleName = async (req, res) => {
     } 
     catch(err){
         console.log(err.message);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        // Generate a random index
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+
+        // Swap elements
+        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+    return array;
+}
+
+exports.fetchCategoryWeddings = async (req, res) => {
+    try{
+        const { categoryName } = req.params;
+        const AllWeddings = await Weddings.find();
+
+        if (AllWeddings.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Empty Weddings Data'
+            });
+        }
+
+        let allData = [];
+        for(let i=0; i<AllWeddings.length; i++){
+            const currName = AllWeddings[i].category.trim().replace(/\s+/g,'-').toLowerCase();
+            if(categoryName === currName){
+                const categoryData = await Weddings.find({category: AllWeddings[i].category});
+                for(let j=0; j<categoryData.length; j++){
+                    if(categoryData[j].images.length > 0){
+                        for(let k=0; k<categoryData[j].images.length; k++){
+                            allData.push(categoryData[j].images[k]);
+                        }
+                    }
+                }
+            }
+        }
+
+        const shuffledArr = shuffleArray(allData);
+
+        res.status(200).json({
+            success: true,
+            message: 'Weddings Data found',
+            data: shuffledArr
+        });
+    } catch(err){
         res.status(500).json({
             success: false,
             message: 'Internal Server Error',

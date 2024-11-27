@@ -13,6 +13,7 @@ function AppContextProvider({children}){
     const [isMenuBarActive, setIsMenuBarActive] = useState(false);
     const [isOpenRate, setIsOpenRate] = useState(false);
     const [activeUserMenu, setActiveUserMenu] = useState(false);
+    const [imageViewActive, setImageViewActive] = useState({isActive: false, currImg:'', AllImages:'', dirName:'', index:0})
 
     const AuthUser = async () => {
         try {
@@ -60,7 +61,8 @@ function AppContextProvider({children}){
         isMenuBarActive, setIsMenuBarActive,
         isOpenRate, setIsOpenRate,
         activeUserMenu, setActiveUserMenu,
-        contactHandler
+        contactHandler,
+        imageViewActive, setImageViewActive
     }
 
     return <AppContext.Provider value={value}>

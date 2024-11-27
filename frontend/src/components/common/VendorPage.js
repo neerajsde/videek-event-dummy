@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import MContactUs2 from "./MContactUs2";
 import { MdVerified } from "react-icons/md";
 import { IoStar } from "react-icons/io5";
@@ -9,26 +9,12 @@ import { BsShare } from "react-icons/bs";
 import { LiaPenNibSolid } from "react-icons/lia";
 import { SlHeart } from "react-icons/sl";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
 import VendorReviews from "./VendorReviews";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { AppContext } from "../../context/AppContext";
 
 const VendorPage = ({ data }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isOpenImg, setIsOpenImg] = useState(false);
-  const [currentIndexReview, setCurrentIndexReview] = useState(0);
-  const [vendorReviewId, setVendorReviewId] = useState(0);
-
-  // Map images to lightbox-compatible format
-  const slides = data.albums.map((img) => ({
-    src: `${process.env.REACT_APP_BASE_URL}/vendor${img}`,
-  }));
-
-  const slides2 = data?.reviews[vendorReviewId]?.images.map((img) => ({
-    src: `${process.env.REACT_APP_BASE_URL}/vendor${img}`,
-  }));
+  const { setImageViewActive } = useContext(AppContext);
 
   return (
     <div className="w-full flex flex-col bg-[#ececec]">
@@ -122,22 +108,16 @@ const VendorPage = ({ data }) => {
                   alt={`Wedding image ${index + 1}`}
                   className="w-full h-[150px] max-sm:h-[120px] object-cover cursor-pointer"
                   onClick={() => {
-                    setCurrentIndex(index);
-                    setIsOpen(true);
+                    setImageViewActive({
+                        isActive: true, 
+                        index: index,
+                        AllImages: data.albums, 
+                        dirName:'vendor'
+                    })
                   }}
                 />
               ))}
           </div>
-
-          {isOpen && (
-            <Lightbox
-              open={isOpen}
-              close={() => setIsOpen(false)}
-              slides={slides}
-              index={currentIndex}
-              onIndexChange={setCurrentIndex}
-            />
-          )}
         </div>
       </div>
 
@@ -228,22 +208,16 @@ const VendorPage = ({ data }) => {
                           alt={`Review image ${index + 1}`}
                           className="w-full h-[50px] object-cover cursor-pointer"
                           onClick={() => {
-                            setCurrentIndexReview(index);
-                            setVendorReviewId(vId);
-                            setIsOpenImg(true);
+                            setImageViewActive({
+                                isActive: true, 
+                                index: index,
+                                AllImages: item.images, 
+                                dirName:'vendor'
+                            })
                           }}
                         />
                       ))}
                   </div>
-                  {isOpenImg && vendorReviewId === vId && (
-                    <Lightbox
-                      open={isOpenImg}
-                      close={() => setIsOpenImg(false)}
-                      slides={slides2}
-                      index={currentIndexReview}
-                      onIndexChange={setCurrentIndexReview}
-                    />
-                  )}
                 </div>
               ))}
           </div>

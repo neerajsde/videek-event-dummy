@@ -59,17 +59,29 @@ const Venues = () => {
   }, [currTab]);
 
   useEffect(() => {
-    fetchPopularVenues();
-  },[]);
-
-  useEffect(() => {
     if(location.hash){
       setCurrTab(location.hash.replace('#',''));
     }
   },[location.hash]);
 
+  useEffect(() => {
+    fetchPopularVenues();
+  },[]);
+
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+      document.title = "Venue Types"
+      scrollToDiv("venetypes");
+  }, []);
+
   return (
-    <div className='w-full flex flex-col'>
+    <div id='venetypes' className='w-full flex flex-col'>
         <Headers/>
         <Navbar/>
 

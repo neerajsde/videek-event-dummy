@@ -25,7 +25,7 @@ const WeddingCategory = () => {
                             <h4 className='text-lg max-sm:text-base font-bold text-white'>Cruise Weddings</h4>
                             <p className='text-sm max-sm:text-xs font-normal text-gray-300'>Amidst the ocean, celebrate your<br/> day of love in the grand cruise</p>
                         </div>
-                        <Link to={''} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
+                        <Link to={'/wedding_category#cruise-weddings'} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
                     </div>
                 </div>
                 <div className='w-full h-[200px] flex justify-between max-sm:flex-col items-center gap-4'>
@@ -36,7 +36,7 @@ const WeddingCategory = () => {
                                 <h4 className='text-lg max-sm:text-base font-bold text-white'>Beach Weddings</h4>
                                 <p className='text-sm max-sm:text-xs font-normal text-gray-300'>Beautiful off shores, blue skies, all you desire to tie your note amidts beachy waves</p>
                             </div>
-                            <Link to={''} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
+                            <Link to={'/wedding_category#beach-weddings'} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
                         </div>
                     </div>
                     <div className='w-full h-full rounded-2xl relative'>
@@ -46,7 +46,7 @@ const WeddingCategory = () => {
                                 <h4 className='text-lg max-sm:text-base font-bold text-white'>Vineyard Weddings</h4>
                                 <p className='text-sm max-sm:text-xs font-normal text-gray-300'>Lush green wineries, to provide you a clique vibe to tie your knot with your soul mate</p>
                             </div>
-                            <Link to={''} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
+                            <Link to={'/wedding_category#vineyard-weddings'} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@ const WeddingCategory = () => {
                                 <h4 className='text-lg max-sm:text-base font-bold text-white'>Intimate Weddings</h4>
                                 <p className='text-sm max-sm:text-xs font-normal text-gray-300'>Tie the Knot with the love of your life in a cozy intimate setting</p>
                             </div>
-                            <Link to={''} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
+                            <Link to={'/wedding_category#intimate-weddings'} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
                         </div>
                     </div>
                     <div className='w-full h-full rounded-2xl relative'>
@@ -71,7 +71,7 @@ const WeddingCategory = () => {
                                 <h4 className='text-lg max-sm:text-base font-bold text-white'>Fort Weddings</h4>
                                 <p className='text-sm max-sm:text-xs font-normal text-gray-300'>Royalty & Aesthetic grandeur to make your wedding a historic memories</p>
                             </div>
-                            <Link to={''} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
+                            <Link to={'/wedding_category#fort-weddings'} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@ const WeddingCategory = () => {
                             <h4 className='text-lg max-sm:text-base font-bold text-white'>Mountain Weddings</h4>
                             <p className='text-sm max-sm:text-xs font-normal text-gray-300'>High hill top chilly weather, special aston</p>
                         </div>
-                        <Link to={''} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
+                        <Link to={'/wedding_category#mountain-weddings'} className='w-[100px] max-sm:w-[80px] max-sm:text-sm flex justify-center items-center gap-2 py-2 px-3 text-base font-bold border bg-[#AB1C49] text-gray-100 rounded border-none'>Visit <FaArrowRightLong/></Link>
                     </div>
                 </div>
             </div>

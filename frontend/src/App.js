@@ -32,6 +32,8 @@ import Invitations from "./pages/Invitations";
 import BlogCategory from "./pages/BlogCategory";
 import Venues from "./pages/Venues";
 import VenueDetails from "./pages/VenueDetails";
+import WeddingCategory from "./pages/WeddingCategory";
+import ImageView from "./components/ImageView";
 
 function App() {
   const {
@@ -45,6 +47,7 @@ function App() {
     isMenuBarActive,
     setIsMenuBarActive,
     activeUserMenu,
+    imageViewActive,
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -152,6 +155,12 @@ function App() {
         </div>
       )}
 
+      {imageViewActive.isActive && (
+        <div className="w-full h-full fixed top-0 bg-[#00000090] backdrop-blur-sm z-[1000000]">
+          <ImageView/>
+        </div>
+      )}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<About />} />
@@ -161,6 +170,7 @@ function App() {
         <Route path="/venues" element={<Venues />} />
         <Route path="/venue/:type/:name" element={<VenueDetails />} />
         <Route path="/gallery/:category" element={<Gallery />} />
+        <Route path="/wedding_category" element={<WeddingCategory/>}/>
         <Route path="/real_weddings" element={<AllWeddings />} />
         <Route path="/real_weddings/:couple_name" element={<RealWeddings />} />
         <Route path="/vendor-category/:name" element={<VendorCategories />} />

@@ -89,7 +89,7 @@ const Gallery = () => {
                     <h3 className='text-xl font-semibold text-black'>About</h3>
                     <div
                         dangerouslySetInnerHTML={{ __html: categoryData.desc }}
-                        ></div>
+                    ></div>
                 </div>
                 <CategoryImages weddingData={categoryData}/>
             </div>

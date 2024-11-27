@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from "axios"
 import MdLoader from '../spinner/MdLoader';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
+import CreatableSelect from "react-select/creatable";
 
 const AddWeddings = () => {
     const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -12,7 +13,9 @@ const AddWeddings = () => {
     const [images, setImages] = useState([]);
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [categoryOptions, setCategoryOptions] = useState([]);
     const [formData, setFormData] = useState({
+        category:'',
         couple_name:'',
         location:'',
         title:'',
@@ -34,6 +37,37 @@ const AddWeddings = () => {
     const handleDescriptionChange = (value) => {
         setDescription(value);
     };
+
+    const handleCategoryChange = (selectedOption) => {
+        setFormData((prevState) => ({
+          ...prevState,
+          category: selectedOption ? selectedOption.value : "",
+        }));
+    };
+
+    const getWeddingsCategory = async () => {
+        try {
+          const response = await axios.get(
+            `${baseUrl}/wedding/unique-category`
+          );
+    
+          if (response.data.success) {
+            const formattedSubCategories = response.data.data.map((sub) => ({
+              label: sub,
+              value: sub,
+            }));
+            setCategoryOptions(formattedSubCategories);
+          } else {
+            setCategoryOptions([]);
+          }
+        } catch (err) {
+          setCategoryOptions([]);
+        }
+    };
+    
+    useEffect(() => {
+        getWeddingsCategory();
+    },[]);
 
     const uploadImg = async (index, ids) => {
         try {
@@ -62,14 +96,15 @@ const AddWeddings = () => {
             setIsLoading(true);
             if (images.length < 4) {
                 setError("Please upload a minimum of four images.");
+                toast.error("Please upload a minimum of four images.");
                 return;
             }
             const formXData = new FormData();
     
-            // Append form data dynamically
+            // Append form fields dynamically
             Object.entries(formData).forEach(([key, value]) => {
                 if (Array.isArray(value)) {
-                    value.forEach((item, index) => formXData.append(`${key}[${index}]`, item)); // handle arrays properly
+                    value.forEach((item, index) => formXData.append(`${key}[${index}]`, item));
                 } else {
                     formXData.append(key, value);
                 }
@@ -77,31 +112,27 @@ const AddWeddings = () => {
     
             formXData.append("description", description);
     
+            // Submit form data
             const response = await axios.post(`${baseUrl}/wedding/upload`, formXData);
-            
-            if (response.data.success) {    
+    
+            if (response.data.success) {
                 const id = response.data.ids;
     
-                // Loop through and upload images
+                // Upload images
                 for (let index = 0; index < images.length; index++) {
                     const res = await uploadImg(index, id);
-                    if (res !== 'success') {
-                        toast.error(`Error uploading image ${index + 1}`);
-                        return; // If one fails, stop further execution
+    
+                    if (res !== "success") {
+                        toast.error(`Error uploading image ${index + 1}. Please try again.`);
+                        setError(`Error uploading image ${index + 1}`);
+                        return;
                     }
                 }
     
                 // Reset form and states
-                setDescription("");
-                setFormData({
-                    couple_name: '',
-                    location: '',
-                    title: '',
-                    date: '',
-                    taggedVendor: ''     
-                });
-                setImages([]);
+                resetFormState();
                 setSuccessMessage("Submitted successfully");
+                getWeddingsCategory();
                 toast.success("Submitted successfully");
     
             } else {
@@ -110,10 +141,28 @@ const AddWeddings = () => {
             }
     
         } catch (error) {
+            // Handle unexpected errors
             setError("Internal Server Error. Please try again later.");
+            toast.error("Internal Server Error. Please try again later.");
+            console.error("Error in submitHandler:", error);
         } finally {
+            // End loading state
             setIsLoading(false);
         }
+    };
+    
+    // Helper to reset form state
+    const resetFormState = () => {
+        setDescription("");
+        setFormData({
+            category: '',
+            couple_name: "",
+            location: "",
+            title: "",
+            date: "",
+            taggedVendor: "",
+        });
+        setImages([]);
     };
     
 
@@ -121,6 +170,48 @@ const AddWeddings = () => {
     <div className="w-full flex flex-col bg-black p-6 gap-4">
         <h2 className="text-2xl font-bold text-cyan-600">Add Real Weddings</h2>
         <form onSubmit={submitHandler} className="w-full flex flex-col gap-4">
+            <div className="w-[50%] flex flex-col gap-1">
+                <label className="text-gray-400 text-base font-medium">
+                    Wedding Category
+                </label>
+                <CreatableSelect
+                    isClearable
+                    required
+                    options={categoryOptions}
+                    onChange={handleCategoryChange}
+                    value={categoryOptions.find(
+                        (option) => option.value === formData.category
+                    )}
+                    placeholder="Create or choose one"
+                    className="w-full"
+                    styles={{
+                        control: (provided) => ({
+                            ...provided,
+                            backgroundColor: "#111",
+                            borderColor: "#333",
+                            height: '45px',
+                            color: "white",
+                        }),
+                        menu: (provided) => ({
+                        ...provided,
+                        backgroundColor: "#222",
+                        }),
+                        option: (provided, state) => ({
+                        ...provided,
+                        backgroundColor: state.isFocused ? "#444" : "#222",
+                        color: "white",
+                        }),
+                        singleValue: (provided) => ({
+                        ...provided,
+                        color: "white",
+                        }),
+                        placeholder: (provided) => ({
+                        ...provided,
+                        color: "#555",
+                        }),
+                }}
+                />
+            </div>
             <div className="w-full flex justify-between gap-4">
                 <div className="w-full flex flex-col gap-1">
                     <label className="text-gray-400 text-base font-medium">Couple Name</label>

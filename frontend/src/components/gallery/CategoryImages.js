@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
+import React, { useContext } from 'react';
+import { AppContext } from '../../context/AppContext';
 
 function CategoryImages({ weddingData }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    // Map images to lightbox-compatible format
-    const slides = weddingData.images.map(img => ({
-        src: `${process.env.REACT_APP_BASE_URL}/gallery${img}`
-    }));
+    const { setImageViewActive } = useContext(AppContext);
 
     return (
         <div className="w-full py-8 flex flex-col gap-4">
@@ -22,22 +15,16 @@ function CategoryImages({ weddingData }) {
                         alt={`Image ${index + 1}`}
                         className="w-full h-[270px] object-cover cursor-pointer"
                         onClick={() => {
-                            setCurrentIndex(index);
-                            setIsOpen(true);
+                            setImageViewActive({
+                                isActive: true, 
+                                index: index,
+                                AllImages: weddingData.images, 
+                                dirName:'gallery'
+                            })
                         }}
                     />
                 ))}
             </div>
-
-            {isOpen && (
-                <Lightbox
-                    open={isOpen}
-                    close={() => setIsOpen(false)}
-                    slides={slides}
-                    index={currentIndex}
-                    onIndexChange={setCurrentIndex}
-                />
-            )}
         </div>
     );
 }

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const createNewRealWeddingSchema = new mongoose.Schema({
+    category: {
+        type: String,
+        required: true
+    },
     couple_name: {
         type: String,
         default: ''
