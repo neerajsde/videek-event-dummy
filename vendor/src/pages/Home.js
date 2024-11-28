@@ -9,7 +9,6 @@ import { FaQuestionCircle } from "react-icons/fa";
 import MainPage from "../components/home/MainPage";
 import FAQs from "../components/FAQs/FAQs";
 import Reviews from "../components/reviews/Reviews";
-import Logo from "../assets/logo.png";
 import { IoMdNotifications } from "react-icons/io";
 import Album from "../components/album/Album";
 import { MdPhotoAlbum } from "react-icons/md";
@@ -17,7 +16,7 @@ import { RxVideo } from "react-icons/rx";
 import VideosHome from "../components/youtube/VideosHome";
 
 const Home = () => {
-  const { setIsLoggedIn, adminData } = useContext(AppContext);
+  const { setIsLoggedIn, adminData, webData } = useContext(AppContext);
   const [currentSection, setCurrentSection] = useState("dashboard");
   const navigate = useNavigate();
 
@@ -35,7 +34,7 @@ const Home = () => {
   return (
     <div className="w-full h-full flex flex-col bg-black">
       <div className="w-full flex justify-between items-center py-3 px-8 bg-[#111]">
-        <img src={Logo} alt="LOGO" className="w-[150px] max-lg:w-[100px]" />
+        <img src={`${process.env.REACT_APP_BASE_URL}/webImg${webData.logo}`} alt="LOGO" className="w-[150px] max-lg:w-[100px]" />
 
         <div className="flex items-center text-white gap-2">
           <IoMdNotifications className="text-3xl" />
