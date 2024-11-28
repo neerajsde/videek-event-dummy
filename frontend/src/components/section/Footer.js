@@ -10,47 +10,47 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { AppContext } from "../../context/AppContext";
 
 const Footer = () => {
-  const { setTab } = useContext(AppContext);
+  const { setTab, webData } = useContext(AppContext);
 
   return (
     <div className="w-full flex flex-col p-8 max-sm:p-4 gap-4 bg-[#feeded]">
-      <div className="w-full flex justify-around items-start max-md:flex-col max-md:gap-8">
-        <div className="flex flex-col items-start gap-6 max-sm:w-full max-sm:gap-4">
+      <div className="w-full flex justify-between items-start max-md:flex-col max-md:gap-8">
+        <div className="w-[500px] flex flex-col items-start gap-6 max-sm:w-full max-sm:gap-4">
           <Logo />
           <div className="flex flex-col justify-start gap-4">
             <div className="flex items-center gap-2">
               <FaPhone className="text-xl text-[#AB1C49]" />
-              <Link to={"tel:+91234567890"} className="text-lg text-gray-600">
-                +91 234567890
+              <Link to={`tel:+91${webData?.phone}`} className="text-lg text-gray-600">
+                {`+91 ${webData?.phone}`}
               </Link>
             </div>
             <div className="flex items-center gap-2">
               <IoIosMail className="text-2xl text-[#AB1C49]" />
               <Link
-                to="mailto:abcxyz@gmail.com"
+                to={`mailto:${webData?.email}`}
                 className="text-lg text-gray-600"
               >
-                abcxyz12@gmail.com
+                {webData?.email}
               </Link>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex justify-start items-center gap-2">
               <FaMapMarkerAlt className="text-2xl text-[#AB1C49]" />
-              <span className="text-lg text-gray-600">
-                abc plot, Gurugram, Haryana
+              <span className="pl-2 text-base text-gray-600">
+                {webData?.address}
               </span>
             </div>
           </div>
           <div className="flex gap-2">
-            <Link className="text-3xl font-normal text-[#316FF6] transition duration-200 ease-in">
+            <Link to={webData?.fb_url} className="text-3xl font-normal text-[#316FF6] transition duration-200 ease-in">
               <FaFacebook />
             </Link>
-            <Link className="w-[30px] h-[30px] transition duration-200 ease-in ">
+            <Link to={webData?.ins_url} className="w-[30px] h-[30px] transition duration-200 ease-in ">
               <img src={InstargramImg} className="w-full h-full" />
             </Link>
-            <Link className="text-3xl font-normal text-[#1DA1F2] transition duration-200 ease-in">
+            <Link to={webData?.twi_url} className="text-3xl font-normal text-[#1DA1F2] transition duration-200 ease-in">
               <FaTwitter />
             </Link>
-            <Link className="text-3xl font-normal text-[#FF0000] transition duration-200 ease-in">
+            <Link to={webData?.yt_url} className="text-3xl font-normal text-[#FF0000] transition duration-200 ease-in">
               <FaYoutube />
             </Link>
           </div>
@@ -122,7 +122,7 @@ const Footer = () => {
       </div>
 
       <div className="w-full flex justify-center items-center text-center border-t border-gray-400 pt-4 text-base font-normal text-gray-500">
-        © Copyright 2024 Videek Events - All Rights Reserved
+        © Copyright 2024 {webData?.title} - All Rights Reserved
       </div>
     </div>
   );

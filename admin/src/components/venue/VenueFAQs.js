@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import MdLoader from '../spinner/MdLoader';
 import toast from 'react-hot-toast';
 import axios from "axios"
-import { AppContext } from '../../context/AppContext';
 
 const VenueFAQs = () => {
-    const {adminData} = useContext(AppContext);
     const [success, setSucsess] = useState("");
     const [error, setError] = useState("");
     const [addLoading, setAddLoading] = useState(false);
@@ -78,6 +76,7 @@ const VenueFAQs = () => {
             return;
         }
         try {
+            setAddLoading(true);
             const token = localStorage.getItem('VideekAdmin');
             const config = {
                 headers: {
@@ -93,8 +92,9 @@ const VenueFAQs = () => {
                 setError(response.data.message);
             }
         } catch (err) {
-            toast.error(err.message)
             setError(err.message);
+        } finally{
+            setAddLoading(false);
         }
     };
 
@@ -165,19 +165,19 @@ const VenueFAQs = () => {
                 curr[index] = true;
                 return curr;
             });
-            const token = localStorage.getItem("VideekVendor");
+            const token = localStorage.getItem("VideekAdmin");
             if (!token) {
                 throw new Error("Token not found. Please log in again.");
             }
             // Example of an async operation like submitting data
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/vendor/FAQ/update`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/venue/faq/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    vendor_id: adminData.user_id, 
+                    venue_id: venueData.id, 
                     faq_id: faqsData[index].id,
                     question: faqsData[index].question,
                     answere: faqsData[index].answere
@@ -221,19 +221,19 @@ const VenueFAQs = () => {
 
     const removeFAQHandler = async(indexToRemove) => {
         try {
-            const token = localStorage.getItem("VideekVendor");
+            const token = localStorage.getItem("VideekAdmin");
             if (!token) {
                 throw new Error("Token not found. Please log in again.");
             }
             // Example of an async operation like submitting data
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/vendor/FAQ/delete`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/venue/faq/remove`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({
-                    vendor_id: adminData.user_id, 
+                    venue_id: venueData.id, 
                     faq_id: faqsData[indexToRemove].id
                 }),
             });
@@ -272,7 +272,7 @@ const VenueFAQs = () => {
                     </select>
                 </div>
                 <div className='w-full flex justify-start items-center gap-4'>
-                    <button type='submit' className="h-[40px] w-[100px] rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-cyan-600 transition duration-200 ease-in hover:bg-cyan-800">{ addLoading ? (<MdLoader/>) : 'Add'}</button>
+                    <button type='submit' className="h-[40px] w-[100px] rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-cyan-600 transition duration-200 ease-in hover:bg-cyan-800">{ addLoading ? (<MdLoader/>) : 'Find'}</button>
                     {
                         success && (<p className='text-base text-green-500 font-semibold'>{success}</p>)
                     }

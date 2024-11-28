@@ -1,10 +1,11 @@
 import { createContext, useState } from "react";
 import toast from "react-hot-toast";
-
+import axios from 'axios'
 
 export const AppContext = createContext();
 
 function AppContextProvider({children}){
+    const [webData, setWebData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userData, setUserData] = useState(null);
@@ -13,7 +14,7 @@ function AppContextProvider({children}){
     const [isMenuBarActive, setIsMenuBarActive] = useState(false);
     const [isOpenRate, setIsOpenRate] = useState(false);
     const [activeUserMenu, setActiveUserMenu] = useState(false);
-    const [imageViewActive, setImageViewActive] = useState({isActive: false, currImg:'', AllImages:'', dirName:'', index:0})
+    const [imageViewActive, setImageViewActive] = useState({isActive: false, AllImages:'', dirName:'', index:0})
 
     const AuthUser = async () => {
         try {
@@ -43,6 +44,23 @@ function AppContextProvider({children}){
         } catch (err) {}
     };
 
+    const fetchGeneralSettingData = async () => {
+      try {
+          const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/web/data`);
+          if (response.data.success) {
+              setWebData(response.data.data);
+          }
+      } catch (err) {
+        console.log(err.message)
+      }
+    };
+
+    useState(() => {
+        if(!webData){
+          fetchGeneralSettingData();
+        }
+    },[]);
+
     const contactHandler = async(Id, emailId, phone) => {
       if(!isLoggedIn && !userData){
         setIsActiveLoginPage(true);
@@ -52,6 +70,7 @@ function AppContextProvider({children}){
     }
 
     const value = {
+        webData,
         AuthUser,
         isLoading, setIsLoading,
         isLoggedIn, setIsLoggedIn,

@@ -14,12 +14,12 @@ const generalSettings = new mongoose.Schema({
         default:''
     },
     phone:{
-        type:String,
-        default:''
+        type:Number,
+        default:0
     },
     whatsapp:{
-        type:String,
-        default:''
+        type:Number,
+        default:0
     },
     fb_url:{
         type:String,

@@ -6,7 +6,7 @@ import axios from 'axios';
 import ModalImage from "react-modal-image";
 
 const AllPictures = () => {
-    const {adminData} = useContext(AppContext);
+    const {adminData, setImageViewActive} = useContext(AppContext);
     const [isLoading, setIsLoading] = useState(false);
     const [images, setImages] = useState(null);
 
@@ -54,12 +54,18 @@ const AllPictures = () => {
     <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {
             images && images.map((img, index) => (
-                <ModalImage
-                    key={index}
-                    small={`${process.env.REACT_APP_BASE_URL}/vendor${img}`}
-                    large={`${process.env.REACT_APP_BASE_URL}/vendor${img}`}
-                    alt={img}
-                    className="w-full h-[270px] object-cover"
+                <img
+                    src={`${process.env.REACT_APP_BASE_URL}/vendor${img}`}
+                    alt='img-not-found'
+                    className='w-full h-full object-cover cursor-pointer'
+                    onClick={() => {
+                        setImageViewActive({
+                            isActive: true, 
+                            AllImages:images, 
+                            dirName:'vendor', 
+                            index: index
+                        })
+                    }}
                 />
             ))
         }

@@ -9,6 +9,8 @@ import DisplayVenue from "./DisplayVenue";
 import AddVenue from "./AddVenue";
 import VenueFAQs from './VenueFAQs';
 import { FaQuestion } from "react-icons/fa";
+import { CiImageOn } from "react-icons/ci";
+import VenueImages from "./VenueImages";
 
 const Venue = () => {
   const [currentSection, setCurrentSection] = useState("/");
@@ -28,16 +30,6 @@ const Venue = () => {
   
         <div className="flex items-center justify-center gap-4">
           <button
-            onClick={() => setCurrentSection("faqs")}
-            className={`text-base font-semibold flex justify-center items-center gap-1 py-2 px-3 border text-blue-600 border-blue-600 rounded-md transition duration-200 ease-in ${
-              currentSection === "faqs"
-                ? "bg-blue-600 text-white"
-                : "hover:bg-blue-600 hover:text-white"
-            }`}
-          >
-            <FaQuestion className="text-xl" /> FAQs
-          </button>
-          <button
             onClick={() => setCurrentSection("add")}
             className={`text-base font-semibold flex justify-center items-center gap-1 py-2 px-3 border text-blue-600 border-blue-600 rounded-md transition duration-200 ease-in ${
               currentSection === "add"
@@ -45,7 +37,7 @@ const Venue = () => {
                 : "hover:bg-blue-600 hover:text-white"
             }`}
           >
-            <MdFormatListBulletedAdd className="text-xl" /> Add
+            <MdFormatListBulletedAdd className="text-xl" /> Add Venue
           </button>
           <button
             onClick={() => setCurrentSection("edit")}
@@ -55,7 +47,28 @@ const Venue = () => {
                 : "hover:bg-blue-600 hover:text-white"
             }`}
           >
-            <MdEdit className="text-xl" /> Edit
+            <MdEdit className="text-xl" /> Update Details
+          </button>
+          <button
+            onClick={() => setCurrentSection("faqs")}
+            className={`text-base font-semibold flex justify-center items-center gap-1 py-2 px-3 border text-blue-600 border-blue-600 rounded-md transition duration-200 ease-in ${
+              currentSection === "faqs"
+                ? "bg-blue-600 text-white"
+                : "hover:bg-blue-600 hover:text-white"
+            }`}
+          >
+            <FaQuestion className="text-xl" /> FAQs
+          </button>
+          
+          <button
+            onClick={() => setCurrentSection("albums")}
+            className={`text-base font-semibold flex justify-center items-center gap-1 py-2 px-3 border text-blue-600 border-blue-600 rounded-md transition duration-200 ease-in ${
+              currentSection === "albums"
+                ? "bg-blue-600 text-white"
+                : "hover:bg-blue-600 hover:text-white"
+            }`}
+          >
+            <CiImageOn className="text-xl" /> Add Albums
           </button>
           <button
             onClick={() => setCurrentSection("remove")}
@@ -73,6 +86,7 @@ const Venue = () => {
         {currentSection === "/" && <DisplayVenue />}
         {currentSection === "add" && <AddVenue />}
         {currentSection === "faqs" && <VenueFAQs />}
+        {currentSection === "albums" && <VenueImages />}
         {currentSection === "edit" && <UpdateVenue />}
         {currentSection === "remove" && <DeleteVenue />}
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Header from '../components/section/Header';
 import Navbar from '../components/section/Navbar';
 import BannerImg from '../assets/home-banner.jpg';
@@ -12,6 +12,7 @@ import TestimonialSection from '../components/home-com/TestimonialSection';
 import Footer from '../components/section/Footer';
 import WhyVideek from '../components/common/WhyVideek'; 
 import VendorCategory from '../components/home-com/VendorCategory';
+import { AppContext } from '../context/AppContext';
 
 // #411530
 // #D1512D
@@ -19,6 +20,7 @@ import VendorCategory from '../components/home-com/VendorCategory';
 // #AB1C49
 
 const Home = () => {
+  const {webData} = useContext(AppContext);
 
   const scrollToDiv = (id) => {
     const element = document.getElementById(id);
@@ -27,10 +29,10 @@ const Home = () => {
     }
     };
 
-    useEffect(() => {
-    document.title = "Dj Events"
+  useEffect(() => {
+    document.title = webData?.title
     scrollToDiv("home");
-  }, []);
+  }, [webData]);
 
   return (
     <div id='home' className='w-full h-full flex flex-col items-center'>

@@ -6,6 +6,7 @@ const { auth } = require('../middleware/auth');
 const { createNewAdmin } = require('../controllers/admin/CreateAdmin');
 const { adminLogin, sendOtpAdminOnMail } = require('../controllers/admin/LoginAdmin');
 const { getAdminDetails } = require('../controllers/admin/GetAdmin');
+const { submitGeneralSettings, getGeneralSettings, changeLogo } = require('../controllers/GeneralSetting');
 // services
 const { getServicesByName, getServicesByCategory, getServicesBySubCategory, getServicesByCategoryForTab, getServicesBySubCategoryWithUnique, getServicesForTabs } = require('../controllers/services/GetServices');
 const { AddNewServices } = require('../controllers/services/AddServices');
@@ -43,7 +44,7 @@ const { UpdatePublishTestimonals, UnUpdatePublishTestimonals } = require('../con
 const { getVenueCategoryWithUnique, AddNewVenue } = require('../controllers/venue/addVenue');
 const { getPopularVenue, getVenueCategory, getVenueByName, getAllVenues, getVenueFAQs } = require('../controllers/venue/getVenue');
 const { addVenueReviews, uploadVenueReviewImg } = require('../controllers/venue/writeVenueReview');
-const { addFAQIntoVenue, deleteFAQFromVenue, updateFAQInVenue } = require('../controllers/venue/UpdateVenue');
+const { addFAQIntoVenue, deleteFAQFromVenue, updateFAQInVenue, uploadVenueAlbumImg, deleteVenueAlbumImg } = require('../controllers/venue/UpdateVenue');
 // user
 const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
 router.post('/user/login-email', loginHandler);
@@ -54,6 +55,9 @@ router.post('/admin/add', createNewAdmin);
 router.post('/admin/login', adminLogin);
 router.post('/admin/login-otp', sendOtpAdminOnMail)
 router.post('/admin/dashboard', auth, getAdminDetails);
+router.post('/admin/setting', auth, submitGeneralSettings);
+router.get('/web/data', getGeneralSettings);
+router.post('/general-settings/change-logo',auth, changeLogo);
 // services
 router.get('/services/:serviceName', getServicesByName);
 router.get('/serverces-tab', getServicesForTabs);
@@ -128,9 +132,11 @@ router.get('/venue/:venue_name/faqs', auth, getVenueFAQs);
 router.get('/venue/:Name', getVenueByName);
 router.post('/venue/review/add', addVenueReviews);
 router.post('/venue/review/img-upload', uploadVenueReviewImg);
-router.post('/venue/faq/add', addFAQIntoVenue);
-router.put('/venue/faq/update', updateFAQInVenue);
-router.delete('/venue/faq/add', deleteFAQFromVenue);
+router.post('/venue/faq/add',auth, addFAQIntoVenue);
+router.put('/venue/faq/update',auth, updateFAQInVenue);
+router.delete('/venue/faq/remove',auth, deleteFAQFromVenue);
+router.post('/venue/album/img/upload', uploadVenueAlbumImg);
+router.delete('/venue/album/img/delete', auth, deleteVenueAlbumImg);
 // downloads
 router.get('/download/contact-us', downloadContactUsData);
 

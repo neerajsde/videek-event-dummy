@@ -1,5 +1,7 @@
 const Venue = require('../../models/venue');
 const FAQs = require('../../models/sub-models/faq');
+const path = require('path');
+const fs = require('fs');
 
 exports.addFAQIntoVenue = async (req, res) => {
     try {
@@ -69,7 +71,7 @@ exports.deleteFAQFromVenue = async (req, res) => {
             });
         }
 
-        // Find the vendor by ID
+        // Find the venue by ID
         const venue = await Venue.findById(venue_id);
         if (!venue) {
             return res.status(404).json({
@@ -171,6 +173,126 @@ exports.updateFAQInVenue = async (req, res) => {
         res.status(500).json({
             success: false,
             message: err.message
+        });
+    }
+};
+
+exports.uploadVenueAlbumImg = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const img = req.files?.img;
+
+        // Check for required fields
+        if (!id) {
+            return res.status(400).json({ success: false, message: 'Please enter id' });
+        }
+
+        const findGallery = await Venue.findById(id);
+        if (!findGallery) {
+            return res.status(404).json({ success: false, message: 'Not Found' });
+        }
+
+        // Validate the services image
+        if (!img) {
+            return res.status(400).json({ success: false, message: 'Please select an image' });
+        }
+
+        // Define the directory where the file will be saved
+        const uploadDir = path.join(__dirname, '../..', 'VenueImages');
+
+        // Check if the directory exists, if not, create it
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        // Create the file path where the image will be stored on the server
+        const timestamp = Date.now();
+        const ext = path.extname(img.name);
+        const imageName = `${timestamp}${ext}`;
+        const serverFilePath = path.join(uploadDir, imageName);
+
+        console.log("Image upload path:", serverFilePath);
+
+        // Move the image to the server's files directory
+        await img.mv(serverFilePath);
+
+        // Update the gallery with the image path
+        const upadtedData = await Venue.findByIdAndUpdate(
+            id,
+            { $push: { albums: `/files/${imageName}` } },
+            { new: true }
+        );
+
+        res.status(201).json({
+            success: true,
+            data: {
+                id: upadtedData._id,
+                venue_name: upadtedData.name,
+                images: upadtedData.albums
+            },
+            message: 'Image uploaded successfully'
+        });
+
+    } catch (err) {
+        console.log('Image Uploading Error: ', err.message);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        });
+    }
+};
+
+
+exports.deleteVenueAlbumImg = async (req, res) => {
+    try {
+        const { id, imgPath } = req.body;
+
+        // Check for required fields
+        if (!id || !imgPath) {
+            return res.status(400).json({ success: false, message: 'Please provide id and imgPath' });
+        }
+
+        // Find the venue
+        const findGallery = await Venue.findById(id);
+        if (!findGallery) {
+            return res.status(404).json({ success: false, message: 'Venue not found' });
+        }
+
+        // Check if the image exists in the venue's album
+        const imgIndex = findGallery.albums.indexOf(imgPath);
+        if (imgIndex === -1) {
+            return res.status(404).json({ success: false, message: 'Image not found in the album' });
+        }
+
+        // Remove the image from the album array
+        findGallery.albums.splice(imgIndex, 1);
+        await findGallery.save();
+
+        // Construct the server file path
+        const serverFilePath = path.join(__dirname, '../..', imgPath.replace('/files/', 'VenueImages/'));
+
+        // Remove the file from the server
+        if (fs.existsSync(serverFilePath)) {
+            fs.unlinkSync(serverFilePath);
+        }
+
+        res.status(200).json({
+            success: true,
+            data: {
+                id: findGallery._id,
+                venue_name: findGallery.name,
+                images: findGallery.albums
+            },
+            message: 'Image deleted successfully'
+        });
+
+    } catch (err) {
+        console.log('Image Deletion Error: ', err.message);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
         });
     }
 };

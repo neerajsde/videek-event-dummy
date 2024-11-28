@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
 import { TbCloudHeart } from "react-icons/tb";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
 import { BiSolidDashboard } from "react-icons/bi";
+import { AppContext } from "../../context/AppContext";
 
 const WhyVideek = () => {
+  const {webData} = useContext(AppContext);
+
   return (
     <div className="w-full flex flex-col p-8 max-md:p-6 max-sm:p-4 pb-10 max-sm:py-8 gap-8 max-sm:gap-4 bg-white">
       <h3 className="text-[#AB1C49] font-bold text-2xl text-center max-sm:text-lg">
-        Why Videek Events ?
+        Why {webData?.title} ?
       </h3>
       <div className="w-full flex justify-between items-center gap-4 flex-wrap">
         <div className="w-[280px] max-sm:w-full rounded-xl flex flex-col gap-4 p-4 bg-blue-100">

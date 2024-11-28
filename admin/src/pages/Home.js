@@ -21,6 +21,9 @@ import Testimonal from "../components/testimonials/Testimonal";
 import { GoPeople } from "react-icons/go";
 import { RiHotelFill } from "react-icons/ri";
 import Venue from "../components/venue/Venue";
+import GeneralSettings from "../components/GeneralSettings";
+import { IoMdSettings } from "react-icons/io";
+
 
 const Home = () => {
   const { setIsLoggedIn } = useContext(AppContext);
@@ -56,6 +59,13 @@ const Home = () => {
             className={`w-full py-2 flex justify-center items-center gap-2 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'dashboard' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
           >
             <FiBarChart2 className="text-xl text-blue-600" /> Dashboard
+          </Link>
+          <Link 
+            to='#settings'
+            onClick={() => setCurrentSection("settings")}
+            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'settings' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
+          >
+            <IoMdSettings className="text-xl" /> General Settings
           </Link>
           <Link 
             to='#services'
@@ -129,6 +139,7 @@ const Home = () => {
 
         <div className="w-full flex justify-start items-start text-white p-4">
           {currentSection === "dashboard" && <MainPage/>}
+          {currentSection === "settings" && <GeneralSettings/>}
           {currentSection === "services" && <Services/>}
           {currentSection === "blog" && <Blog/>}
           {currentSection === "gallery" && <Gallery/>}

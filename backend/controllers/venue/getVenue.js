@@ -294,7 +294,8 @@ exports.getVenueFAQs = async (req, res) => {
             data: {
                 id: venue._id,
                 venue_name: venue.name,
-                faqs: venue.FAQs
+                faqs: venue.FAQs,
+                images: venue.albums
             }
         });
 

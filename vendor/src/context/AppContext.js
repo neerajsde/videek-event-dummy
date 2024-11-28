@@ -9,6 +9,7 @@ function AppContextProvider({children}){
     const [adminData, setAdminData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const [imageViewActive, setImageViewActive] = useState({isActive: false, AllImages:'', dirName:'', index:0})
 
     const AuthAdmin = async () => {
         try {
@@ -46,6 +47,7 @@ function AppContextProvider({children}){
         isLoggedIn, setIsLoggedIn,
         adminData, setAdminData,
         isLoading, setIsLoading,
+        imageViewActive, setImageViewActive
     }
 
     return <AppContext.Provider value={value}>

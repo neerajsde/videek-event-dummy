@@ -55,11 +55,9 @@ const VenueDetails = () => {
     };
     
     useEffect(() => {
-        document.title = "Venue"
+        document.title = venueData?.name
         scrollToDiv("venueinfo");
-    }, []);
-
-    console.log(venueData);
+    }, [venueData.name]);
 
   return (
     <div id='venueinfo' className='w-full flex flex-col'>
