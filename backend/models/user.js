@@ -29,6 +29,12 @@ const creatednewUser = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    EInvites: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Invitation-Card' 
+        }
+    ],
     token:{
         type:String,
         default:''

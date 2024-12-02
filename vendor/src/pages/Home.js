@@ -34,10 +34,9 @@ const Home = () => {
   return (
     <div className="w-full h-full flex flex-col bg-black">
       <div className="w-full flex justify-between items-center py-3 px-8 bg-[#111]">
-        <img src={`${process.env.REACT_APP_BASE_URL}/webImg${webData.logo}`} alt="LOGO" className="w-[150px] max-lg:w-[100px]" />
+        <img src={`${process.env.REACT_APP_BASE_URL}/webImg${webData?.logo}`} alt="LOGO" className="w-[150px] max-lg:w-[100px]" />
 
         <div className="flex items-center text-white gap-2">
-          <IoMdNotifications className="text-3xl" />
           {adminData && (
             <div className="w-[40px] h-[40px] flex justify-center items-center border-2 border-yellow-600 rounded-full">
               <img
@@ -48,6 +47,7 @@ const Home = () => {
               />
             </div>
           )}
+          <div className="text-base font-semibold">{adminData.name}</div>
         </div>
       </div>
 

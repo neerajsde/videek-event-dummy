@@ -50,3 +50,4 @@ app.use('/api/v1/weddings/files', express.static(path.join(__dirname, 'RealWeddi
 app.use('/api/v1/vendor/files', express.static(path.join(__dirname, 'VendorAlbum')));
 app.use('/api/v1/venue/files', express.static(path.join(__dirname, 'VenueImages')));
 app.use('/api/v1/webImg/files', express.static(path.join(__dirname, 'imp-photos')));
+app.use('/api/v1/invitationsCard/files', express.static(path.join(__dirname, 'E-Invites-Cards')));

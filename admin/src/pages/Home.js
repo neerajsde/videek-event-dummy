@@ -23,7 +23,8 @@ import { RiHotelFill } from "react-icons/ri";
 import Venue from "../components/venue/Venue";
 import GeneralSettings from "../components/GeneralSettings";
 import { IoMdSettings } from "react-icons/io";
-
+import EInvitesCard from "../components/e-invites/EInvitesCard";
+import { TbGiftCardFilled } from "react-icons/tb";
 
 const Home = () => {
   const { setIsLoggedIn } = useContext(AppContext);
@@ -129,6 +130,13 @@ const Home = () => {
           >
             <RiContactsBook3Line className="text-xl" /> Contacts
           </Link>
+          <Link
+            to='#e-invites'
+            onClick={() => setCurrentSection("e-invites")}
+            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'contact' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
+          >
+            <TbGiftCardFilled className="text-xl" /> E-Invites Card
+          </Link>
           <button
             onClick={handleLogout}
             className="w-full py-2 flex justify-start px-4 items-center gap-4 text-red-400 text-lg font-semibold transition duration-300 ease-in-out hover:bg-[#000] hover:text-red-500"
@@ -147,6 +155,7 @@ const Home = () => {
           {currentSection === "vendor" && <Vendor/>}
           {currentSection === "venue" && <Venue/>}
           {currentSection === "testimonals" && <Testimonal/>}
+          {currentSection === "e-invites" && <EInvitesCard/>}
           {currentSection === "contact" && <Contact/>}
         </div>
       </div>

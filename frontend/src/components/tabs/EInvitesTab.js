@@ -9,10 +9,7 @@ const EInvitesTab = () => {
       title: 'Wedding Card Designs',
     },
     {
-      title: 'Invitaion Video Templates',
-    },
-    {
-      title: 'Save the Date Templates',
+      title: 'Save the templates',
     }
   ]
   return (

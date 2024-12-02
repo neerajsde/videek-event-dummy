@@ -34,6 +34,7 @@ import Venues from "./pages/Venues";
 import VenueDetails from "./pages/VenueDetails";
 import WeddingCategory from "./pages/WeddingCategory";
 import ImageView from "./components/ImageView";
+import WeddingInvitation from "./pages/WeddingInvitation";
 
 function App() {
   const {
@@ -176,6 +177,7 @@ function App() {
         <Route path="/vendor-category/:name" element={<VendorCategories />} />
         <Route path="/vendor/:category/:name" element={<Vendor />} />
         <Route path="/wedding-invitations/:tab" element={<Invitations />} /> 
+        <Route path="/wedding-invitations/:tab/:id" element={<WeddingInvitation />} /> 
         <Route path="/s/:services" element={<Services />} />
         <Route path="/s/:services/:anything" element={<Services />} />
         <Route path="/s/:services/:anything/:anything" element={<Services />} />

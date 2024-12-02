@@ -45,6 +45,9 @@ const { getVenueCategoryWithUnique, AddNewVenue } = require('../controllers/venu
 const { getPopularVenue, getVenueCategory, getVenueByName, getAllVenues, getVenueFAQs } = require('../controllers/venue/getVenue');
 const { addVenueReviews, uploadVenueReviewImg } = require('../controllers/venue/writeVenueReview');
 const { addFAQIntoVenue, deleteFAQFromVenue, updateFAQInVenue, uploadVenueAlbumImg, deleteVenueAlbumImg } = require('../controllers/venue/UpdateVenue');
+// E-Invites-Cards
+const { AddNewDummyCard } = require('../controllers/e-invites-cards/AddEInvites');
+const { getEInviteCardById, allEInvitesCards } = require('../controllers/e-invites-cards/getEInvites');
 // user
 const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
 router.post('/user/login-email', loginHandler);
@@ -137,6 +140,10 @@ router.put('/venue/faq/update',auth, updateFAQInVenue);
 router.delete('/venue/faq/remove',auth, deleteFAQFromVenue);
 router.post('/venue/album/img/upload', uploadVenueAlbumImg);
 router.delete('/venue/album/img/delete', auth, deleteVenueAlbumImg);
+// E-Invites Cards
+router.post('/einvites/dummy/add', AddNewDummyCard);
+router.get('/einvites/dummy', allEInvitesCards);
+router.get('/einvites/card/:cardId', getEInviteCardById);
 // downloads
 router.get('/download/contact-us', downloadContactUsData);
 
