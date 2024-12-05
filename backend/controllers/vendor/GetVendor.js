@@ -356,3 +356,78 @@ exports.getOnVendorAdminVideoLinks = async (req, res) => {
         })
     }
 }
+
+
+exports.vendorDataInsight = async (req, res) => {
+    try{
+        const { vendor_id } = req.params;
+        if(!vendor_id){
+            return res.status(404).json({
+                success: false,
+                message: 'Vendor id required'
+            })
+        }
+        const VendorDetails = await Vendor.findById(vendor_id);
+        if(!VendorDetails){
+            return res.status(404).json({
+                success: false,
+                message: 'Vendor not found'
+            })
+        }
+
+        const newObj = {
+            name: VendorDetails.name,
+            total_reviews: VendorDetails.reviews.length,
+            total_images: VendorDetails.albums.length,
+            total_ytVideos: VendorDetails.youtube_links.length,
+            total_FAQs: VendorDetails.FAQs.length,
+            total_unlockedEnquires: VendorDetails.clientInformation.length,
+        }
+        res.status(200).json({
+            success: true,
+            data: newObj,
+            message:'Fetch successfully'
+        })
+    } catch(err){
+        console.log('Error while Get Vendor Insights For Admin Pannel: ', err.message);
+        res.status(500).json({
+            success: false,
+            message:'Internal server error',
+            error:err.message
+        })
+    }
+}
+
+exports.getVendorDataForTheirAdmin = async (req, res) => {
+    try {
+        const { vendor_id } = req.params;
+
+        if (!vendor_id) {
+            return res.status(400).json({
+                success: false,
+                message: 'Vendor id is required'
+            });
+        }
+
+        const VendorDetails = await Vendor.findById(vendor_id).select('-createdAt -reviews -FAQs -youtube_links -albums -password -token -clientInformation -category').lean();
+
+        if (!VendorDetails) {
+            return res.status(404).json({
+                success: false,
+                message: 'Vendor not found'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: VendorDetails,
+            message: 'Fetch successful'
+        });
+    } catch (err) {
+        console.error('Error while getting vendor insights for admin panel:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
+    }
+};

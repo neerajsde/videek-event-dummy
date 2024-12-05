@@ -61,6 +61,12 @@ const creatednewVendorCategory = new mongoose.Schema({
             ref: 'FAQ' 
         }
     ],
+    clientInformation: [
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'contact-for-vendor' 
+        }
+    ],
     albums:[
         {type: String}
     ],

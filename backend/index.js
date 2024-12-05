@@ -42,7 +42,6 @@ app.use('/api/v1', route);
 
 // Serve static files from the "files" directory
 app.use('/api/v1/files', express.static(path.join(__dirname, 'controllers', 'ImagesFiles')));
-app.use('/api/v1/', express.static(path.join(__dirname, 'imp-photos')));
 app.use('/api/v1/blogImg/files', express.static(path.join(__dirname, 'Blogs')));
 app.use('/api/v1/blogImg/category', express.static(path.join(__dirname, 'category')));
 app.use('/api/v1/gallery/files', express.static(path.join(__dirname, 'Gallery')));

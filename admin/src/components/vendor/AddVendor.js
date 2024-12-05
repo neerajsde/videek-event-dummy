@@ -24,15 +24,16 @@ const AddVendor = () => {
     });
 
     function inputHandler(event){
-        if(event.target.name === 'phone' && formData.phone > 999999999){
+        const {name, value} = event.target;
+        if(name === 'phone' && value > 9999999999){
             return;
         }
-        if(event.target.name === 'whatsapp' && formData.whatsapp > 999999999){
+        if(name === 'whatsapp' && value > 9999999999){
             return;
         }
         setFormData((prevState) => ({
             ...prevState,
-            [event.target.name]: event.target.value
+            [name]: value
         }))
     }
 

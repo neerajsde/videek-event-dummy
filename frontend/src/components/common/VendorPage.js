@@ -31,21 +31,33 @@ const VendorPage = ({ data }) => {
 
             <div className="w-full absolute bottom-[0px] left-0 px-8 max-lg:px-2 max-md:px-4 max-sm:px-2">
               <div className="w-full flex flex-col bg-white shadow-sm shadow-gray-500">
-                <div className="w-full flex justify-between items-start p-4">
-                  <div className="flex flex-col gap-2">
-                    <h2 className="flex justify-start items-center gap-2 max-sm:gap-1">
-                      <span className="text-2xl text-black font-semibold max-sm:text-lg">
-                        {data.name}
-                      </span>{" "}
-                      <MdVerified className="text-blue-500 text-xl max-sm:text-base" />
-                    </h2>
+                <div className="w-full flex justify-between items-start p-4 max-sm:p-2">
+                  <div className="w-full flex justify-start max-sm:items-center gap-4 max-sm:gap-1">
+                    {data && (
+                        <div className="w-[100px] h-[100px] max-sm:w-[50px] max-sm:h-[50px] flex justify-center items-center border-2 border-yellow-600 rounded-lg">
+                          <img
+                            src={ data.user_img === '' ? `https://api.dicebear.com/5.x/initials/svg?seed=${data.name}` : `${process.env.REACT_APP_BASE_URL}${data.user_img}`}
+                            alt={data.name}
+                            className="w-full h-full object-cover rounded-md"
+                            loading="lazy"
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-2 max-sm:gap-0">
+                        <h2 className="flex justify-start items-center gap-2 max-sm:gap-1">
+                          <span className="text-2xl text-black font-semibold max-sm:text-lg">
+                            {data.name}
+                          </span>{" "}
+                          <MdVerified className="text-blue-500 text-xl max-sm:text-base" />
+                        </h2>
 
-                    <Link className="flex gap-2 items-center">
-                      <FaPhone className="text-teal-600 max-sm:text-sm" />
-                      <span className="text-base max-sm:text-sm font-semibold text-teal-600">
-                        Contact
-                      </span>
-                    </Link>
+                        <Link className="flex gap-2 items-center">
+                          <FaPhone className="text-teal-600 max-sm:text-sm" />
+                          <span className="text-base max-sm:text-sm font-semibold text-teal-600">
+                            Contact
+                          </span>
+                        </Link>
+                      </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex justify-center items-center rounded-sm gap-2 bg-green-500 p-2 max-sm:py-1 max-sm:gap-1 text-white">

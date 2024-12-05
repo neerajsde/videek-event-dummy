@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FiBarChart2 } from "react-icons/fi";
 import { RiContactsBook3Line } from "react-icons/ri";
 import { TbLogout } from "react-icons/tb";
 import toast from "react-hot-toast";
@@ -25,10 +24,12 @@ import GeneralSettings from "../components/GeneralSettings";
 import { IoMdSettings } from "react-icons/io";
 import EInvitesCard from "../components/e-invites/EInvitesCard";
 import { TbGiftCardFilled } from "react-icons/tb";
+import { MdDashboard } from "react-icons/md";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   const { setIsLoggedIn } = useContext(AppContext);
-  const [currentSection, setCurrentSection] = useState("dashboard");
+  const [currentSection, setCurrentSection] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -51,15 +52,16 @@ const Home = () => {
 
   return (
     <div className="w-full h-full flex flex-col bg-black">
+      <Navbar/>
 
       <div className="w-full flex justify-start items-start">
         <div className="w-[300px] h-screen sticky top-0 flex flex-col items-center justify-start bg-[#111] border-r border-t border-[#222]">
-          <Link
+          <Link 
             to='#home'
-            onClick={() => setCurrentSection("dashboard")}
-            className={`w-full py-2 flex justify-center items-center gap-2 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'dashboard' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
+            onClick={() => setCurrentSection("home")}
+            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'home' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
           >
-            <FiBarChart2 className="text-xl text-blue-600" /> Dashboard
+            <MdDashboard className="text-xl" /> Dashboard
           </Link>
           <Link 
             to='#settings'
@@ -133,7 +135,7 @@ const Home = () => {
           <Link
             to='#e-invites'
             onClick={() => setCurrentSection("e-invites")}
-            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'contact' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
+            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'e-invites' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
           >
             <TbGiftCardFilled className="text-xl" /> E-Invites Card
           </Link>
@@ -146,7 +148,7 @@ const Home = () => {
         </div>
 
         <div className="w-full flex justify-start items-start text-white p-4">
-          {currentSection === "dashboard" && <MainPage/>}
+          {currentSection === "home" && <MainPage/>}
           {currentSection === "settings" && <GeneralSettings/>}
           {currentSection === "services" && <Services/>}
           {currentSection === "blog" && <Blog/>}

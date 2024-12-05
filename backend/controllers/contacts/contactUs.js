@@ -84,7 +84,7 @@ exports.downloadContactUsData = async (req, res) => {
         }
 
         const xls = json2xls(data);
-        const uploadDir = path.join(__dirname, 'uploads');
+        const uploadDir = path.join(__dirname,'../..', 'uploads');
 
         // Create upload directory if it does not exist
         if (!fs.existsSync(uploadDir)) {

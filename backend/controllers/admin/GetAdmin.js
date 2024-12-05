@@ -1,4 +1,14 @@
-const Admin = require('../../models/admin')
+const Admin = require('../../models/admin');
+const Vendor = require('../../models/vendor_category');
+const Venue = require('../../models/venue');
+const User = require('../../models/user');
+const Testimonal = require('../../models/testimonial');
+const Gallery = require('../../models/gallery');
+const Blog = require('../../models/blogs');
+const ContactForVendor = require('../../models/basic_contact_vendor');
+const Contact = require('../../models/contact');
+const Services = require('../../models/services');
+const Wedding = require('../../models/real_weddings');
 
 exports.getAdminDetails = async (req, res) => {
     try {
@@ -37,3 +47,42 @@ exports.getAdminDetails = async (req, res) => {
         });
     }
 };
+
+exports.getWebRealTimeActivity = async (req, res) => {
+    try{
+        const Users = await User.find();
+        const Vendors = await Vendor.find();
+        const Venues = await Venue.find();
+        const Testimonials = await Testimonal.find();
+        const Galleries = await Gallery.find();
+        const Blogs = await Blog.find();
+        const Contacts = await Contact.find();
+        const ContactForVendors = await ContactForVendor.find();
+        const AllServices = await Services.find();
+        const Weddings = await Wedding.find();
+
+        const newObj = {
+            services: AllServices.length,
+            users: Users.length,
+            vendors: Vendors.length,
+            venues: Venues.length,
+            testimonals: Testimonials.length,
+            gallery: Galleries.length,
+            blogs: Blogs.length,
+            contacts: Contacts.length,
+            contactForVendors: ContactForVendors.length,
+            weddings: Weddings.length,
+        }
+
+        res.status(200).json({
+            success: true,
+            data: newObj,
+            message: 'Data fetched'
+        });
+    }catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+}

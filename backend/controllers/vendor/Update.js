@@ -341,3 +341,66 @@ exports.deleteVideoLink = async (req, res) => {
         });
     }
 };
+
+
+exports.changeVendorProfilePic = async (req, res) => {
+    try {
+        const {vendor_id} = req.body;
+        const profilePic = req.files?.img;
+
+        // Check for required fields
+        if (!profilePic) {
+            return res.status(400).json({ success: false, message: 'Please select the Profile Pic' });
+        }
+
+        // Find the general settings document
+        const VendorDetails = await Vendor.findById(vendor_id);
+        if (!VendorDetails) {
+            return res.status(404).json({ success: false, message: 'Vendor data not found' });
+        }
+
+        // Remove the existing logo file if it exists
+        if (VendorDetails.user_img) {
+            const oldProfilePath = path.join(__dirname, '..', VendorDetails.user_img.replace('/files/', 'ImagesFiles/'));
+            if (fs.existsSync(oldProfilePath)) {
+                fs.unlinkSync(oldProfilePath);
+            }
+        }
+
+        // Define the directory where the new logo will be saved
+        const uploadDir = path.join(__dirname, '..', 'ImagesFiles');
+
+        // Check if the directory exists, if not, create it
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        // Create the file path where the logo will be stored
+        const timestamp = Date.now();
+        const ext = path.extname(profilePic.name);
+        const imageName = `${timestamp}${ext}`;
+        const serverFilePath = path.join(uploadDir, imageName);
+
+        console.log("Vendor Profile Pic path:", serverFilePath);
+
+        // Move the logo to the server's files directory
+        await profilePic.mv(serverFilePath);
+
+        // Update the logo path in the database
+        VendorDetails.user_img = `/files/${imageName}`;
+        await VendorDetails.save();
+
+        res.status(200).json({
+            success: true,
+            data: VendorDetails.user_img,
+            message: 'Profile Pic updated successfully'
+        });
+    } catch (err) {
+        console.error('Error in change Vendor Proile Pic:', err.message);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        });
+    }
+};

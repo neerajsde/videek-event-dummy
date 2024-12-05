@@ -76,7 +76,7 @@ function App() {
   }, []);
 
   return (
-    <div className={`w-full min-h-full`}>
+    <div className={`w-full min-h-full bg-white`}>
       {tab.isActive && (
         <div className="fixed w-full h-full overflow-y-scroll bg-[#00000045] top-0 left-0 flex items-start justify-end z-50">
           <div

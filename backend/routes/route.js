@@ -5,8 +5,12 @@ const router = express.Router();
 const { auth } = require('../middleware/auth');
 const { createNewAdmin } = require('../controllers/admin/CreateAdmin');
 const { adminLogin, sendOtpAdminOnMail } = require('../controllers/admin/LoginAdmin');
-const { getAdminDetails } = require('../controllers/admin/GetAdmin');
+const { getAdminDetails, getWebRealTimeActivity } = require('../controllers/admin/GetAdmin');
 const { submitGeneralSettings, getGeneralSettings, changeLogo } = require('../controllers/GeneralSetting');
+const { PaymentOrder, verifyPayment, updateVendorForUnlock } = require('../controllers/Payment');
+router.post('/payment/order', PaymentOrder);
+router.post('/payment/verify', verifyPayment);
+router.post('/payment/vendor/update', updateVendorForUnlock);
 // services
 const { getServicesByName, getServicesByCategory, getServicesBySubCategory, getServicesByCategoryForTab, getServicesBySubCategoryWithUnique, getServicesForTabs } = require('../controllers/services/GetServices');
 const { AddNewServices } = require('../controllers/services/AddServices');
@@ -21,12 +25,13 @@ const { AddNewBlogs } = require('../controllers/blogs/AddBlog');
 const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory, getLatestBlogsForTab } = require('../controllers/blogs/GetBlogs');
 // vendor
 const { VendorLogin, sendOtpVendorOnMail } = require('../controllers/vendor/LoginVendor');
-const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName, getOnVendorAdminVideoLinks } = require('../controllers/vendor/GetVendor');
-const { AddNewVendor } = require('../controllers/vendor/AddVendor');
+const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName, getOnVendorAdminVideoLinks, vendorDataInsight, getVendorDataForTheirAdmin } = require('../controllers/vendor/GetVendor');
+const { AddNewVendor, UpdateVendorDetails } = require('../controllers/vendor/AddVendor');
 const { getVendorFAQs } = require('../controllers/vendor/GetVendorFAQs');
-const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg, addVideoLinks, deleteVideoLink } = require('../controllers/vendor/Update');
+const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg, addVideoLinks, deleteVideoLink, changeVendorProfilePic } = require('../controllers/vendor/Update');
 const { sendOtpVendor, resetVendorPassword } = require('../controllers/vendor/ForgotPassword');
 const { addVendorReviews, uploadVendorReviewImg } = require('../controllers/vendor/writeVendorReviews');
+const { getVendorEnquiry, getVendorUnlockedEnquiry, downloadVendorEnquiryData } = require('../controllers/vendor/GetClientEnquiry');
 // gallery
 const { uploadGalleryImg } = require('../controllers/Gallery/uploadImg');
 const { getGalleryCategoryWithUnique, getById, getGalleryData, getGalleryCategory } = require('../controllers/Gallery/GetGallery');
@@ -54,6 +59,7 @@ router.post('/user/login-email', loginHandler);
 router.post('/user/login-mobile', loginWithMobile);
 router.post('/user/dashboard', auth, getUserDetails);
 // admin
+router.get('/admin/realtime/data',auth, getWebRealTimeActivity);
 router.post('/admin/add', createNewAdmin);
 router.post('/admin/login', adminLogin);
 router.post('/admin/login-otp', sendOtpAdminOnMail)
@@ -86,6 +92,7 @@ router.get('/vendor/category', getVendorCategoryWithUnique);
 router.get('/vendor/category-data', getVendorCategories);
 router.get('/vendor/category/:categoryName', getCategory);
 router.post('/vendor/add', AddNewVendor);
+router.put('/vendor/update', UpdateVendorDetails);
 router.post('/vendor-login', VendorLogin);
 router.post('/vendor-login/otp', sendOtpVendorOnMail);
 router.post('/vendor-dashboard', auth, getVendorDetails);
@@ -103,6 +110,11 @@ router.post('/vendor/review/img/upload', uploadVendorReviewImg);
 router.put('/vendor/admin/video/add', auth, addVideoLinks);
 router.delete('/vendor/admin/video/delete', auth, deleteVideoLink);
 router.post('/vendor/admin/video', auth, getOnVendorAdminVideoLinks);
+router.get('/vendor/enquiry/:vendor_id', getVendorEnquiry);
+router.get('/vendor/enquiry/unlocked/:vendor_id', auth, getVendorUnlockedEnquiry);
+router.get('/vendor/insight/:vendor_id', auth, vendorDataInsight);
+router.get('/vendor/details/:vendor_id', auth, getVendorDataForTheirAdmin);
+router.put('/vendor/profile-pic/change', changeVendorProfilePic);
 
 // gallery
 router.get('/gallery', getGalleryData);
@@ -146,6 +158,7 @@ router.get('/einvites/dummy', allEInvitesCards);
 router.get('/einvites/card/:cardId', getEInviteCardById);
 // downloads
 router.get('/download/contact-us', downloadContactUsData);
+router.get('/download/vendor-contact-us/:vendor_id', downloadVendorEnquiryData);
 
 router.get('/', (req, res) => {
     res.status(200).json({

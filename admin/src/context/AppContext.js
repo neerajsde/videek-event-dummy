@@ -1,10 +1,12 @@
 import { createContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from 'axios'
 
 export const AppContext = createContext();
 
 function AppContextProvider({ children }) {
+  const [webData, setWebData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [adminData, setAdminData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +50,25 @@ function AppContextProvider({ children }) {
     }
   };
 
+  const fetchGeneralSettingData = async () => {
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/web/data`);
+        if (response.data.success) {
+            setWebData(response.data.data);
+        }
+    } catch (err) {
+      console.log(err.message)
+    }
+  };
+
+  useState(() => {
+      if(!webData){
+        fetchGeneralSettingData();
+      }
+  },[]);
+
   const value = {
+    webData,
     AuthAdmin,
     isLoggedIn,
     setIsLoggedIn,
