@@ -1,25 +1,25 @@
-const Services = require('../../models/services');
+const Blogs = require('../../models/blogs');
 const path = require('path');
 const fs = require('fs');
 
-exports.RemoveService = async (req, res) => {
+exports.RemoveBlogById = async (req, res) => {
     try {
-        const { serviceId } = req.params;
+        const { blogId } = req.params;
 
         // Check if service ID is provided
-        if (!serviceId) {
-            return res.status(400).json({ success: false, message: 'Service ID is required' });
+        if (!blogId) {
+            return res.status(400).json({ success: false, message: 'Blog ID is required' });
         }
 
         // Find the service by ID
-        const service = await Services.findById(serviceId);
+        const blog = await Blogs.findById(blogId);
 
-        if (!service) {
-            return res.status(404).json({ success: false, message: 'Service not found' });
+        if (!blog) {
+            return res.status(404).json({ success: false, message: 'Blog not found' });
         }
 
         // Get the image file path - Adjusting to the 'ImagesFiles' directory
-        const imagePath = path.join(__dirname, '..', 'ImagesFiles', path.basename(service.img)); 
+        const imagePath = path.join(__dirname, '../..', 'Blogs', path.basename(blog.img)); 
 
         // Check if the image exists and delete it
         if (fs.existsSync(imagePath)) {
@@ -30,14 +30,15 @@ exports.RemoveService = async (req, res) => {
         }
 
         // Remove the service from the database
-        await Services.findByIdAndDelete(serviceId);
+        await Blogs.findByIdAndDelete(blogId);
 
         return res.status(200).json({
             success: true,
-            message: 'Service deleted successfully'
+            message: 'Blog deleted successfully'
         });
 
     } catch (err) {
+        console.log(err.message);
         return res.status(500).json({
             success: false,
             message: 'Internal Server Error',

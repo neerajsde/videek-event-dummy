@@ -431,3 +431,41 @@ exports.getVendorDataForTheirAdmin = async (req, res) => {
         });
     }
 };
+
+
+exports.getAllVendorDataForAdmin = async (req, res) => {
+    try{
+        const AllVendors = await Vendor.find().sort({ createdAt: -1 });
+        if(AllVendors.length === 0){
+            return res.status(400).json({
+                success: false,
+                message: 'Empty Vendors'
+            })
+        }
+        const uniqueCategories = [...new Set(AllVendors.map(vendor => vendor.category))];
+        const newArr = [];
+        for(let i=0; i<AllVendors.length; i++){
+            const currData = AllVendors[i];
+            const newObj = {
+                _id: currData._id,
+                category: currData.category,
+                name: currData.name,
+                phone: currData.phone,
+                email: currData.email,
+            }
+            newArr.push(newObj);
+        }
+        res.status(200).json({
+            success: true,
+            data: newArr,
+            services: uniqueCategories,
+            message: 'Found All Vendors'
+        })
+    } catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}

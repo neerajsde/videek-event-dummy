@@ -12,7 +12,7 @@ router.post('/payment/order', PaymentOrder);
 router.post('/payment/verify', verifyPayment);
 router.post('/payment/vendor/update', updateVendorForUnlock);
 // services
-const { getServicesByName, getServicesByCategory, getServicesBySubCategory, getServicesByCategoryForTab, getServicesBySubCategoryWithUnique, getServicesForTabs } = require('../controllers/services/GetServices');
+const { getServicesByName, getServicesByCategory, getServicesBySubCategory, getServicesByCategoryForTab, getServicesBySubCategoryWithUnique, getServicesForTabs, getAllServicesDataForAdmin } = require('../controllers/services/GetServices');
 const { AddNewServices } = require('../controllers/services/AddServices');
 const { UpdateService } = require('../controllers/services/UpdateServices');
 const { RemoveService } = require('../controllers/services/RemoveServices');
@@ -22,16 +22,19 @@ const { submitRequestContact } = require('../controllers/contacts/request_contac
 const { submitVendorContact } = require('../controllers/contacts/vendor_contact');
 // blogs
 const { AddNewBlogs } = require('../controllers/blogs/AddBlog');
-const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory, getLatestBlogsForTab } = require('../controllers/blogs/GetBlogs');
+const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory, getLatestBlogsForTab, getAllBlogsDataForAdmin } = require('../controllers/blogs/GetBlogs');
+const { UpdateBlogs } = require('../controllers/blogs/UpdateBlog');
+const { RemoveBlogById } = require('../controllers/blogs/RemoveBlogs');
 // vendor
 const { VendorLogin, sendOtpVendorOnMail } = require('../controllers/vendor/LoginVendor');
-const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName, getOnVendorAdminVideoLinks, vendorDataInsight, getVendorDataForTheirAdmin } = require('../controllers/vendor/GetVendor');
+const { getVendorCategoryWithUnique, getVendorCategories, getCategory, getVendorDetails, getVendorAlbumImages, getVendorByName, getOnVendorAdminVideoLinks, vendorDataInsight, getVendorDataForTheirAdmin, getAllVendorDataForAdmin } = require('../controllers/vendor/GetVendor');
 const { AddNewVendor, UpdateVendorDetails } = require('../controllers/vendor/AddVendor');
 const { getVendorFAQs } = require('../controllers/vendor/GetVendorFAQs');
 const { addFAQIntoVendor, deleteFAQFromVendor, updateFAQInVendor, uploadVendorAlbumImg, addVideoLinks, deleteVideoLink, changeVendorProfilePic } = require('../controllers/vendor/Update');
 const { sendOtpVendor, resetVendorPassword } = require('../controllers/vendor/ForgotPassword');
 const { addVendorReviews, uploadVendorReviewImg } = require('../controllers/vendor/writeVendorReviews');
 const { getVendorEnquiry, getVendorUnlockedEnquiry, downloadVendorEnquiryData } = require('../controllers/vendor/GetClientEnquiry');
+const { RemoveVendorById } = require('../controllers/vendor/RemoveVendor');
 // gallery
 const { uploadGalleryImg } = require('../controllers/Gallery/uploadImg');
 const { getGalleryCategoryWithUnique, getById, getGalleryData, getGalleryCategory } = require('../controllers/Gallery/GetGallery');
@@ -76,17 +79,21 @@ router.get('/services-tab/:serviceCategory', getServicesByCategoryForTab);
 router.get('/services-select/:serviceCategory', getServicesBySubCategoryWithUnique);
 router.post('/services/add', AddNewServices);
 router.put('/services/update', UpdateService);
-router.delete('/services/remove', RemoveService);
+router.delete('/services/remove/:serviceId',auth, RemoveService); // will use
+router.get('/all/services', getAllServicesDataForAdmin);
 // contact
 router.post('/contact-us', submitContact);
 router.post('/contact/request', submitRequestContact);
 router.post('/contact/vendor', submitVendorContact);
 // blogs
 router.post('/blog/post', AddNewBlogs);
+router.put('/blog/update', UpdateBlogs);
 router.get('/blog/category', getBlogCategoryWithUnique);
 router.get('/blogs', getLatestBlogsWithCategory);
 router.get('/blog/:blogId', getBlogById);
 router.get('/blogs/tab', getLatestBlogsForTab);
+router.get('/all/blogs', getAllBlogsDataForAdmin);
+router.delete('/blog/remove/:blogId',auth, RemoveBlogById);
 // vendor
 router.get('/vendor/category', getVendorCategoryWithUnique);
 router.get('/vendor/category-data', getVendorCategories);
@@ -115,7 +122,8 @@ router.get('/vendor/enquiry/unlocked/:vendor_id', auth, getVendorUnlockedEnquiry
 router.get('/vendor/insight/:vendor_id', auth, vendorDataInsight);
 router.get('/vendor/details/:vendor_id', auth, getVendorDataForTheirAdmin);
 router.put('/vendor/profile-pic/change', changeVendorProfilePic);
-
+router.get('/all/vendors', getAllVendorDataForAdmin);
+router.delete('/vendor/remove/:vendorId',auth, RemoveVendorById);
 // gallery
 router.get('/gallery', getGalleryData);
 router.post('/gallery/img/upload', uploadGalleryImg);

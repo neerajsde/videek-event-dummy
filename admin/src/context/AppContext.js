@@ -12,7 +12,10 @@ function AppContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isActiveConformation, setIsActiveConformation] = useState({isActive: false, name:'', data: null, tab:'', response:false});
   const [imageViewActive, setImageViewActive] = useState({isActive: false, AllImages:'', dirName:'', index:0})
+  const [editServices, setEditServices] = useState({isActive: false, data: null});
+  const [editBlog, setEditBlog] = useState({isActive: false, data: null});
 
   const AuthAdmin = async () => {
     try {
@@ -76,7 +79,10 @@ function AppContextProvider({ children }) {
     setAdminData,
     isLoading,
     setIsLoading,
-    imageViewActive, setImageViewActive
+    isActiveConformation, setIsActiveConformation,
+    imageViewActive, setImageViewActive,
+    editServices, setEditServices,
+    editBlog, setEditBlog
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

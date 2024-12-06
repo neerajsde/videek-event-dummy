@@ -26,9 +26,10 @@ import EInvitesCard from "../components/e-invites/EInvitesCard";
 import { TbGiftCardFilled } from "react-icons/tb";
 import { MdDashboard } from "react-icons/md";
 import Navbar from "../components/Navbar";
+import AskConformation from "../components/AskConformation";
 
 const Home = () => {
-  const { setIsLoggedIn } = useContext(AppContext);
+  const { setIsLoggedIn, isActiveConformation } = useContext(AppContext);
   const [currentSection, setCurrentSection] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,8 +52,12 @@ const Home = () => {
   },[location.hash])
 
   return (
-    <div className="w-full h-full flex flex-col bg-black">
+    <div className="w-full h-full flex flex-col bg-black relative">
       <Navbar/>
+
+      {isActiveConformation.isActive && (
+        <div className="w-full min-h-screen fixed top-0 left-0 bg-[#00000038] backdrop-blur z-[10] flex justify-center items-center"><AskConformation/></div>
+      )}
 
       <div className="w-full flex justify-start items-start">
         <div className="w-[300px] h-screen sticky top-0 flex flex-col items-center justify-start bg-[#111] border-r border-t border-[#222]">

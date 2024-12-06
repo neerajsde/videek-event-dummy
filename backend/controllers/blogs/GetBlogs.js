@@ -203,3 +203,29 @@ exports.getLatestBlogsForTab = async (req, res) => {
         });
     }
 };
+
+
+exports.getAllBlogsDataForAdmin = async (req, res) => {
+    try{
+        const AllBlogs = await Blogs.find().sort({ createdAt: -1 });
+        if(AllBlogs.length === 0){
+            return res.status(400).json({
+                success: false,
+                message: 'Empty Blogs'
+            })
+        }
+        const uniqueCategories = [...new Set(AllBlogs.map(blog => blog.category))];
+        res.status(200).json({
+            success: true,
+            data: AllBlogs,
+            services: uniqueCategories,
+            message: 'Found All Blogs'
+        })
+    } catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}

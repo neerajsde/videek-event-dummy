@@ -1,29 +1,28 @@
-const Services = require('../../models/services');
+const Blogs = require('../../models/blogs');
 const path = require('path');
 const fs = require('fs');
 
-exports.UpdateService = async (req, res) => {
+exports.UpdateBlogs = async (req, res) => {
     try {
-        const { serviceId, subCategory, name, title, description } = req.body;
-        const services_img = req.files?.services_img;
+        const { blogId, category, title, description } = req.body;
+        const blog_img = req.files?.services_img;
 
         // Find the service by ID
-        let service = await Services.findById(serviceId);
+        let Blog = await Blogs.findById(blogId);
 
-        if (!service) {
-            return res.status(404).json({ success: false, message: 'Service not found' });
+        if (!Blog) {
+            return res.status(404).json({ success: false, message: 'Blog not found' });
         }
 
         // Update fields if provided in the request
-        if (subCategory) service.subCategory = subCategory;
-        if (name) service.name = name;
-        if (title) service.title = title;
-        if (description) service.description = description;
+        if (category) Blog.category = category;
+        if (title) Blog.title = title;
+        if (description) Blog.description = description;
 
         // Handle the image update if a new image is uploaded
-        if (services_img) {
+        if (blog_img) {
             // Delete the old image
-            const oldImagePath = path.join(__dirname, '..', 'ImagesFiles', path.basename(service.img));
+            const oldImagePath = path.join(__dirname, '../..', 'Blogs', path.basename(Blog.img));
             if (fs.existsSync(oldImagePath)) {
                 fs.unlinkSync(oldImagePath);
                 console.log(`Old image deleted: ${oldImagePath}`);
@@ -31,11 +30,11 @@ exports.UpdateService = async (req, res) => {
 
             // Save the new image
             const timestamp = Date.now();
-            const ext = path.extname(services_img.name);
+            const ext = path.extname(blog_img.name);
             const newImageName = `${timestamp}${ext}`;
-            const newServerFilePath = path.join(__dirname, '..', 'ImagesFiles', newImageName);
+            const newServerFilePath = path.join(__dirname, '../..', 'Blogs', newImageName);
 
-            services_img.mv(newServerFilePath, (err) => {
+            blog_img.mv(newServerFilePath, (err) => {
                 if (err) {
                     console.error('Error while moving new image:', err);
                     return res.status(500).json({ success: false, message: 'Error while uploading new image' });
@@ -43,16 +42,15 @@ exports.UpdateService = async (req, res) => {
             });
 
             // Update the image path in the service
-            service.img = `/files/${newImageName}`;
+            Blog.img = `/files/${newImageName}`;
         }
 
         // Save the updated service
-        await service.save();
+        await Blog.save();
 
         return res.status(200).json({
             success: true,
-            message: 'Service updated successfully',
-            data: service
+            message: 'Blog updated successfully'
         });
 
     } catch (err) {

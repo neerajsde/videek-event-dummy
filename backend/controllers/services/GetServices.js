@@ -150,7 +150,6 @@ exports.getServicesBySubCategoryWithUnique = async (req, res) => {
                 message: 'Service not found'
             });
         }
-
         const uniqueSubCategories = [...new Set(AllService.map(service => service.subCategory))];
 
         // If the service is found, return it
@@ -167,9 +166,6 @@ exports.getServicesBySubCategoryWithUnique = async (req, res) => {
         })
     }
 }
-
-
-
 
 exports.getServicesForTabs = async (req, res) => {
     try {
@@ -228,3 +224,29 @@ exports.getServicesForTabs = async (req, res) => {
         });
     }
 };
+
+
+exports.getAllServicesDataForAdmin = async (req, res) => {
+    try{
+        const AllServices = await Services.find();
+        if(AllServices.length === 0){
+            return res.status(400).json({
+                success: false,
+                message: 'Empty Services'
+            })
+        }
+        const uniqueCategories = [...new Set(AllServices.map(service => service.category))];
+        res.status(200).json({
+            success: true,
+            data: AllServices,
+            services: uniqueCategories,
+            message: 'Found All Services'
+        })
+    } catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}
