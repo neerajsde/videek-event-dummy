@@ -20,6 +20,7 @@ const { RemoveService } = require('../controllers/services/RemoveServices');
 const { submitContact, downloadContactUsData } = require('../controllers/contacts/contactUs');
 const { submitRequestContact } = require('../controllers/contacts/request_contact_us');
 const { submitVendorContact } = require('../controllers/contacts/vendor_contact');
+const { getAllContactsDataForAdmin } = require('../controllers/contacts/GetContacts');
 // blogs
 const { AddNewBlogs } = require('../controllers/blogs/AddBlog');
 const { getBlogCategoryWithUnique, getBlogById, getLatestBlogsWithCategory, getLatestBlogsForTab, getAllBlogsDataForAdmin } = require('../controllers/blogs/GetBlogs');
@@ -40,9 +41,12 @@ const { uploadGalleryImg } = require('../controllers/Gallery/uploadImg');
 const { getGalleryCategoryWithUnique, getById, getGalleryData, getGalleryCategory } = require('../controllers/Gallery/GetGallery');
 const { createCategoryAlbum } = require('../controllers/Gallery/UploadGallery');
 const { updateAlbum } = require('../controllers/Gallery/UpdateGallery');
+const { RemoveGalleryForAdmin } = require('../controllers/Gallery/RemoveGallery');
 // Real Weddings
 const { createNewRealWedding, uploadRealWeddingImg } = require('../controllers/weddings/AddNewWedding');
-const { getWeddingsData, getRealWeddingByCoupleName, getWeddingCategory, fetchCategoryWeddings } = require('../controllers/weddings/GetWeddings');
+const { getWeddingsData, getRealWeddingByCoupleName, getWeddingCategory, fetchCategoryWeddings, getAllWeddingsDataForAdmin } = require('../controllers/weddings/GetWeddings');
+const { updateWeddingData } = require('../controllers/weddings/UpdateWeddings');
+const { RemoveRealWeddingById } = require('../controllers/weddings/RemoveWeddingd');
 // Testimonals
 const { AddNewTestimonials } = require('../controllers/testimonials/AddTestimonial');
 const { getTestimonalForAdmin, getTestimonals } = require('../controllers/testimonials/GetTestimonals');
@@ -50,9 +54,10 @@ const { UpdatePublishTestimonals, UnUpdatePublishTestimonals } = require('../con
 
 // venue
 const { getVenueCategoryWithUnique, AddNewVenue } = require('../controllers/venue/addVenue');
-const { getPopularVenue, getVenueCategory, getVenueByName, getAllVenues, getVenueFAQs } = require('../controllers/venue/getVenue');
+const { getPopularVenue, getVenueCategory, getVenueByName, getAllVenues, getVenueFAQs, getAllVenueDataForAdmin, getVenueDetailsForAdmin } = require('../controllers/venue/getVenue');
 const { addVenueReviews, uploadVenueReviewImg } = require('../controllers/venue/writeVenueReview');
-const { addFAQIntoVenue, deleteFAQFromVenue, updateFAQInVenue, uploadVenueAlbumImg, deleteVenueAlbumImg } = require('../controllers/venue/UpdateVenue');
+const { addFAQIntoVenue, deleteFAQFromVenue, updateFAQInVenue, uploadVenueAlbumImg, deleteVenueAlbumImg, UpdateVenueDetailsFormAdmin } = require('../controllers/venue/UpdateVenue');
+const { RemoveVenueById } = require('../controllers/venue/RemoveVenue');
 // E-Invites-Cards
 const { AddNewDummyCard } = require('../controllers/e-invites-cards/AddEInvites');
 const { getEInviteCardById, allEInvitesCards } = require('../controllers/e-invites-cards/getEInvites');
@@ -85,6 +90,7 @@ router.get('/all/services', getAllServicesDataForAdmin);
 router.post('/contact-us', submitContact);
 router.post('/contact/request', submitRequestContact);
 router.post('/contact/vendor', submitVendorContact);
+router.get('/all/contacts', getAllContactsDataForAdmin);
 // blogs
 router.post('/blog/post', AddNewBlogs);
 router.put('/blog/update', UpdateBlogs);
@@ -132,13 +138,17 @@ router.post('/gellery/create', createCategoryAlbum);
 router.get('/gelleryById/:albumName', getById);
 router.get('/gallery/category/:categoryName', getGalleryCategory);
 router.put('/gallery/update', updateAlbum);
+router.delete('/gallery/remove/:galleryId',auth, RemoveGalleryForAdmin);
 // Real Weddings
 router.get('/wedding/unique-category', getWeddingCategory);
 router.get('/wedding/category/:categoryName', fetchCategoryWeddings);
 router.get('/weddings', getWeddingsData);
 router.get('/wedding/:coupleName', getRealWeddingByCoupleName);
 router.post('/wedding/upload', createNewRealWedding);
+router.put('/wedding/update', updateWeddingData);
 router.post('/wedding/img-upload', uploadRealWeddingImg);
+router.get('/all/weddings', getAllWeddingsDataForAdmin);
+router.delete('/wedding/remove/:weddingId',auth, RemoveRealWeddingById);
 // testimonals
 router.get('/testimonals', getTestimonals);
 router.post('/testimonial/add', AddNewTestimonials);
@@ -149,9 +159,11 @@ router.put('/testimonal/admin-unPublish', UnUpdatePublishTestimonals);
 router.get('/venue/category', getVenueCategoryWithUnique);
 router.get('/venue/all', getAllVenues);
 router.post('/venue/add', AddNewVenue);
+router.put('/venue/update', UpdateVenueDetailsFormAdmin);
 router.get('/venue/popular', getPopularVenue);
 router.get('/venue-category/:categoryName', getVenueCategory);
 router.get('/venue/:venue_name/faqs', auth, getVenueFAQs);
+router.get('/venue/:venue_name/details', auth, getVenueDetailsForAdmin);
 router.get('/venue/:Name', getVenueByName);
 router.post('/venue/review/add', addVenueReviews);
 router.post('/venue/review/img-upload', uploadVenueReviewImg);
@@ -160,6 +172,8 @@ router.put('/venue/faq/update',auth, updateFAQInVenue);
 router.delete('/venue/faq/remove',auth, deleteFAQFromVenue);
 router.post('/venue/album/img/upload', uploadVenueAlbumImg);
 router.delete('/venue/album/img/delete', auth, deleteVenueAlbumImg);
+router.get('/all/venue', getAllVenueDataForAdmin);
+router.delete('/venue/remove/:venueId',auth, RemoveVenueById);
 // E-Invites Cards
 router.post('/einvites/dummy/add', AddNewDummyCard);
 router.get('/einvites/dummy', allEInvitesCards);

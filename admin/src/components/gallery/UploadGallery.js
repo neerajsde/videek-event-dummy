@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import axios from "axios"
 import CreatableSelect from "react-select/creatable";
 import MdLoader from '../spinner/MdLoader';
@@ -6,9 +6,11 @@ import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast"
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { AppContext } from '../../context/AppContext';
 
 const UploadGallery = () => {
     const baseUrl = process.env.REACT_APP_BASE_URL;
+    const { isActiveConformation, setIsActiveConformation } = useContext(AppContext);
     const [isLoading, setIsLoading] = useState(false);
     const [images, setImages] = useState([]);  // Updated to handle multiple images
     const [error, setError] = useState("");
@@ -187,9 +189,33 @@ const UploadGallery = () => {
         }
     }
 
+    function deleteHandler(){
+        if(formData.id){
+            const data = {
+                _id: formData.id,
+                category: formData.category
+            }
+            setIsActiveConformation({isActive: true, data: data, name:`Galley - ${formData.category}`, tab:'gallery', response:false});
+        }
+    }
+
+    useEffect(() => {
+        if((isActiveConformation.tab === 'gallery') && isActiveConformation.response){
+            getGalleryCategory();
+            setCurrAlbum(null);
+            setFormData({
+                id:'',
+                category:'',
+                title:'',
+            });
+            setDescription('');
+        }
+    },[isActiveConformation]);
+
+
   return (
     <div className="w-full flex flex-col bg-black p-6 gap-4">
-        <h2 className="text-2xl font-bold text-cyan-600">Create New Album</h2>
+        <h2 className="text-2xl font-bold text-cyan-600">create, update and delete Album</h2>
         <div className="w-full flex flex-col gap-4">
             <div className="w-full flex justify-between gap-4">
                 <div className="w-full flex flex-col gap-1">
@@ -285,13 +311,21 @@ const UploadGallery = () => {
                     />
                 </div>
 
-                <div className="w-full flex justify-start items-end gap-4">
-                    <div className="w-full flex gap-1">
+                <div className="w-full flex justify-start items-center gap-4">
+                    <div className="flex gap-1">
                         <button
                             onClick={imagesUploader}
-                            className="h-[45px] w-[200px] rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-cyan-600 transition duration-200 ease-in hover:bg-cyan-800"
+                            className="h-[45px] w-[250px] rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-cyan-600 transition duration-200 ease-in hover:bg-cyan-800"
                         >
-                        {isLoading ? <MdLoader /> : "Upload Images"}
+                        {isLoading ? <MdLoader /> : "Upload Images & Save"}
+                        </button>
+                    </div>
+                    <div className="flex gap-1">
+                        <button
+                            onClick={deleteHandler}
+                            className="h-[45px] w-[150px] rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-red-600 transition duration-200 ease-in hover:bg-red-700"
+                        >
+                        Delete
                         </button>
                     </div>
                 </div>

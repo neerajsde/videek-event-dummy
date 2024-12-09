@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoIosMail } from "react-icons/io";
 import { MdPermContactCalendar } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
@@ -6,8 +6,10 @@ import { TiMessageTyping } from "react-icons/ti";
 import SmLoader from '../spinner/SmLoader';
 import contactImg from '../../assets/contact-img.jpg';
 import Logo from '../navbar/Logo';
+import { AppContext } from '../../context/AppContext';
 
 const ContactForm = () => {
+    const { isLoggedIn, userData } = useContext(AppContext);
     const [error, setError] = useState('');
     const [sucess, setSucess] = useState('');
     const [loading, setLoading] = useState(false);
@@ -18,6 +20,17 @@ const ContactForm = () => {
         subject:'',
         message:''
     });
+
+    useEffect(() => {
+        if (isLoggedIn && userData) {
+            setFormData((prevState) => ({
+                ...prevState,
+                name: userData.name || "", // Fallback to empty string if undefined
+                phone: userData.mobile ? Number(userData.mobile.slice(-10)) : 0, // Convert to number
+                email: userData.email || "" // Fallback to empty string if undefined
+            }));
+        }
+    }, [isLoggedIn, userData]); // Add userData as a dependency    
 
     function inputHandler(event){
         setFormData((prevState) => ({
@@ -45,6 +58,13 @@ const ContactForm = () => {
             // Check if the response status is OK (2xx)
             const data = await response.json();
             if (response.ok && data.success) {
+                setFormData({
+                    name:'',
+                    phone:'',
+                    email:'',
+                    subject:'',
+                    message:''
+                })
                 setSucess(data.message);  // Display success message
             } else {
                 setError(data.message || 'Something went wrong');  // Handle errors properly

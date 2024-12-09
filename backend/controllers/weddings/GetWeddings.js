@@ -175,3 +175,54 @@ exports.fetchCategoryWeddings = async (req, res) => {
         })
     }
 }
+
+exports.getAllWeddingsDataForAdmin = async (req, res) => {
+    try {
+        // Fetch all weddings and populate taggedVendor with IDs
+        const AllWeddings = await Weddings.find().populate('taggedVendor');
+
+        if (AllWeddings.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'No weddings found',
+            });
+        }
+
+        const uniqueCategories = new Set();
+        const dataArr = await Promise.all(
+            AllWeddings.map(async (wedding) => {
+                const currWedding = wedding.toObject();
+                uniqueCategories.add(currWedding.category);
+                const newTaggedArr = await Promise.all(
+                    currWedding.taggedVendor.map(async (vendorId) => {
+                        const vendor = await Vendor.findById(vendorId);
+                        if (vendor) {
+                            return {
+                                name: vendor.name,
+                                category: vendor.category,
+                            };
+                        }
+                        return null; // Handle invalid vendor cases
+                    })
+                );
+
+                // Filter out null values (invalid vendors)
+                currWedding.taggedVendor = newTaggedArr.filter((vendor) => vendor !== null);
+                return currWedding;
+            })
+        );
+
+        res.status(200).json({
+            success: true,
+            data: dataArr,
+            services: Array.from(uniqueCategories),
+            message: 'Found all weddings',
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message,
+        });
+    }
+};

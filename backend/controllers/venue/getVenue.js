@@ -307,3 +307,92 @@ exports.getVenueFAQs = async (req, res) => {
         });
     }
 };
+
+exports.getAllVenueDataForAdmin = async (req, res) => {
+    try{
+        const AllVenue = await Venue.find().sort({ createdAt: -1 });
+        if(AllVenue.length === 0){
+            return res.status(400).json({
+                success: false,
+                message: 'Empty Venues'
+            })
+        }
+        const uniqueCategories = [...new Set(AllVenue.map(venue => venue.type))];
+        const newArr = [];
+        for(let i=0; i<AllVenue.length; i++){
+            const currData = AllVenue[i];
+            const newObj = {
+                _id: currData._id,
+                category: currData.type,
+                name: currData.name,
+                phone: currData.phone,
+                email: currData.email,
+            }
+            newArr.push(newObj);
+        }
+        res.status(200).json({
+            success: true,
+            data: newArr,
+            services: uniqueCategories,
+            message: 'Found All Venues'
+        })
+    } catch(err){
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message
+        })
+    }
+}
+
+exports.getVenueDetailsForAdmin = async (req, res) => {
+    try {
+        const { venue_name } = req.params;
+
+        // Validate vendor_id
+        if (!venue_name) {
+            return res.status(400).json({
+                success: false,
+                message: 'Venue name is required'
+            });
+        }
+
+        // Find the vendor and populate the FAQs
+        const venue = await Venue.findOne({name: venue_name});
+        if (!venue) {
+            return res.status(404).json({
+                success: false,
+                message: 'Venue not found'
+            });
+        }
+
+        const currData = venue;
+        const newObj = {
+            _id: currData._id,
+            type: currData.type,
+            name: currData.name,
+            phone: currData.phone,
+            whatsapp: currData.whatsapp,
+            email: currData.email,
+            description: currData.description,
+            price_range: currData.price_range,
+            location: currData.location,
+            rooms: currData.rooms,
+            img: currData.img
+        }
+
+        // Return the venue details along with FAQs
+        res.status(200).json({
+            success: true,
+            message: 'Venue data found',
+            data: newObj
+        });
+
+    } catch (err) {
+        // Handle server errors
+        res.status(500).json({
+            success: false,
+            message: err.message
+        });
+    }
+};

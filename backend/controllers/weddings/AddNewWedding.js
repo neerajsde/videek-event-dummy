@@ -5,57 +5,6 @@ const fs = require('fs');
 const moment = require('moment');
 
 // Create new real wedding
-// exports.createNewRealWedding = async (req, res) => {
-//     try {
-//         const { category, couple_name, location, title, description, date, taggedVendor } = req.body;
-//         console.log(req.body);
-
-//         const requiredFields = ['category', 'couple_name', 'location', 'title', 'description', 'date', 'taggedVendor'];
-//         for (const field of requiredFields) {
-//             if (!req.body[field]) {
-//                 return res.status(400).json({ success: false, message: `Please fill in the ${field.toUpperCase()}` });
-//             }
-//         }
-
-//         // Format date
-//         const formattedDate = moment(date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-
-//         // Find tagged vendors
-//         const tags = taggedVendor.split(',');
-//         const tagsArr = await Promise.all(
-//             tags.map(async (tag) => {
-//                 const trimmedStr = tag.trim();
-//                 const vendorData = await Vendor.findOne({ name: trimmedStr });
-//                 if (vendorData) {
-//                     return {
-//                         _id: vendorData._id
-//                     };
-//                 } else {
-//                     return res.status(400).json({ success: false, message: `Vendor not found-> ${trimmedStr}` });
-//                 }
-//             })
-//         );
-
-//         const newData = await RealWedding.create({
-//             category, couple_name, location, title, description, date: formattedDate, taggedVendor: tagsArr
-//         }); 
-
-//         res.status(200).json({
-//             success: true,
-//             ids: newData._id,
-//             message: 'Uploaded Successfully'
-//         });
-
-//     } catch (err) {
-//         console.log('Real Wedding-> Add', err.message);
-//         res.status(500).json({
-//             success: false,
-//             message: err.message
-//         });
-//     }
-// };
-
-// Create new real wedding
 exports.createNewRealWedding = async (req, res) => {
     try {
         const { category, couple_name, location, title, description, date, taggedVendor } = req.body;
@@ -78,10 +27,9 @@ exports.createNewRealWedding = async (req, res) => {
         const tagsArr = [];
         for (const tag of tags) {
             const vendorData = await Vendor.findOne({ name: tag });
-            if (!vendorData) {
-                return res.status(400).json({ success: false, message: `Vendor not found: ${tag}` });
+            if (vendorData) {
+                tagsArr.push({ _id: vendorData._id });
             }
-            tagsArr.push({ _id: vendorData._id });
         }
 
         // Create Real Wedding entry

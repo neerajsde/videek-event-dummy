@@ -14,7 +14,6 @@ import { MdChromeReaderMode } from "react-icons/md";
 import { RiAlignItemHorizontalCenterFill } from "react-icons/ri";
 import { TbTimelineEventMinus } from "react-icons/tb";
 import { GrGallery } from "react-icons/gr";
-import Gallery from "../components/gallery/Gallery";
 import Weddings from "../components/weddings/Weddings";
 import Testimonal from "../components/testimonials/Testimonal";
 import { GoPeople } from "react-icons/go";
@@ -27,6 +26,7 @@ import { TbGiftCardFilled } from "react-icons/tb";
 import { MdDashboard } from "react-icons/md";
 import Navbar from "../components/Navbar";
 import AskConformation from "../components/AskConformation";
+import UploadGallery from "../components/gallery/UploadGallery";
 
 const Home = () => {
   const { setIsLoggedIn, isActiveConformation } = useContext(AppContext);
@@ -157,7 +157,7 @@ const Home = () => {
           {currentSection === "settings" && <GeneralSettings/>}
           {currentSection === "services" && <Services/>}
           {currentSection === "blog" && <Blog/>}
-          {currentSection === "gallery" && <Gallery/>}
+          {currentSection === "gallery" && <UploadGallery/>}
           {currentSection === "weddings" && <Weddings/>}
           {currentSection === "vendor" && <Vendor/>}
           {currentSection === "venue" && <Venue/>}

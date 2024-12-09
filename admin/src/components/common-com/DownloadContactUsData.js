@@ -31,8 +31,8 @@ const DownloadContactUsData = () => {
   };
 
   return (
-    <button onClick={downloadFile} className='text-white border'>
-      Download Contact Us Data
+    <button onClick={downloadFile} className='w-[220px] text-white border py-2 border-green-600 bg-green-600 rounded transition-all duration-200 ease-in hover:bg-green-700'>
+      Download contacts in Excel
     </button>
   );
 };

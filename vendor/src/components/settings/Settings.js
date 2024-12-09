@@ -13,9 +13,9 @@ const Settings = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [description, setDescription] = useState("");
     const [img, setImg] = useState(null);
+    const [data, setData] = useState(null);
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    const [data, setData] = useState(null);
     const [errorImg, setErrorImg] = useState("");
     const [successImg, setSuccessImg] = useState("");
     const [imgLoading, setImgLoading] = useState(false);

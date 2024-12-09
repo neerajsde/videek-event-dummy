@@ -24,7 +24,7 @@ exports.submitContact = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Please enter a valid email address.' });
         }
 
-        await ContactUs.create({ name, phone, email, subject, message });
+        await ContactUs.create({ name, phone:`+91${phone}`, email, subject, message });
 
         // Sending emails
         try {
@@ -62,6 +62,24 @@ exports.submitContact = async (req, res) => {
     }
 };
 
+function getISTDateAndTime(createdAt) {
+    // Parse the ISO date
+    const date = new Date(createdAt);
+
+    // Convert to IST using locale and timezone
+    const options = { timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" };
+    const formatter = new Intl.DateTimeFormat("en-IN", options);
+    
+    // Split the formatted date and time
+    const formattedDateTime = formatter.format(date);
+    const [datePart, timePart] = formattedDateTime.split(", ");
+
+    return {
+        date: datePart.replaceAll("/", "-"), // Convert MM/DD/YYYY to DD/MM/YYYY
+        time: timePart
+    };
+}
+
 exports.downloadContactUsData = async (req, res) => {
     try {
         const AllData = await ContactUs.find();
@@ -74,10 +92,13 @@ exports.downloadContactUsData = async (req, res) => {
         }
         const data = [];
         for(let i=0; i<AllData.length; i++){
+            const {date, time} = getISTDateAndTime(AllData[i].createdAt);
             data.push({
                 Name:AllData[i].name,
                 Email:AllData[i].email,
                 Phone:AllData[i].phone,
+                Date: date,
+                Time: time,
                 Subject:AllData[i].subject,
                 Message:AllData[i].message
             });

@@ -131,7 +131,7 @@ exports.updateFAQInVenue = async (req, res) => {
             });
         }
 
-        // Find the vendor by ID
+        // Find the Venue by ID
         const venue = await Venue.findById(venue_id);
         if (!venue) {
             return res.status(404).json({
@@ -140,7 +140,7 @@ exports.updateFAQInVenue = async (req, res) => {
             });
         }
 
-        // Check if the FAQ exists in the vendor's FAQs array
+        // Check if the FAQ exists in the Venue's FAQs array
         if (!venue.FAQs.includes(faq_id)) {
             return res.status(404).json({
                 success: false,
@@ -296,3 +296,75 @@ exports.deleteVenueAlbumImg = async (req, res) => {
         });
     }
 };
+
+
+exports.UpdateVenueDetailsFormAdmin = async(req, res) => {
+    try{
+        const {venue_id, type, name, phone, whatsapp, email, location, description, price, rooms} = req.body;
+        
+        const venue_img = req.files?.img; 
+        // Check for required fields
+        const requiredFields = ['venue_id','type', 'name', 'phone', 'whatsapp', 'email', 'location', 'description', 'price', 'rooms'];
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({ success: false, message: `Please fill in the ${field.toUpperCase()}` });
+            }
+        }
+
+        // Validate the services image
+        let imageName = '';
+        if (venue_img) {
+            const uploadDir = path.join(__dirname, '../..', 'VenueImages');
+        
+            // Check if the directory exists, if not, create it
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+
+            // Create the file path where the image will be stored on the server
+            const timestamp = Date.now();
+            const ext = path.extname(venue_img.name);
+            imageName = `${timestamp}${ext}`;
+            const serverFilePath = path.join(uploadDir, imageName);
+
+            console.log("Image upload path:", serverFilePath);
+
+            // Move the image to the server's files directory
+            venue_img.mv(serverFilePath, (err) => {
+                if (err) {
+                    console.error('Error while moving image:', err);
+                    // Send response and stop further execution
+                    return res.status(500).json({ success: false, message: 'Error while uploading image' });
+                }
+            });
+        }
+        
+        if(venue_img && imageName !== ''){
+            await Venue.findByIdAndUpdate(
+                venue_id,
+                {$set: {name: name,type:type, phone:phone, whatsapp: whatsapp, email:email, location:location, rooms:rooms, description:description, price_range:price, img:`/files/${imageName}`}},
+                {new: true}
+            )
+        }
+        else{
+            await Venue.findByIdAndUpdate(
+                venue_id,
+                {$set: {name: name, type:type, phone:phone, whatsapp: whatsapp, email:email,location:location, rooms:rooms, description:description, price_range:price}},
+                {new: true}
+            )
+        }
+
+        return res.status(201).json({
+            success: true,
+            message: 'Venue updated successfully'
+        });
+
+    } catch(err){
+        console.log('Venue Updation Error: ', err.message)
+        res.status(500).json({
+            success: false,
+            message:'Internal Server Error',
+            error:err.message
+        })
+    }
+}

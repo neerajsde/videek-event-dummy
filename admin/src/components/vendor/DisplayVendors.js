@@ -144,6 +144,7 @@ const DisplayVendors = () => {
                     <th className="py-2 px-4 text-left login">Name</th>
                     <th className="py-2 px-4 text-center login">Phone</th>
                     <th className="py-2 px-4 text-center login">Email</th>
+                    <th className="py-2 px-4 text-center login">Action</th>
                 </tr>
                 </thead>
                 <tbody>

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { IoHome } from "react-icons/io5";
 import { MdFormatListBulletedAdd } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import UpdateVenue from "./UpdateVenue";
-import DeleteVenue from "./DeleteVenue";
 import DisplayVenue from "./DisplayVenue";
 import AddVenue from "./AddVenue";
 import VenueFAQs from './VenueFAQs';
@@ -70,16 +68,6 @@ const Venue = () => {
           >
             <CiImageOn className="text-xl" /> Add Albums
           </button>
-          <button
-            onClick={() => setCurrentSection("remove")}
-            className={`text-base font-semibold flex justify-center items-center gap-1 py-2 px-3 border text-red-600 border-red-600 rounded-md transition duration-200 ease-in ${
-              currentSection === "remove"
-                ? "bg-red-600 text-white"
-                : "hover:bg-red-600 hover:text-white"
-            }`}
-          >
-            <MdDelete className="text-xl" /> Delete
-          </button>
         </div>
       </div>
       <div className="w-full bg-[#111] rounded-sm !border !border-[#333]">
@@ -88,7 +76,6 @@ const Venue = () => {
         {currentSection === "faqs" && <VenueFAQs />}
         {currentSection === "albums" && <VenueImages />}
         {currentSection === "edit" && <UpdateVenue />}
-        {currentSection === "remove" && <DeleteVenue />}
       </div>
     </div>
   );
