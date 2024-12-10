@@ -61,7 +61,7 @@ exports.submitVendorContact = async (req, res) => {
             for(let i=0; i<AllVendors.length; i++){
                 await mailSender(
                     AllVendors[i].email,
-                    "New Contact Form Submission From DJ Events",
+                    "New Contact Form Submission From Vimoo Wed",
                     vendorNotificationMail(AllVendors[i].name)
                 );
             }

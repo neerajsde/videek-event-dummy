@@ -33,9 +33,13 @@ const ContactForm = () => {
     }, [isLoggedIn, userData]); // Add userData as a dependency    
 
     function inputHandler(event){
+        const { name, value } = event.target;
+        if(name === 'phone' && value > 9999999999){
+            return;
+        }
         setFormData((prevState) => ({
             ...prevState,
-            [event.target.name]: event.target.value
+            [name]: value
         }))
     }
 

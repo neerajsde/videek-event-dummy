@@ -98,7 +98,7 @@ const VendorPage = ({ data }) => {
 
         <div className="w-[800px] max-md:w-full max-lg:w-[600px] flex flex-col gap-4">
           <div className="bg-white p-2">
-            <MContactUs2 />
+            <MContactUs2 vendorData={{name: data.name, category: data.category}}/>
           </div>
         </div>
       </div>

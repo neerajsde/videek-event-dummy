@@ -17,6 +17,7 @@ function AppContextProvider({ children }) {
   const [editServices, setEditServices] = useState({isActive: false, data: null});
   const [editBlog, setEditBlog] = useState({isActive: false, data: null});
   const [editWedding, setEditWedding] = useState({isActive: false, data: null});
+  const [viewContactUs, setViewContactUs] = useState({isActive: false, data: null});
 
   const AuthAdmin = async () => {
     try {
@@ -84,7 +85,8 @@ function AppContextProvider({ children }) {
     imageViewActive, setImageViewActive,
     editServices, setEditServices,
     editBlog, setEditBlog,
-    editWedding, setEditWedding
+    editWedding, setEditWedding,
+    viewContactUs, setViewContactUs
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

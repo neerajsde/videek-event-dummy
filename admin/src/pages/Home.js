@@ -27,9 +27,10 @@ import { MdDashboard } from "react-icons/md";
 import Navbar from "../components/Navbar";
 import AskConformation from "../components/AskConformation";
 import UploadGallery from "../components/gallery/UploadGallery";
+import ViewContacts from "../components/contact/ViewContacts";
 
 const Home = () => {
-  const { setIsLoggedIn, isActiveConformation } = useContext(AppContext);
+  const { setIsLoggedIn, isActiveConformation, viewContactUs } = useContext(AppContext);
   const [currentSection, setCurrentSection] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,6 +58,10 @@ const Home = () => {
 
       {isActiveConformation.isActive && (
         <div className="w-full min-h-screen fixed top-0 left-0 bg-[#00000038] backdrop-blur z-[10] flex justify-center items-center"><AskConformation/></div>
+      )}
+
+      {viewContactUs.isActive && (
+        <div className="w-full min-h-screen fixed top-0 left-0 bg-[#00000038] backdrop-blur z-[10] flex justify-center items-center"><ViewContacts/></div>
       )}
 
       <div className="w-full flex justify-start items-start">

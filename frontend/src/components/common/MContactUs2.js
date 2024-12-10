@@ -1,22 +1,47 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { MdOutlineEmail } from "react-icons/md";
 import { FaWhatsapp } from "react-icons/fa";
 import MdLoader from '../spinner/MdLoader';
 import { TiArrowSortedUp } from "react-icons/ti";
 import indiaFlagImg from '../../assets/india_flag.svg';
 import toast from "react-hot-toast";
+import { AppContext } from '../../context/AppContext';
 
-const MContactUs2 = () => {
+const MContactUs2 = ({vendorData}) => {
+    const {isLoggedIn, userData, setIsActiveLoginPage} = useContext(AppContext);
     const [currTab, setTab] = useState('send-message');
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
+        userId: '',
         name:'',
         email:'',
         country_code:'+91',
         phone:'',
         function_date:'',
-        message:''
+        message:'',
+        vendorName: '',
+        vendorCategory: ''
     });
+
+    useEffect(() => {
+        if(isLoggedIn && userData){
+            setFormData((prevState) => ({
+                ...prevState,
+                userId: userData.user_id,
+                name: userData.name,
+                email: userData?.email,
+                phone: userData.mobile ? Number(userData.mobile.slice(-10)) : 0,
+            }))
+        }
+    }, [isLoggedIn]);
+
+    useEffect(() => {
+        setFormData((prevState) => ({
+            ...prevState,
+            vendorName: vendorData.name,
+            vendorCategory: vendorData.category
+        }))
+    }, [vendorData])
 
     function inputHandler(event){
         if (event.target.name === "phone" && event.target.value.length > 10) {
@@ -26,6 +51,11 @@ const MContactUs2 = () => {
             ...prevState,
             [event.target.name]: event.target.value
         }))
+    }
+    const vaildateUser = () => {
+        if(!isLoggedIn || !userData){
+            setIsActiveLoginPage(true);
+        }
     }
 
     const submitMaleHandler = async (e) => {
@@ -68,14 +98,15 @@ const MContactUs2 = () => {
             const data = await response.json();
             if (response.ok && data.success) {
                 toast.success(data.message);
-                setFormData({
+                setFormData((prevState) => ({
+                    ...prevState,
                     name:'',
                     email:'',
                     country_code:'+91',
                     phone:'',
                     function_date:'',
                     message:''
-                })
+                }));
             } else {
                 toast.error(data.message || 'Something went wrong');
             }
@@ -91,18 +122,29 @@ const MContactUs2 = () => {
     
         try {
             setIsLoading(true);
-            const phoneNumber = '+919521500728'; 
-            const message = `Hi, I'm ${formData.name}, My Phone No ${formData.country_code}${formData.phone}\n I want to connect with us for vendor support!`;
+    
+            // Validate form data
+            if (!formData.name || !formData.phone) {
+                toast.error("Please fill all required fields");
+                return;
+            }
+    
+            const phoneNumber = '+919521500728'; // Replace with dynamic recipient if needed
+            const message = `Hi, I'm ${formData.name}. My Phone No is ${formData.country_code}${formData.phone}.\nI want to connect for vendor support!`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+    
+            // Open WhatsApp URL
             window.open(whatsappUrl, '_blank');
+    
+            // Inform the user
             toast.success('Message sent on WhatsApp!');
         } catch (err) {
             toast.error('Internal Server Error');
         } finally {
             setIsLoading(false);
         }
-    }
+    };    
     
 
   return (
@@ -174,7 +216,7 @@ const MContactUs2 = () => {
                     </div>
 
                     <div  className='w-full flex flex-col gap-2'>
-                        <button type='submit' className='w-full py-2 text-base font-semibold text-white bg-[#AB1C49] flex justify-center items-center transition duration-200 ease-in hover:bg-[#411530] min-h-[40px]'>{ isLoading ? (<MdLoader/>) : ('Send')}</button>
+                        <button type='submit'  onClick={vaildateUser} className='w-full py-2 text-base font-semibold text-white bg-[#AB1C49] flex justify-center items-center transition duration-200 ease-in hover:bg-[#411530] min-h-[40px]'>{ isLoading ? (<MdLoader/>) : ('Send')}</button>
                         <span className='text-sm text-gray-400'>Complete information ensures you get accurate and timely vendor responses</span>
                     </div>
                 </form>

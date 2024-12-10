@@ -8,7 +8,7 @@ import { HiOutlineEye } from "react-icons/hi";
 import DownloadContactUs from '../common-com/DownloadContactUsData';
 
 const Contact = () => {
-  const { setEditBlog, isActiveConformation, setIsActiveConformation } = useContext(AppContext);
+  const { setViewContactUs } = useContext(AppContext);
   const [realWeddingData, setRealWeddingData] = useState(null);
   const [Data, setData] = useState(null);
   const [categoryOptions, setCategoryOptions] = useState([]);
@@ -150,6 +150,7 @@ const Contact = () => {
                         <td className="py-2 px-4">{item.time}</td>
                         <td className="py-2 px-4 flex justify-center gap-4">
                           <button
+                              onClick={() => setViewContactUs({isActive: true, data: item})}
                               className="px-2 py-1 bg-transparent text-blue-600 border border-blue-600 rounded-md flex items-center justify-center gap-1 transition duration-200 ease-in hover:bg-blue-600 hover:text-white"
                           >
                               <HiOutlineEye/> View
