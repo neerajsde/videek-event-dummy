@@ -84,12 +84,14 @@ const Blogs = () => {
             </div>
             
             <div className='w-full flex flex-col p-8 gap-4 max-sm:p-4'>
-                <h3 className='text-black font-bold text-3xl max-md:text-xl max-sm:text-lg'>{blogData.title}</h3>
-                <img
-                    src={`${process.env.REACT_APP_BASE_URL}/blogImg${blogData?.img}`}
-                    alt="blog_img"
-                    className="w-full max-h-screen max-md:h-[300px] max-sm:h-[200px] object-cover rounded-lg"
-                />
+                <div className='w-full flex justify-between items-start max-sm:flex-col gap-4'>
+                    <h3 className='text-black font-bold text-3xl max-md:text-xl max-sm:text-lg'>{blogData.title}</h3>
+                    <img
+                        src={`${process.env.REACT_APP_BASE_URL}/blogImg${blogData?.img}`}
+                        alt="blog_img"
+                        className="w-[200px] max-h-screen max-sm:w-full max-sm:h-[200px] object-cover rounded-lg"
+                    />
+                </div>
 
                 <div
                     className='text-black text-base w-full max-sm:text-sm flex flex-col'

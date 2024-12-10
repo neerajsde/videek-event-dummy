@@ -58,6 +58,7 @@ const { getPopularVenue, getVenueCategory, getVenueByName, getAllVenues, getVenu
 const { addVenueReviews, uploadVenueReviewImg } = require('../controllers/venue/writeVenueReview');
 const { addFAQIntoVenue, deleteFAQFromVenue, updateFAQInVenue, uploadVenueAlbumImg, deleteVenueAlbumImg, UpdateVenueDetailsFormAdmin } = require('../controllers/venue/UpdateVenue');
 const { RemoveVenueById } = require('../controllers/venue/RemoveVenue');
+const { submitVenueEnquires } = require('../controllers/venue/VenueEnquires');
 // E-Invites-Cards
 const { AddNewDummyCard } = require('../controllers/e-invites-cards/AddEInvites');
 const { getEInviteCardById, allEInvitesCards } = require('../controllers/e-invites-cards/getEInvites');
@@ -174,6 +175,7 @@ router.post('/venue/album/img/upload', uploadVenueAlbumImg);
 router.delete('/venue/album/img/delete', auth, deleteVenueAlbumImg);
 router.get('/all/venue', getAllVenueDataForAdmin);
 router.delete('/venue/remove/:venueId',auth, RemoveVenueById);
+router.post('/venue/enquiery', auth, submitVenueEnquires);
 // E-Invites Cards
 router.post('/einvites/dummy/add', AddNewDummyCard);
 router.get('/einvites/dummy', allEInvitesCards);

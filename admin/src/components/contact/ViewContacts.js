@@ -17,37 +17,37 @@ const ViewContacts = () => {
                 <IoClose />
             </button>
         </div>
-        <div className='w-full flex flex-col gap-2'>
+        <div className='w-full flex flex-col gap-1'>
             <div className='w-full flex justify-start items-center gap-2'>
                 <span className='text-lg text-gray-500'>Name:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.name}</span>
+                <span className='text-base text-black font-semibold'>{viewContactUs?.data.name}</span>
             </div>
             <div className='w-full flex justify-start items-center gap-2'>
                 <span className='text-lg text-gray-500'>Mobile:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.phone}</span>
+                <span className='text-base text-black font-semibold'>{viewContactUs?.data.phone}</span>
             </div>
             <div className='w-full flex justify-start items-center gap-2'>
                 <span className='text-lg text-gray-500'>Email:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.email}</span>
+                <span className='text-base text-black font-semibold'>{viewContactUs?.data.email}</span>
             </div>
             <div className='w-full flex justify-start items-center gap-2'>
                 <span className='text-lg text-gray-500'>Submitted Date:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.date}</span>
+                <span className='text-base text-black font-semibold'>{viewContactUs?.data.date}</span>
             </div>
 
             <div className='w-full flex justify-start items-center gap-2'>
                 <span className='text-lg text-gray-500'>Submitted Time:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.time}</span>
+                <span className='text-base text-black font-semibold'>{viewContactUs?.data.time}</span>
             </div>
 
-            <div className='w-full flex justify-start items-center gap-2'>
+            <div className='w-full flex flex-col justify-start gap-1'>
                 <span className='text-lg text-gray-500'>Subject:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.subject}</span>
+                <span className='text-base text-black font-semibold bg-white p-2 rounded'>{viewContactUs?.data.subject}</span>
             </div>
 
-            <div className='w-full flex justify-start items-center gap-2'>
+            <div className='w-full flex flex-col justify-start gap-1'>
                 <span className='text-lg text-gray-500'>Message:</span>
-                <span className='text-lg text-black font-semibold'>{viewContactUs?.data.message}</span>
+                <span className='text-base text-black font-semibold bg-white p-2 rounded'>{viewContactUs?.data.message}</span>
             </div>
         </div>
     </div>

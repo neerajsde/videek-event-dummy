@@ -1,11 +1,11 @@
-exports.notifyAdminMail = (userName, userEmail, userMessage) => {
+exports.notifyUserMail = (userName, venueName) => {
     return `
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>New Contact Form Submission</title>
+            <title>Venue Enquiry Confirmation</title>
             <style>
                 body {
                     background-color: #f4f4f4;
@@ -38,19 +38,6 @@ exports.notifyAdminMail = (userName, userEmail, userMessage) => {
                     font-size: 16px;
                     margin-bottom: 20px;
                 }
-                .message p {
-                    margin-bottom: 10px;
-                }
-                .details {
-                    background-color: #f9f9f9;
-                    padding: 15px;
-                    border-radius: 5px;
-                    margin-bottom: 20px;
-                }
-                .details p {
-                    margin: 5px 0;
-                    font-weight: bold;
-                }
                 .footer {
                     font-size: 14px;
                     color: #777;
@@ -66,29 +53,23 @@ exports.notifyAdminMail = (userName, userEmail, userMessage) => {
         </head>
         <body>
             <div class="container">
-                <img src=${process.env.LOGO_URL} alt="Company Logo" class="logo" />
+                <img src="${process.env.LOGO_URL}" alt="Company Logo" class="logo" />
 
-                <h2 class="heading">New Contact Form Submission</h2>
+                <h2 class="heading">Venue Enquiry Confirmation</h2>
 
                 <div class="message">
-                    <p>Hello Admin,</p>
-                    <p>A new contact form has been submitted by <strong>${userName}</strong>:</p>
-                </div>
-
-                <div class="details">
-                    <p><strong>Name:</strong> ${userName}</p>
-                    <p><strong>Email:</strong> ${userEmail}</p>
-                    <p><strong>Message:</strong></p>
-                    <p>${userMessage}</p>
+                    <p>Dear <strong>${userName}</strong>,</p>
+                    <p>Thank you for submitting your enquiry for the venue with Name: <strong>${venueName}</strong>.</p>
+                    <p>Our team has received your request and will get back to you shortly with further details.</p>
                 </div>
 
                 <div class="message">
-                    <p>Please review the message and respond accordingly.</p>
+                    <p>If you have any additional questions or would like to provide more information, feel free to reply to this email or contact our support team.</p>
                 </div>
 
                 <div class="footer">
                     <p>Best regards,</p>
-                    <p><strong>Vimoo Wed System</strong></p>
+                    <p><strong>Vimoo Wed Team</strong></p>
                     <p>© 2025 Vimoo Wed. All rights reserved.</p>
                 </div>
             </div>

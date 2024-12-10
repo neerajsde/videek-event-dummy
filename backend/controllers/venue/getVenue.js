@@ -135,7 +135,6 @@ exports.getVenueCategory = async (req, res) => {
                 
                 delete currVenue.createdAt;
                 delete currVenue.__v;
-                delete currVenue._id;
                 delete currVenue.description;
                 currVenue.total_images = currVenue.albums.length;
                 delete currVenue.reviews;

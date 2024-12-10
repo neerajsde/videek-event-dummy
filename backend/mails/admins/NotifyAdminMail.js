@@ -1,11 +1,11 @@
-exports.notifyAdminMail = (userName, userEmail, userMessage) => {
+exports.notifyAdminMail = (userName, userEmail, venueName) => {
     return `
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>New Contact Form Submission</title>
+            <title>New Venue Enquiry</title>
             <style>
                 body {
                     background-color: #f4f4f4;
@@ -38,9 +38,6 @@ exports.notifyAdminMail = (userName, userEmail, userMessage) => {
                     font-size: 16px;
                     margin-bottom: 20px;
                 }
-                .message p {
-                    margin-bottom: 10px;
-                }
                 .details {
                     background-color: #f9f9f9;
                     padding: 15px;
@@ -66,24 +63,23 @@ exports.notifyAdminMail = (userName, userEmail, userMessage) => {
         </head>
         <body>
             <div class="container">
-                <img src=${process.env.LOGO_URL} alt="Company Logo" class="logo" />
+                <img src="${process.env.LOGO_URL}" alt="Company Logo" class="logo" />
 
-                <h2 class="heading">New Contact Form Submission</h2>
+                <h2 class="heading">New Venue Enquiry Submitted</h2>
 
                 <div class="message">
                     <p>Hello Admin,</p>
-                    <p>A new contact form has been submitted by <strong>${userName}</strong>:</p>
+                    <p>A new venue enquiry has been submitted by <strong>${userName}</strong>:</p>
                 </div>
 
                 <div class="details">
                     <p><strong>Name:</strong> ${userName}</p>
                     <p><strong>Email:</strong> ${userEmail}</p>
-                    <p><strong>Message:</strong></p>
-                    <p>${userMessage}</p>
+                    <p><strong>Venue Name:</strong> ${venueName}</p>
                 </div>
 
                 <div class="message">
-                    <p>Please review the message and respond accordingly.</p>
+                    <p>Please review the enquiry and respond accordingly.</p>
                 </div>
 
                 <div class="footer">

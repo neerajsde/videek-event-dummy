@@ -161,7 +161,7 @@ const Services = () => {
 
         {/* Sticky Contact Us Form */}
         <div className="sticky top-[80px] max-md:w-full p-4">
-          <ModernContactUs />
+          <ModernContactUs sname={servicesData?.name}/>
         </div>
       </div>
 

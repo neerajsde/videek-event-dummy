@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { AppContext } from '../../context/AppContext';
 
 const MContactUs2 = ({vendorData}) => {
-    const {isLoggedIn, userData, setIsActiveLoginPage} = useContext(AppContext);
+    const {webData, isLoggedIn, userData, setIsActiveLoginPage} = useContext(AppContext);
     const [currTab, setTab] = useState('send-message');
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -124,13 +124,20 @@ const MContactUs2 = ({vendorData}) => {
             setIsLoading(true);
     
             // Validate form data
-            if (!formData.name || !formData.phone) {
+            if (!formData.name || !formData.phone || !formData.country_code) {
                 toast.error("Please fill all required fields");
                 return;
             }
     
-            const phoneNumber = '+919521500728'; // Replace with dynamic recipient if needed
-            const message = `Hi, I'm ${formData.name}. My Phone No is ${formData.country_code}${formData.phone}.\nI want to connect for vendor support!`;
+            if (!webData?.whatsapp) {
+                toast.error("Vendor WhatsApp number is unavailable.");
+                return;
+            }
+    
+            // Ensure country code starts with '+'
+            const countryCode = formData.country_code.startsWith('+') ? formData.country_code : `+${formData.country_code}`;
+            const phoneNumber = `${countryCode}${webData.whatsapp}`;
+            const message = `Hi, I'm ${formData.name}. My Phone No is ${countryCode}${formData.phone}.\nI want to connect for vendor support!`;
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
     
@@ -256,7 +263,7 @@ const MContactUs2 = ({vendorData}) => {
                         </div>
                     </div>
                     <div className='w-full flex flex-col gap-2'>
-                        <button type='submit' className='w-full py-2 text-base font-semibold text-white bg-[#25D366] flex justify-center items-center transition duration-200 ease-in hover:bg-[#2bb45e]'>{ isLoading ? (<MdLoader/>) : ('Send')}</button>
+                        <button type='submit' onClick={vaildateUser} className='w-full py-2 text-base font-semibold text-white bg-[#25D366] flex justify-center items-center transition duration-200 ease-in hover:bg-[#2bb45e]'>{ isLoading ? (<MdLoader/>) : ('Send')}</button>
                         <span className='text-sm text-gray-400'>Complete information ensures you get accurate and timely vendor responses</span>
                     </div>
                 </form>

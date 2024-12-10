@@ -35,6 +35,8 @@ import VenueDetails from "./pages/VenueDetails";
 import WeddingCategory from "./pages/WeddingCategory";
 import ImageView from "./components/ImageView";
 import WeddingInvitation from "./pages/WeddingInvitation";
+import TermsConditions from "./pages/TermsConditions";
+import Privacy from "./pages/Privacy";
 
 function App() {
   const {
@@ -166,6 +168,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/contact-us" element={<Contact />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/blog" element={<BlogCategory />} /> 
         <Route path="/blog/:uId" element={<Blogs />} />
         <Route path="/venues" element={<Venues />} />

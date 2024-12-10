@@ -65,7 +65,43 @@ exports.getCategory = async (req, res) => {
                 message: 'Vendors category not found'
             });
         }
+        if(categoryName.toLowerCase() === 'all'){
+            const findCategory = AllVendors;
+            if(findCategory.length > 0){
+                let VendorsData = [];
+                for(let k=0; k<findCategory.length; k++){
+                    // Calculate total reviews
+                    const currVendor = findCategory[k].toObject();
+                    const totalReviews = await Promise.all(currVendor?.reviews.map(async (reviewId) => {
+                        const currReviewer = await Reviews.findById(reviewId);
+                        return currReviewer ? currReviewer.noOfStars : 0;
+                    }));
+                    
+                    delete currVendor.createdAt;
+                    delete currVendor.__v;
+                    delete currVendor.token;
+                    delete currVendor.password;
+                    delete currVendor._id;
+                    delete currVendor.description;
+                    delete currVendor.youtube_links;
 
+                    if(currVendor.FAQs.length !== 0 && currVendor.albums.length !== 0){
+                        currVendor.total_images = currVendor.albums.length;
+                        delete currVendor.reviews;
+                        delete currVendor.albums;
+                        delete currVendor.FAQs;
+                        currVendor.avg_ratings = totalReviews.length > 0 ? (totalReviews.reduce((sum, stars) => sum + stars, 0) / totalReviews.length).toFixed(1) : "4.8";
+                        VendorsData.push(currVendor);
+                    }
+                }
+                // console.log(VendorsData);
+                return res.status(200).json({
+                    success: true,
+                    data: VendorsData,
+                    message: 'All vendors category found'
+                });
+            }
+        }
         for(let i=0; i<AllVendors.length; i++){
             if(AllVendors[i].category.toLocaleLowerCase().replaceAll(/\s+/g, '-') === categoryName){
                 const findCategory = await Vendor.find({category: AllVendors[i].category});

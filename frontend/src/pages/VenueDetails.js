@@ -17,9 +17,10 @@ import { MdVerified } from "react-icons/md";
 import { IoStar } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import VenueReviews from '../components/common/VenueReviews';
+import MdLoader from '../components/spinner/MdLoader';
 
 const VenueDetails = () => {
-    const { contactHandler, setImageViewActive } = useContext(AppContext);
+    const { contactHandler, setImageViewActive, btnLoader } = useContext(AppContext);
     const [venueData, setVenueData] = useState(null);
     const location = useLocation();
     const [loading, setLoading] = useState(false);
@@ -120,8 +121,8 @@ const VenueDetails = () => {
                                     <p className='text-base cursor-pointer text-gray-500 flex justify-start items-center gap-1'><IoMdShare/>Share</p>
 
                                     <div className='w-full flex justify-between items-center gap-2'>
-                                        <button className='w-full border border-[#AB1C49] text-[#AB1C49] py-1 rounded-sm font-normal transition duration-300 ease-in hover:bg-[#AB1C49] hover:text-white flex justify-center items-center gap-2'>Write Review</button>
-                                        <button onClick={() => contactHandler(venueData.id, venueData.email, venueData.phone)} className='w-full border border-[#AB1C49] text-[#AB1C49] py-1 rounded-sm font-normal transition duration-300 ease-in hover:bg-[#AB1C49] hover:text-white flex justify-center items-center gap-2'>Send Message</button>
+                                        <button onClick={() => scrollToDiv("writex")} className='w-full border border-[#AB1C49] text-[#AB1C49] py-1 rounded-sm font-normal transition duration-300 ease-in hover:bg-[#AB1C49] hover:text-white flex justify-center items-center gap-2'>Write Review</button>
+                                        <button onClick={() => contactHandler(venueData._id)} className={`w-full h-[35px] border border-[#AB1C49] text-[#AB1C49] py-1 rounded-sm font-normal transition duration-300 ease-in hover:text-white flex justify-center items-center gap-2 ${btnLoader ? 'bg-[#AB1C49]' : 'hover:bg-[#AB1C49]'}`}>{btnLoader ? (<MdLoader/>): "Send Message"}</button>
                                     </div>
                                 </div>
                             </div>
@@ -236,9 +237,9 @@ const VenueDetails = () => {
                                     ))}
                                 </div>
                                 </div>
-                                <div className="w-[800px] max-lg:w-[600px] max-md:w-full gap-4">
-                                {/* Review  */}
-                                <VenueReviews data={venueData} />
+                                <div id='writex' className="w-[800px] max-lg:w-[600px] max-md:w-full gap-4">
+                                    {/* Review  */}
+                                    <VenueReviews data={venueData} />
                                 </div>
                             </div>
                         )}
@@ -274,7 +275,6 @@ const VenueDetails = () => {
                 )
             )
         }
-
         <Footer/>
     </div>
   )

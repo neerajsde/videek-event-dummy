@@ -26,7 +26,7 @@ const VendorCategories = () => {
     };
     
     useEffect(() => {
-        document.title = `Vendor category - ${location.pathname.split('/').at(-1).replaceAll('-',' ')}`
+        document.title = `Vendor - ${location.pathname.split('/').at(-1).replaceAll('-',' ')}`
         scrollToDiv("vendor-category");
     }, []);
 
