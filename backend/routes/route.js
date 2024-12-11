@@ -61,12 +61,15 @@ const { RemoveVenueById } = require('../controllers/venue/RemoveVenue');
 const { submitVenueEnquires } = require('../controllers/venue/VenueEnquires');
 // E-Invites-Cards
 const { AddNewDummyCard } = require('../controllers/e-invites-cards/AddEInvites');
-const { getEInviteCardById, allEInvitesCards } = require('../controllers/e-invites-cards/getEInvites');
+const { getEInviteCardById, allEInvitesCards, getUserInvitionCardById } = require('../controllers/e-invites-cards/getEInvites');
+const { saveEInvitesCardToUser } = require('../controllers/user/SaveEInvites');
 // user
 const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
 router.post('/user/login-email', loginHandler);
 router.post('/user/login-mobile', loginWithMobile);
 router.post('/user/dashboard', auth, getUserDetails);
+router.post('/user/einvites/card/upload', auth, saveEInvitesCardToUser);
+router.get('/user/invitation/:cardId', getUserInvitionCardById);
 // admin
 router.get('/admin/realtime/data',auth, getWebRealTimeActivity);
 router.post('/admin/add', createNewAdmin);

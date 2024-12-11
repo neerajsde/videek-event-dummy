@@ -1,37 +1,17 @@
 const mongoose = require('mongoose');
 
 const createdInvitationCard = new mongoose.Schema({
-    couple_name:{
+    cardImg:{
         type:String,
-        default:''
+        required: true
     },
-    date:{
+    url:{
         type:String,
-        default:''
+        required: true
     },
-    time:{
+    userId:{
         type:String,
-        default:''
-    },
-    desc:{
-        type:String,
-        default:''
-    },
-    img:{
-        type:String,
-        default:''
-    },
-    location:{
-        type:String,
-        default:''
-    },
-    venue_name:{
-        type:String,
-        default:''
-    },
-    isPublish:{
-        type:Boolean,
-        default:false
+        required: true
     },
     createdAt:{
         type:Date,

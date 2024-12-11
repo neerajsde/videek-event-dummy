@@ -1,137 +1,201 @@
-import React, { useState } from "react";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import React, { useContext, useEffect, useState } from "react";
+import { IoMdArrowRoundBack, IoMdSave } from "react-icons/io";
 import Draggable from "react-draggable";
 import { IoIosColorPalette } from "react-icons/io";
 import { AiOutlineFontSize } from "react-icons/ai";
+import { AppContext } from '../context/AppContext'
+import html2canvas from "html2canvas";
+import { FaSave } from "react-icons/fa";
+import toast from "react-hot-toast";
+import {Link} from 'react-router-dom'
 
 const EditWeddingInvitation = ({ data, fun }) => {
+  const {userData} = useContext(AppContext);
+  const [resultData, setResultData] = useState({isActive: false, url:null});
   const [formData, setFormData] = useState({
     boyName: "",
     girlName: "",
-    boyStyle: {
-      fontSize: "30px",
-      color: "#000000",
-    },
-    girlStyle: {
-      fontSize: "30px",
-      color: "#000000",
+    description: "",
+    weddingDate: "",
+    styles: {
+      boyName: { fontSize: "32px", color: "#CB7594", maxscreen: "top-[28%] left-[35%] max-sm:top-[24%] max-sm:left-[5%] max-sm:text-sm" },
+      girlName: { fontSize: "32px", color: "#CB7594", maxscreen: "top-[40%] left-[35%] max-sm:top-[35%] max-sm:left-[5%] max-sm:text-sm" },
+      weddingDate: { fontSize: "22px", color: "#CB7594", maxscreen: "top-[75%] left-[38%] max-sm:left-[5%] max-sm:text-base" },
+      description: { fontSize: "20px", color: "#CB7594", maxscreen: "top-[80%] left-[30%] max-sm:left-[5%] max-sm:text-sm" },
     },
   });
 
-  // Handler to update text content
+  useEffect(() => {
+    if(userData){
+      setFormData((prevState) => ({
+        ...prevState,
+        boyName: userData.name.trim().split(' ').at(0)
+      }))
+    }
+  },[userData])
+
   function inputHandler(e) {
+    const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   }
 
-  // Handler to update styles (fontSize or color)
   function styleHandler(target, property, value) {
     setFormData((prevState) => ({
       ...prevState,
-      [target]: {
-        ...prevState[target],
-        [property]: value,
+      styles: {
+        ...prevState.styles,
+        [target]: {
+          ...prevState.styles[target],
+          [property]: value,
+        },
       },
     }));
   }
 
+  const fields = [
+    { name: "boyName", placeholder: "Mr. name" },
+    { name: "girlName", placeholder: "Mr's name" },
+    { name: "description", placeholder: "Write Message", isTextarea: true },
+    { name: "weddingDate", placeholder: "14-Feb-2025" },
+  ];
+
+  const handleSaveCard = async () => {
+    if(!formData.boyName || !formData.girlName){
+      toast.error('Please Update Couple Name');
+      return;
+    }
+    const invitationCard = document.getElementById("invitation-card");
+    if (invitationCard) {
+      try {
+        // Capture the card as a canvas
+        const canvas = await html2canvas(invitationCard, {
+          useCORS: true, // Allows cross-origin images
+          logging: false, // Optional: suppress logging
+        });
+  
+        // Convert canvas to Blob
+        canvas.toBlob(async (blob) => {
+          if (blob) {
+            // Prepare FormData
+            const token = localStorage.getItem("DJevents");
+            if (!token) {
+              throw new Error("Token not found. Please log in again.");
+            }
+            const surl = `${formData.boyName.trim().split(' ').at(0)}-and-${formData.girlName.trim().split(' ').at(0)}`
+            const formXData = new FormData();
+            formXData.append("userId", userData.user_id);
+            formXData.append("urls", surl);
+            formXData.append("card_img", blob, "wedding-invitation.png");
+  
+            // Send the image to the backend
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/user/einvites/card/upload`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formXData, // Attach the FormData
+            });
+  
+            const result = await response.json();
+            if (result.success) {
+              const originUrl = window.location.origin;
+              setResultData({isActive: true, url:`${originUrl}/invitation/${surl}/${result.id}`});
+              toast.success(result.message);
+            } else {
+              toast.error(result.message);
+            }
+          }
+        }, "image/png");
+      } catch (error) {
+        toast.error("Error capturing and sending invitation card:", error);
+      }
+    } else {
+      console.error("No invitation card found!");
+    }
+  };
+  
+
   return (
     <div className="w-full max-sm:flex max-sm:flex-col min-h-screen relative">
-      {/* Back Button */}
-      <div className="absolute max-sm:relative top-2 left-2">
-        <button
-          onClick={() => fun(false)}
-          className="flex justify-center items-center gap-2 border py-1 px-3 border-gray-600 bg-gray-400 rounded-sm"
-        >
-          <IoMdArrowRoundBack /> Back
-        </button>
-      </div>
-
-      {/* Edit Controls */}
-      <div className="max-sm:w-[90%] fixed top-[50%] max-sm:top-0 max-sm:relative right-2 max-sm:right-0 border flex flex-col gap-2 p-2 bg-gray-100 shadow-md rounded-md">
-        <h3 className="font-bold mb-2">Edit Text</h3>
-
-        {/* Font Size */}
-        <div className="flex items-center gap-2">
-          <AiOutlineFontSize className="text-xl"/>
-          <input
-            type="number"
-            min="10"
-            max="100"
-            value={parseInt(formData.boyStyle.fontSize)}
-            onChange={(e) => styleHandler("boyStyle", "fontSize", `${e.target.value}px`)}
-            placeholder="Font Size"
-            className="w-full border px-2 py-1 rounded"
-          />
-          <input
-            type="number"
-            min="10"
-            max="100"
-            value={parseInt(formData.girlStyle.fontSize)}
-            onChange={(e) => styleHandler("girlStyle", "fontSize", `${e.target.value}px`)}
-            placeholder="Font Size"
-            className="w-full border px-2 py-1 rounded"
-          />
+      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start p-8 gap-8 max-md:gap-4 max-md:p-4 max-sm:p-2">
+        <div className="w-full border flex flex-col gap-4 p-2 bg-gray-100 shadow-md rounded-md">
+          <div className="w-full flex justify-start items-center gap-2">
+            <IoMdArrowRoundBack onClick={() => fun(false)} className="text-xl cursor-pointer"/>
+            <h3 className="font-bold">Edit Text Styles</h3>
+          </div>
+          {fields.map((field) => (
+            <div key={field.name} className="flex flex-col gap-2">
+              <label>{field.placeholder} Style</label>
+              <div className="flex items-center gap-2">
+                <AiOutlineFontSize className="text-xl" />
+                <input
+                  type="number"
+                  min="10"
+                  max="100"
+                  value={parseInt(formData.styles[field.name].fontSize)}
+                  onChange={(e) =>
+                    styleHandler(field.name, "fontSize", `${e.target.value}px`)
+                  }
+                  className="w-full border px-2 py-1 rounded"
+                />
+                <IoIosColorPalette />
+                <input
+                  type="color"
+                  value={formData.styles[field.name].color}
+                  onChange={(e) =>
+                    styleHandler(field.name, "color", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* Font Color */}
-        <div className="flex items-center gap-2">
-          <IoIosColorPalette />
-          <input
-            type="color"
-            value={formData.boyStyle.color}
-            onChange={(e) => styleHandler("boyStyle", "color", e.target.value)}
-          />
-          <input
-            type="color"
-            value={formData.girlStyle.color}
-            onChange={(e) => styleHandler("girlStyle", "color", e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* Invitation Card Area */}
-      <div className="w-full h-full flex justify-center items-center p-4">
-        <div className="w-[500px] flex relative">
-          {/* Background Invitation Card Image */}
+        <div id="invitation-card" className="w-full col-span-1 lg:col-span-2 flex relative justify-center items-center">
           <img
             src={`${process.env.REACT_APP_BASE_URL}/invitationsCard${data.img}`}
             alt="card"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover shadow-md"
           />
 
-          {/* Draggable Input Fields */}
-          <Draggable>
-            <input
-              type="text"
-              name="boyName"
-              value={formData.boyName}
-              onChange={inputHandler}
-              placeholder="Boy's Name"
-              style={{
-                ...formData.boyStyle,
-              }}
-              className="w-[200px] max-sm:w-[90%] absolute top-[190px] max-sm:top-[60px] text-center left-[150px] max-sm:left-3 border bg-transparent px-2 py-1 font-extrabold dancing-text outline-none border-dashed border-transparent focus:border-black cursor-move"
-            />
-          </Draggable>
-
-          <Draggable>
-            <input
-              type="text"
-              name="girlName"
-              value={formData.girlName}
-              onChange={inputHandler}
-              placeholder="Girl's Name"
-              style={{
-                ...formData.girlStyle,
-              }}
-              className="w-[200px] max-sm:w-[90%] absolute top-[280px] max-sm:top-[150px] text-center left-[150px] max-sm:left-3 border bg-transparent px-2 py-1 font-extrabold dancing-text outline-none border-dashed border-transparent focus:border-black cursor-move"
-            />
-          </Draggable>
+          {fields.map((field) => (
+            <Draggable key={field.name}>
+              {field.isTextarea ? (
+                <textarea
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={inputHandler}
+                  placeholder={field.placeholder}
+                  style={formData.styles[field.name]}
+                  className={`w-[300px] max-sm:w-[90%] ${formData.styles[field.name].maxscreen} absolute text-center border bg-transparent px-2 py-1 font-semibold dancing-text outline-none border-dashed border-transparent focus:border-black cursor-move`}
+                />
+              ) : (
+                <input
+                  type="text"
+                  name={field.name}
+                  value={formData[field.name]}
+                  onChange={inputHandler}
+                  placeholder={field.placeholder}
+                  style={formData.styles[field.name]}
+                  className={`w-[300px] max-sm:w-[90%] ${formData.styles[field.name].maxscreen} absolute text-center border bg-transparent px-2 py-1 font-extrabold dancing-text outline-none border-dashed border-transparent focus:border-black cursor-move`}
+                />
+              )}
+            </Draggable>
+          ))}
         </div>
       </div>
+
+      <div className="w-full flex justify-center items-center gap-4 mb-4">
+        <button onClick={handleSaveCard} className='flex justify-center items-center gap-1 border border-[#ae2c56] bg-[#AB1C49] text-white text-lg py-2 px-4 rounded-sm transition duration-200 ease-in hover:bg-[#822846]'> <FaSave/> Save</button>
+      </div>
+
+      {resultData.isActive && (
+        <div className="w-full flex justify-center items-center gap-4 mb-4 max-sm:px-2">
+          <Link to={resultData.url} target="_blank" className="text-blue-600 text-base hover:underline hover:text-green-600">{resultData.url}</Link>
+        </div>
+      )}
     </div>
   );
 };

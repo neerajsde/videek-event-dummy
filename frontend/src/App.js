@@ -37,6 +37,7 @@ import ImageView from "./components/ImageView";
 import WeddingInvitation from "./pages/WeddingInvitation";
 import TermsConditions from "./pages/TermsConditions";
 import Privacy from "./pages/Privacy";
+import InvitationCard from "./pages/InvitationCard";
 
 function App() {
   const {
@@ -180,6 +181,7 @@ function App() {
         <Route path="/real_weddings/:couple_name" element={<RealWeddings />} />
         <Route path="/vendor-category/:name" element={<VendorCategories />} />
         <Route path="/vendor/:category/:name" element={<Vendor />} />
+        <Route path="/invitation/:coupleName/:ID" element={<InvitationCard />} /> 
         <Route path="/wedding-invitations/:tab" element={<Invitations />} /> 
         <Route path="/wedding-invitations/:tab/:id" element={<WeddingInvitation />} /> 
         <Route path="/s/:services" element={<Services />} />
