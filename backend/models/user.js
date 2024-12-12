@@ -35,6 +35,10 @@ const creatednewUser = new mongoose.Schema({
             ref: 'Invitation-Card' 
         }
     ],
+    address:{
+        type:String,
+        default:''
+    },
     token:{
         type:String,
         default:''

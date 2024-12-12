@@ -34,34 +34,38 @@ const VendorPage = ({ data }) => {
                 <div className="w-full flex justify-between items-start p-4 max-sm:p-2">
                   <div className="w-full flex justify-start max-sm:items-center gap-4 max-sm:gap-1">
                     {data && (
-                        <div className="w-[100px] h-[100px] max-sm:w-[50px] max-sm:h-[50px] flex justify-center items-center border-2 border-yellow-600 rounded-lg">
-                          <img
-                            src={ data.user_img === '' ? `https://api.dicebear.com/5.x/initials/svg?seed=${data.name}` : `${process.env.REACT_APP_BASE_URL}${data.user_img}`}
-                            alt={data.name}
-                            className="w-full h-full object-cover rounded-md"
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
-                      <div className="flex flex-col gap-2 max-sm:gap-0">
-                        <h2 className="flex justify-start items-center gap-2 max-sm:gap-1">
-                          <span className="text-2xl text-black font-semibold max-sm:text-lg">
-                            {data.name}
-                          </span>{" "}
-                          <MdVerified className="text-blue-500 text-xl max-sm:text-base" />
-                        </h2>
-
-                        <Link className="flex gap-2 items-center">
-                          <FaPhone className="text-teal-600 max-sm:text-sm" />
-                          <span className="text-base max-sm:text-sm font-semibold text-teal-600">
-                            Contact
-                          </span>
-                        </Link>
+                      <div className="w-[100px] h-[100px] max-sm:w-[50px] max-sm:h-[50px] flex justify-center items-center border-2 border-yellow-600 rounded-lg">
+                        <img
+                          src={
+                            data.user_img === ""
+                              ? `https://api.dicebear.com/5.x/initials/svg?seed=${data.name}`
+                              : `${process.env.REACT_APP_BASE_URL}${data.user_img}`
+                          }
+                          alt={data.name}
+                          className="w-full h-full object-cover rounded-md"
+                          loading="lazy"
+                        />
                       </div>
+                    )}
+                    <div className="flex flex-col gap-2 max-sm:gap-0">
+                      <h2 className="flex justify-start items-center gap-2 max-sm:gap-1">
+                        <span className="text-2xl text-black font-semibold max-sm:text-lg">
+                          {data.name}
+                        </span>{" "}
+                        <MdVerified className="text-blue-500 text-xl max-sm:text-base" />
+                      </h2>
+
+                      <Link className="flex gap-2 items-center">
+                        <FaPhone className="text-teal-600 max-sm:text-sm" />
+                        <span className="text-base max-sm:text-sm font-semibold text-teal-600">
+                          Contact
+                        </span>
+                      </Link>
+                    </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex justify-center items-center rounded-sm gap-2 bg-green-500 p-2 max-sm:py-1 max-sm:gap-1 text-white">
-                      <IoStar className="max-sm:text-base"/>
+                      <IoStar className="max-sm:text-base" />
                       <span className="max-sm:text-sm">{data.avg_ratings}</span>
                     </div>
                     <div className="flex justify-start items-center gap-2">
@@ -98,7 +102,9 @@ const VendorPage = ({ data }) => {
 
         <div className="w-[800px] max-md:w-full max-lg:w-[600px] flex flex-col gap-4">
           <div className="bg-white p-2">
-            <MContactUs2 vendorData={{name: data.name, category: data.category}}/>
+            <MContactUs2
+              vendorData={{ name: data.name, category: data.category }}
+            />
           </div>
         </div>
       </div>
@@ -108,7 +114,8 @@ const VendorPage = ({ data }) => {
           <div className="w-full flex justify-between items-center">
             <h2 className="text-xl font-semibold text-black max-md:text-base">{`Albums (${data.albums.length})`}</h2>
             <Link className="text-base max-sm:text-sm text-[#AB1C49] flex items-center gap-1">
-              View All <MdKeyboardArrowRight className="text-xl max-sm:text-base" />
+              View All{" "}
+              <MdKeyboardArrowRight className="text-xl max-sm:text-base" />
             </Link>
           </div>
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 grid-rows-5 md:grid-rows-2 sm:grid-rows-3 gap-4">
@@ -121,11 +128,11 @@ const VendorPage = ({ data }) => {
                   className="w-full h-[150px] max-sm:h-[120px] object-cover cursor-pointer"
                   onClick={() => {
                     setImageViewActive({
-                        isActive: true, 
-                        index: index,
-                        AllImages: data.albums, 
-                        dirName:'vendor'
-                    })
+                      isActive: true,
+                      index: index,
+                      AllImages: data.albums,
+                      dirName: "vendor",
+                    });
                   }}
                 />
               ))}
@@ -138,7 +145,8 @@ const VendorPage = ({ data }) => {
           <div className="w-full flex justify-between items-center">
             <h2 className="text-xl font-semibold text-black max-md:text-lg max-sm:text-base">{`Vendor's YouTube Videos (${data.ytLinksLength})`}</h2>
             <Link className="text-base max-sm:text-sm text-[#AB1C49] flex items-center gap-1">
-              View All <MdKeyboardArrowRight className="text-xl max-sm:text-sm" />
+              View All{" "}
+              <MdKeyboardArrowRight className="text-xl max-sm:text-sm" />
             </Link>
           </div>
           <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-4">
@@ -166,7 +174,8 @@ const VendorPage = ({ data }) => {
               <span>{`(${data.total_reviews})`} </span> Reviews & Ratings
             </h2>
             <Link className="text-base text-[#AB1C49] flex items-center gap-1 max-sm:text-sm">
-              View All <MdKeyboardArrowRight className="text-xl max-md:text-lg max-sm:text-base" />
+              View All{" "}
+              <MdKeyboardArrowRight className="text-xl max-md:text-lg max-sm:text-base" />
             </Link>
           </div>
           <div className="w-full flex flex-col">
@@ -180,8 +189,13 @@ const VendorPage = ({ data }) => {
                     <div className="flex justify-start items-center gap-2">
                       <div className="w-[45px] h-[45px] rounded-full border-2 border-gray-300">
                         <img
-                          src={item.user_img}
-                          alt=""
+                          src={
+                            item.user_img &&
+                            item.user_img.slice(0, 4) !== "http"
+                              ? `${process.env.REACT_APP_BASE_URL}${item.user_img}`
+                              : `https://api.dicebear.com/5.x/initials/svg?seed=${item?.user_name}`
+                          }
+                          alt="Profile Pic"
                           className="w-full h-full object-cover rounded-full"
                         />
                       </div>
@@ -210,7 +224,9 @@ const VendorPage = ({ data }) => {
                       <BsThreeDotsVertical className="text-xl" />
                     </div>
                   </div>
-                  <div className="text-sm text-gray-700 max-sm:text-xs">{item.comment}</div>
+                  <div className="text-sm text-gray-700 max-sm:text-xs">
+                    {item.comment}
+                  </div>
                   <div className="w-full grid grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-4 max-sm:gap-2">
                     {item.images &&
                       item.images.map((img, index) => (
@@ -221,11 +237,11 @@ const VendorPage = ({ data }) => {
                           className="w-full h-[50px] object-cover cursor-pointer"
                           onClick={() => {
                             setImageViewActive({
-                                isActive: true, 
-                                index: index,
-                                AllImages: item.images, 
-                                dirName:'vendor'
-                            })
+                              isActive: true,
+                              index: index,
+                              AllImages: item.images,
+                              dirName: "vendor",
+                            });
                           }}
                         />
                       ))}

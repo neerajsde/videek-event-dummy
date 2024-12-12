@@ -21,7 +21,16 @@ const UserMenu = () => {
     <div className='w-full flex flex-col'>
         <div className='w-full flex justify-start items-center gap-2 px-4 py-2 border-b-2 border-gray-300'>
             <div className='w-[40px] h-[40px] rounded-full border-2 border-gray-500'>
-              <img src={userData.user_img} alt='user-img' className='w-full h-full rounded-full'/>
+                <img 
+                    src={
+                        userData.user_img && (userData.user_img.slice(0,4) !== 'http') 
+                            ? `${process.env.REACT_APP_BASE_URL}${userData.user_img}`
+                            :
+                                `https://api.dicebear.com/5.x/initials/svg?seed=${userData?.name}`
+                    } 
+                    alt="Profile Pic" 
+                    className="w-full h-full object-cover rounded-full"
+                />
             </div>
 
             <div className='flex flex-col gap-0'>

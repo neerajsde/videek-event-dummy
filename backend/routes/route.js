@@ -65,11 +65,18 @@ const { getEInviteCardById, allEInvitesCards, getUserInvitionCardById } = requir
 const { saveEInvitesCardToUser } = require('../controllers/user/SaveEInvites');
 // user
 const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
+const { changeUserProfilePic, VerifyUserWithEmail, verifyOTPandUpdateUser, updateUserDetails } = require('../controllers/user/UpdateUser');
+const { getUserDetailsById } = require('../controllers/user/GetUserDetails');
 router.post('/user/login-email', loginHandler);
 router.post('/user/login-mobile', loginWithMobile);
 router.post('/user/dashboard', auth, getUserDetails);
 router.post('/user/einvites/card/upload', auth, saveEInvitesCardToUser);
 router.get('/user/invitation/:cardId', getUserInvitionCardById);
+router.put('/user/profile-pic/change', auth, changeUserProfilePic); 
+router.get('/user/details/:userId', auth, getUserDetailsById); 
+router.post('/user/verify/email', auth, VerifyUserWithEmail); 
+router.post('/user/verify/otp', auth, verifyOTPandUpdateUser); 
+router.post('/user/update', auth, updateUserDetails); 
 // admin
 router.get('/admin/realtime/data',auth, getWebRealTimeActivity);
 router.post('/admin/add', createNewAdmin);
@@ -131,7 +138,7 @@ router.get('/vendor/enquiry/:vendor_id', getVendorEnquiry);
 router.get('/vendor/enquiry/unlocked/:vendor_id', auth, getVendorUnlockedEnquiry);
 router.get('/vendor/insight/:vendor_id', auth, vendorDataInsight);
 router.get('/vendor/details/:vendor_id', auth, getVendorDataForTheirAdmin);
-router.put('/vendor/profile-pic/change', changeVendorProfilePic);
+router.put('/vendor/profile-pic/change', changeVendorProfilePic); 
 router.get('/all/vendors', getAllVendorDataForAdmin);
 router.delete('/vendor/remove/:vendorId',auth, RemoveVendorById);
 // gallery

@@ -182,10 +182,15 @@ const VenueDetails = () => {
                                         <div className="w-full flex justify-between">
                                             <div className="flex justify-start items-center gap-2">
                                             <div className="w-[45px] h-[45px] rounded-full border-2 border-gray-300">
-                                                <img
-                                                src={item.user_img}
-                                                alt=""
-                                                className="w-full h-full object-cover rounded-full"
+                                                <img 
+                                                    src={
+                                                        item.user_img && (item.user_img.slice(0,4) !== 'http') 
+                                                            ? `${process.env.REACT_APP_BASE_URL}${item.user_img}`
+                                                            :
+                                                                `https://api.dicebear.com/5.x/initials/svg?seed=${item?.user_name}`
+                                                    } 
+                                                    alt="Profile Pic" 
+                                                    className="w-full h-full object-cover rounded-full"
                                                 />
                                             </div>
                                             <div className="flex flex-col">
