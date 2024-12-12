@@ -122,7 +122,7 @@ const Footer = () => {
 
       <div className="w-full flex justify-center items-center gap-2 text-center border-t border-gray-400 pt-4 text-base font-normal text-gray-100">
         © Copyright 2024 {webData?.title} - All Rights Reserved.
-        <span>Developed by <Link to={'https://standupstartups.com/'} target="_blank" className="text-[#333]">StandUp StartUps</Link></span>
+        <span>Developed by <Link to={'https://www.neerajprajapati.in/'} target="_blank" className="text-[#333]">Neeraj Prajapati</Link></span>
       </div>
     </div>
   );
