@@ -98,8 +98,12 @@ const AddVendor = () => {
             formXData.append("description", description);
             formXData.append("img", img);
 
-            const response = await axios.post(`${baseUrl}/vendor/add`, formXData);
-            if (response.data.success) {
+            const response = await fetch(`${baseUrl}/vendor/add`, {
+                method:'POST',
+                body: formXData
+            });
+            const data = await response.json();
+            if (data.success) {
                 setSuccessMessage("Vendor added successfully");
                 setFormData({
                     category:'',
@@ -113,7 +117,7 @@ const AddVendor = () => {
                 setImg(null);
                 toast.success("Vendor added successfully");
             } else {
-                setError(response.data.message);
+                setError(data.message);
             }
         } catch (error) {
             setError("Internal Server Error. Please try again later.");
@@ -260,24 +264,23 @@ const AddVendor = () => {
                 />
             </div>
 
-            <div className="w-full flex justify-start items-end gap-4">
-                <div className="w-full flex gap-1">
+            <div className="w-full flex justify-start items-center gap-4">
+                <div className="w-[200px] flex gap-1">
                     <button
                     type="submit"
-                    className="h-[45px] w-[200px] rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-cyan-600 transition duration-200 ease-in hover:bg-cyan-800"
+                    className="h-[45px] w-full rounded-sm flex justify-center items-center py-2 px-4 border-none outline-none text-lg text-white bg-cyan-600 transition duration-200 ease-in hover:bg-cyan-800"
                     >
                     {isLoading ? <MdLoader /> : "Add Vendor"}
                     </button>
                 </div>
+                {/* Error and Success Messages */}
+                {error && <p className="text-sm font-semibold text-red-600">{error}</p>}
+                {successMessage && (
+                    <p className="text-sm font-semibold text-green-600">
+                        {successMessage}
+                    </p>
+                )}
             </div>
-
-            {/* Error and Success Messages */}
-            {error && <p className="text-sm font-semibold text-red-600">{error}</p>}
-            {successMessage && (
-                <p className="text-sm font-semibold text-green-600">
-                    {successMessage}
-                </p>
-            )}
         </form>
     </div>
   )

@@ -21,6 +21,11 @@ function generateHardPassword(length = 8) {
     return password;
 }
 
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
 exports.AddNewVendor = async(req, res) => {
     try{
         const {category, name, phone, whatsapp, email, title, description} = req.body;
@@ -32,6 +37,18 @@ exports.AddNewVendor = async(req, res) => {
             if (!req.body[field]) {
                 return res.status(400).json({ success: false, message: `Please fill in the ${field.toUpperCase()}` });
             }
+        }
+
+        if(!validateEmail(email)){
+            return res.status(400).json({ success: false, message: 'Please enter vaild email' });
+        }
+
+        const findVendorExits = await Vendor.findOne({email: email});
+        if(findVendorExits && findVendorExits.name === name){
+            return res.status(400).json({ success: false, message: 'Vendor already exits' });
+        }
+        if(findVendorExits){
+            return res.status(400).json({ success: false, message: 'Please enter another email' });
         }
 
         // Validate the services image
