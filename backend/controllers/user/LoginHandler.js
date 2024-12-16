@@ -74,6 +74,13 @@ exports.loginHandler = async (req, res) => {
 
         if (findExistUser) {
             try {
+                if(findExistUser.block){
+                    return res.status(404).json({
+                        success: false,
+                        tag: 'password',
+                        message: "You are blocked"
+                    });
+                }
                 const isValidPass = await bcrypt.compare(password, findExistUser.password);
                 if (!isValidPass) {
                     return res.status(401).json({

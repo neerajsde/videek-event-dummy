@@ -28,6 +28,8 @@ import Navbar from "../components/Navbar";
 import AskConformation from "../components/AskConformation";
 import UploadGallery from "../components/gallery/UploadGallery";
 import ViewContacts from "../components/contact/ViewContacts";
+import User from "../components/users/User";
+import { FaUsers } from "react-icons/fa";
 
 const Home = () => {
   const { setIsLoggedIn, isActiveConformation, viewContactUs } = useContext(AppContext);
@@ -72,6 +74,13 @@ const Home = () => {
             className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'home' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
           >
             <MdDashboard className="text-xl" /> Dashboard
+          </Link>
+          <Link 
+            to='#users'
+            onClick={() => setCurrentSection("users")}
+            className={`w-full py-2 flex justify-start px-4 items-center gap-4 text-gray-400 text-lg font-semibold transition duration-300 ease-in-out ${currentSection === 'users' ? 'bg-[#222] text-white': 'hover:bg-[#000] hover:text-white'}`}
+          >
+            <FaUsers className="text-xl" /> Users
           </Link>
           <Link 
             to='#settings'
@@ -159,6 +168,7 @@ const Home = () => {
 
         <div className="w-full flex justify-start items-start text-white p-4">
           {currentSection === "home" && <MainPage/>}
+          {currentSection === "users" && <User/>}
           {currentSection === "settings" && <GeneralSettings/>}
           {currentSection === "services" && <Services/>}
           {currentSection === "blog" && <Blog/>}

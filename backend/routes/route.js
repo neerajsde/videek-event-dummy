@@ -66,7 +66,8 @@ const { saveEInvitesCardToUser } = require('../controllers/user/SaveEInvites');
 // user
 const { loginHandler, getUserDetails, loginWithMobile } = require('../controllers/user/LoginHandler');
 const { changeUserProfilePic, VerifyUserWithEmail, verifyOTPandUpdateUser, updateUserDetails } = require('../controllers/user/UpdateUser');
-const { getUserDetailsById } = require('../controllers/user/GetUserDetails');
+const { getUserDetailsById, getAllUsersData } = require('../controllers/user/GetUserDetails');
+const { BlockUserById, unBlockUserById } = require('../controllers/user/DeleteUser');
 router.post('/user/login-email', loginHandler);
 router.post('/user/login-mobile', loginWithMobile);
 router.post('/user/dashboard', auth, getUserDetails);
@@ -77,6 +78,9 @@ router.get('/user/details/:userId', auth, getUserDetailsById);
 router.post('/user/verify/email', auth, VerifyUserWithEmail); 
 router.post('/user/verify/otp', auth, verifyOTPandUpdateUser); 
 router.post('/user/update', auth, updateUserDetails); 
+router.delete('/user/block/remove/:userId',auth, BlockUserById);
+router.delete('/user/unblock/remove/:userId',auth, unBlockUserById);
+router.get('/all/users', auth, getAllUsersData);
 // admin
 router.get('/admin/realtime/data',auth, getWebRealTimeActivity);
 router.post('/admin/add', createNewAdmin);

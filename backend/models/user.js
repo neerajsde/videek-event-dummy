@@ -43,6 +43,14 @@ const creatednewUser = new mongoose.Schema({
         type:String,
         default:''
     },
+    isActive:{
+        type:Boolean,
+        default:false
+    },
+    block:{
+        type:Boolean,
+        default:false
+    },
     createdAt:{
         type:Date,
         default:Date.now
